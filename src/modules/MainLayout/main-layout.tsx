@@ -5,14 +5,14 @@ import {Separator} from "@/components/ui/separator.tsx";
 
 function MainLayout() {
     return(
-        <div className="flex flex-col h-full w-full p-2">
+        <div className="flex flex-col h-full w-full">
             <StatusBar />
 
             <Separator />
 
             <div className="flex flex-row flex-auto">
                 <Sidebar />
-                <Separator orientation="vertical" />
+                <Separator orientation="vertical" className="h-full"/>
                 <MainCard />
             </div>
         </div>
