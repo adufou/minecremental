@@ -1,13 +1,12 @@
 import './App.css'
-import {Button} from "antd";
+import {ThemeProvider} from "@/components/providers/theme-provider.tsx";
+import MainLayout from "@/modules/MainLayout/main-layout.tsx";
 
 function App() {
   return (
-    <>
-      <div>
-          Test
-      </div>
-    </>
+      <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+          <MainLayout />
+      </ThemeProvider>
   )
 }
 
