@@ -1,8 +1,9 @@
 import {create} from 'zustand'
 import {createInventorySlice, InventorySlice} from "@/store/slices/inventory-slice.ts";
+import {devtools} from "zustand/middleware";
 
 type State = InventorySlice
 
-export const useBoundStore = create<State>((...a) => ({
+export const useBoundStore = create<State>()(devtools((...a) => ({
     ...createInventorySlice(...a)
-}))
+})))
