@@ -2,25 +2,25 @@ import {StateCreator} from "zustand";
 
 export interface InventorySlice {
     inventory: ItemStack[];
-    addItemToPlayerInventory: (item: any) => void;
+    addItemToPlayerInventory: (payload: {item: Item, number: number}) => void;
 }
 
 export const createInventorySlice: StateCreator<InventorySlice, [], [], InventorySlice> = (set) => ({
     inventory: [],
-    addItemToPlayerInventory: (item: Item, number = 1) => {
+    addItemToPlayerInventory: (payload) => {
         set((state) => {
             const newInventory = state.inventory;
 
-            if (item.stackSize === 1) {
+            if (payload.item.stackSize === 1) {
                 newInventory.push({
-                    item,
+                    item: payload.item,
                     size: 1,
                 })
             }
 
             const availableStack = newInventory.findIndex((stack) => {
-                if (stack.item === item) {
-                    if (stack.size + number <= item.stackSize) {
+                if (stack.item === payload.item) {
+                    if (stack.size + payload.number <= payload.item.stackSize) {
                         return true;
                     }
                 }
@@ -29,13 +29,13 @@ export const createInventorySlice: StateCreator<InventorySlice, [], [], Inventor
             })
 
             if (availableStack !== -1) {
-                newInventory[availableStack].size += number;
+                newInventory[availableStack].size += payload.number;
             }
 
             else {
                 newInventory.push({
-                    item,
-                    size: number,
+                    item: payload.item,
+                    size: payload.number,
                 })
             }
 

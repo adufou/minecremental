@@ -1,8 +1,9 @@
 const Items: {[key: string]: Item} = {
-    LOG: {
+    OAK_LOG: {
         id: 1,
-        name: 'Log',
+        name: 'Oak Log',
         stackSize: 64,
+        imageName: 'oak_log',
     }
 }
 
