@@ -1,7 +1,7 @@
 import {AIMED_TICK_DURATION_IN_MS, useTick} from "@/components/providers/tick-provider.tsx";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {BASE_CHOP_DURATION_IN_MS} from "@/components/providers/engine/Tree/const.ts";
+import {BASE_CHOP_PROGRESS_DURATION_IN_MS} from "@/components/providers/engine/Tree/const.ts";
 import {useBoundStore} from "@/store/store.ts";
 import {useMemo} from "react";
 import {Separator} from "@/components/ui/separator.tsx";
@@ -21,7 +21,7 @@ function Devtools() {
     }, [tick])
 
     const expectedNbBlocksInInventory = useMemo(() => {
-        return Math.floor((AIMED_TICK_DURATION_IN_MS * tick) / BASE_CHOP_DURATION_IN_MS)
+        return Math.floor((AIMED_TICK_DURATION_IN_MS * tick) / BASE_CHOP_PROGRESS_DURATION_IN_MS)
     }, [tick])
 
     const diffNbBlocks = useMemo(() => {

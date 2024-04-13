@@ -1,13 +1,21 @@
 import {Button} from "@/components/ui/button.tsx";
 import {useBoundStore} from "@/store/store.ts";
-import {Items} from "@/constants/items.ts";
 import {Separator} from "@/components/ui/separator.tsx";
+import {useMemo} from "react";
 
 function Chop() {
     const boundStore = useBoundStore();
 
+    const chopRemainingDuration = useMemo(() => {
+        if (boundStore.chopActivationEnd === undefined) {
+            return 0;
+        }
+
+        return new Date(boundStore.chopActivationEnd.getTime() - Date.now()).getSeconds()
+    }, [() => boundStore.chopActivationEnd])
+
     const chopTree = () => {
-        boundStore.addItemToPlayerInventory({item :Items.OAK_LOG, number: 64})
+        boundStore.chopActivate()
     }
 
     return (
@@ -15,7 +23,8 @@ function Chop() {
             <Button onClick={chopTree} className="w-48">Chop</Button>
             <Separator orientation="vertical" />
             <div>
-                <span>Progress: {(boundStore.chopProgress * 100).toFixed(2)}%</span>
+                <p>Progress: {(boundStore.chopProgress * 100).toFixed(2)}%</p>
+                <p>Duration: {chopRemainingDuration}</p>
             </div>
         </div>
     )

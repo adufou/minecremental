@@ -16,7 +16,7 @@ type TickProviderState = {
     firstTick?: Date
     lastTick: Date
     tick: number
-    tickDurationMovingAverage100: number
+    tickDurationMovingAverage10: number
     // nextTick: () => void
 }
 
@@ -24,7 +24,7 @@ const initialState: TickProviderState = {
     firstTick: undefined,
     lastTick: new Date(),
     tick: 0,
-    tickDurationMovingAverage100: AIMED_TICK_DURATION_IN_MS
+    tickDurationMovingAverage10: AIMED_TICK_DURATION_IN_MS
     // nextTick: () => null
 }
 
@@ -44,8 +44,8 @@ export function TickProvider({
         // TODO: GET IT FROM A SAVE ?
         () => initialState.tick
     )
-    const [tickDurationMovingAverage100, setTickDurationMovingAverage100] = useState<number>(
-        () => initialState.tickDurationMovingAverage100
+    const [tickDurationMovingAverage10, setTickDurationMovingAverage10] = useState<number>(
+        () => initialState.tickDurationMovingAverage10
     )
 
     // TODO: handle when not enough time between 2 ticks (took too long) + warning in console
@@ -62,7 +62,7 @@ export function TickProvider({
                 setFirstTick(now)
             }
             setLastTick(now)
-            setTickDurationMovingAverage100((tickDurationMovingAverage100 * 99 + elapsed) / 100)
+            setTickDurationMovingAverage10((tickDurationMovingAverage10 * 9 + elapsed) / 10)
         }
 
         if (STOP_AT_TICK === -1 || tick < STOP_AT_TICK ) {
@@ -76,7 +76,7 @@ export function TickProvider({
         firstTick,
         lastTick,
         tick,
-        tickDurationMovingAverage100,
+        tickDurationMovingAverage10,
     }
 
     return (

@@ -15,14 +15,14 @@ export function TreeProvider({
     ...props
 }: TreeProviderProps) {
     const boundStore = useBoundStore();
-    const { tick, tickDurationMovingAverage100 } = useTick()
+    const { tick, tickDurationMovingAverage10 } = useTick()
 
-    const chopPerTick = useMemo(() => {
-        return tickDurationMovingAverage100 / boundStore.chopDurationInMs;
-    }, [tickDurationMovingAverage100])
+    const estimatedChopPerTick = useMemo(() => {
+        return tickDurationMovingAverage10 / boundStore.chopDurationInMs;
+    }, [tickDurationMovingAverage10])
 
     useEffect(() => {
-        const {nbChopped} = boundStore.chop(chopPerTick);
+        const {nbChopped} = boundStore.chop(estimatedChopPerTick);
         if (nbChopped > 0) {
             // console.timeEnd('chop')
             // console.log('chopped', nbChopped)
