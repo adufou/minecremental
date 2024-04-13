@@ -1,9 +1,12 @@
 import {createContext, useContext, useEffect, useState} from "react";
 
+// Set at -1 to not stop
+const STOP_AT_TICK: number = 5000;
+
 const AIMED_FPS = 60;
 const AIMED_FRAME_DURATION = Math.floor(1000 / AIMED_FPS);
 const AIMED_FRAME_PER_TICK = 4;
-const AIMED_TICK_DURATION_IN_MS = AIMED_FRAME_DURATION * AIMED_FRAME_PER_TICK;
+export const AIMED_TICK_DURATION_IN_MS = AIMED_FRAME_DURATION * AIMED_FRAME_PER_TICK;
 
 type TickProviderProps = {
     children: React.ReactNode
@@ -30,10 +33,13 @@ export function TickProvider({
         () => initialState.tick
     )
 
+    // TODO: handle when not enough time between 2 ticks (took too long) + warning in console
     useEffect(() => {
-        setTimeout(() => {
-            setTick(tick + 1)
-        }, AIMED_TICK_DURATION_IN_MS)
+        if (STOP_AT_TICK === -1 || tick < STOP_AT_TICK ) {
+            setTimeout(() => {
+                setTick(tick + 1)
+            }, AIMED_TICK_DURATION_IN_MS)
+        }
     }, [tick]);
 
     const value = {

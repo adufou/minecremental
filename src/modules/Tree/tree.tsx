@@ -1,18 +1,12 @@
-import {Button} from "@/components/ui/button.tsx";
-import {useBoundStore} from "@/store/store.ts";
-import {Items} from "@/constants/items.ts";
+import Chop from "@/modules/Tree/components/chop.tsx";
+import {Separator} from "@/components/ui/separator.tsx";
 
 function Tree() {
-    const boundStore = useBoundStore();
-
-    const chopTree = () => {
-        boundStore.addItemToPlayerInventory({item :Items.OAK_LOG, number: 64})
-    }
-
     return(
-        <>
-            <Button onClick={chopTree}>Chop</Button>
-        </>
+        <div className="flex flex-col p-2 gap-1 w-full">
+            <Chop />
+            <Separator />
+        </div>
     )
 }
 

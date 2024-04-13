@@ -15,7 +15,10 @@ export const createInventorySlice: StateCreator<InventorySliceCreator, [], [], I
                 number: payload.number,
                 inventory: state.inventory
             });
-            return {inventory: newInventory}
+
+            return {
+                inventory: newInventory
+            }
         })
     },
 });
