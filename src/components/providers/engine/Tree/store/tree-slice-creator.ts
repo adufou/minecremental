@@ -1,31 +1,28 @@
 import {StateCreator} from "zustand";
-import {AIMED_TICK_DURATION_IN_MS} from "@/components/providers/tick-provider.tsx";
 import treeSliceMethods from "@/components/providers/engine/Tree/store/tree-slice-methods.ts";
-
-const BASE_CHOP_DURATION_IN_MS = 30 * 1000;
-const BASE_CHOP_PER_TICK =  AIMED_TICK_DURATION_IN_MS / BASE_CHOP_DURATION_IN_MS;
+import {BASE_CHOP_DURATION_IN_MS} from "@/components/providers/engine/Tree/const.ts";
 
 export interface TreeSliceCreator {
-    chopPerTick: number;
+    chopDurationInMs: number
     chopProgress: number;
-    chop: () => {
-        nbChopped: number
-    };
+    chop: (chopPerTick: number) => { nbChopped: number };
 }
 
 export const createTreeSlice: StateCreator<TreeSliceCreator, [], [], TreeSliceCreator> = (set) => ({
-    chopPerTick: BASE_CHOP_PER_TICK, // 8sec base, for test TODO CHANGE
+    chopDurationInMs: BASE_CHOP_DURATION_IN_MS,
     chopProgress: 0,
-    chop: () => {
+    chop: (chopPerTick) => {
         let nbChopped = 0;
         let newProgress = 0;
 
         set((state) => {
             const chopProgressResult  = treeSliceMethods().chopProgress({
                 progress: state.chopProgress,
-                chopPerTick: state.chopPerTick,
+                chopPerTick,
                 nbTick: 1
             })
+
+            // console.log('chop per tick', state.chopPerTick)
 
             nbChopped = chopProgressResult.nbChopped;
             newProgress = chopProgressResult.newProgress;

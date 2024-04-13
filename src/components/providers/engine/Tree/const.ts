@@ -1,0 +1,1 @@
+export const BASE_CHOP_DURATION_IN_MS = 0.0001 * 1000;

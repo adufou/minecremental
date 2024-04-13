@@ -1,4 +1,4 @@
-import {createContext, useContext, useEffect} from "react";
+import {createContext, useContext, useEffect, useMemo} from "react";
 import {useBoundStore} from "@/store/store.ts";
 import {useTick} from "@/components/providers/tick-provider.tsx";
 import {Items} from "@/constants/items.ts";
@@ -15,14 +15,23 @@ export function TreeProvider({
     ...props
 }: TreeProviderProps) {
     const boundStore = useBoundStore();
-    const { tick } = useTick()
+    const { tick, tickDurationMovingAverage100 } = useTick()
+
+    const chopPerTick = useMemo(() => {
+        return tickDurationMovingAverage100 / boundStore.chopDurationInMs;
+    }, [tickDurationMovingAverage100])
 
     useEffect(() => {
-        const {nbChopped} = boundStore.chop();
-        boundStore.addItemToPlayerInventory({
-            item: Items.OAK_LOG,
-            number: nbChopped,
-        })
+        const {nbChopped} = boundStore.chop(chopPerTick);
+        if (nbChopped > 0) {
+            // console.timeEnd('chop')
+            // console.log('chopped', nbChopped)
+            // console.time('chop')
+            boundStore.addItemToPlayerInventory({
+                item: Items.OAK_LOG,
+                number: nbChopped,
+            })
+        }
     }, [tick]);
 
     return(
