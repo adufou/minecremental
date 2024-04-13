@@ -24,7 +24,15 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Types */
+    "types": [
+      "jest",
+      "node",
+      "react",
+      "react-dom",
+    ]
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
