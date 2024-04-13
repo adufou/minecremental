@@ -1,7 +1,7 @@
 import {createContext, useContext, useEffect, useState} from "react";
 
 // Set at -1 to not stop
-export const STOP_AT_TICK: number = 5000;
+export const STOP_AT_TICK: number = -1;
 
 const AIMED_FPS = 60;
 const AIMED_FRAME_DURATION = 1000 / AIMED_FPS;
