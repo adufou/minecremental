@@ -6,7 +6,7 @@ function Tree() {
     const boundStore = useBoundStore();
 
     const chopTree = () => {
-        boundStore.addItemToPlayerInventory({item :Items.OAK_LOG, number: 1})
+        boundStore.addItemToPlayerInventory({item :Items.OAK_LOG, number: 64})
     }
 
     return(
