@@ -1,9 +1,7 @@
 import {createContext, useContext, useEffect, useState} from "react";
-import {useBoundStore} from "@/store/store.ts";
-import {BASE_CHOP_DURATION_IN_MS} from "@/components/providers/engine/Tree/const.ts";
 
 // Set at -1 to not stop
-const STOP_AT_TICK: number = 5000;
+export const STOP_AT_TICK: number = 5000;
 
 const AIMED_FPS = 60;
 const AIMED_FRAME_DURATION = 1000 / AIMED_FPS;
@@ -50,28 +48,6 @@ export function TickProvider({
         () => initialState.tickDurationMovingAverage100
     )
 
-    const boundStore = useBoundStore();
-    const nbBlocksInInventory = () => {
-        let nbBlocks = 0;
-        boundStore.inventory.forEach(stack => {
-            nbBlocks += stack.size
-        })
-
-        return nbBlocks;
-    }
-
-    const expectedNbBlocksInInventory = () => {
-        return (AIMED_TICK_DURATION_IN_MS * STOP_AT_TICK) / BASE_CHOP_DURATION_IN_MS
-    }
-
-    const elapsedTime = (): number => {
-        return lastTick.getTime() - (firstTick?.getTime() ?? 0)
-    }
-
-    const expectedElapsedTime = (): number => {
-        return AIMED_TICK_DURATION_IN_MS * STOP_AT_TICK
-    }
-
     // TODO: handle when not enough time between 2 ticks (took too long) + warning in console
     useEffect(() => {
         // console.log('aimed tick duration', AIMED_TICK_DURATION_IN_MS)
@@ -93,17 +69,11 @@ export function TickProvider({
             setTimeout(() => {
                 requestAnimationFrame(setTickOnFrame)
             }, AIMED_TICK_DURATION_IN_MS / 2)
-        } else if (tick >= STOP_AT_TICK) {
-            console.log({
-                elapsed: elapsedTime(),
-                elapsedExpected: expectedElapsedTime(),
-                nbBlock: nbBlocksInInventory(),
-                nbBlockExpected: expectedNbBlocksInInventory(),
-            })
         }
     }, [tick]);
 
     const value = {
+        firstTick,
         lastTick,
         tick,
         tickDurationMovingAverage100,
