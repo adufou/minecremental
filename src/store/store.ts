@@ -1,5 +1,5 @@
 import {create} from 'zustand'
-import {createInventorySlice, InventorySlice} from "@/store/slices/inventory-slice.ts";
+import {createInventorySlice, InventorySlice} from "@/modules/Inventory/store/inventory-slice.ts";
 import {devtools} from "zustand/middleware";
 
 type State = InventorySlice

@@ -1,11 +1,12 @@
 import {Button} from "@/components/ui/button.tsx";
 import {useBoundStore} from "@/store/store.ts";
+import {Items} from "@/constants/items.ts";
 
 function Tree() {
     const boundStore = useBoundStore();
 
     const chopTree = () => {
-        boundStore.addItem('Log')
+        boundStore.addItemToPlayerInventory(Items.LOG)
     }
 
     return(

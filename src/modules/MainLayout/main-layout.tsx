@@ -2,7 +2,7 @@ import Sidebar from "@/modules/MainLayout/components/sidebar.tsx";
 import MainCard from "@/modules/MainLayout/components/main-card.tsx";
 import StatusBar from "@/modules/MainLayout/components/status-bar.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
-import Inventory from "@/modules/Inventory/inventory.tsx";
+import PlayerInventory from "@/modules/Inventory/player-inventory.tsx";
 
 function MainLayout() {
     return(
@@ -15,7 +15,7 @@ function MainLayout() {
                 <Sidebar />
                 <Separator orientation="vertical" className="h-full"/>
                 <MainCard />
-                <Inventory />
+                <PlayerInventory />
             </div>
         </div>
     )
