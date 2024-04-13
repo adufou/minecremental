@@ -21,7 +21,7 @@ function Devtools() {
     }, [tick])
 
     const expectedNbBlocksInInventory = useMemo(() => {
-        return (AIMED_TICK_DURATION_IN_MS * tick) / BASE_CHOP_DURATION_IN_MS
+        return Math.floor((AIMED_TICK_DURATION_IN_MS * tick) / BASE_CHOP_DURATION_IN_MS)
     }, [tick])
 
     const diffNbBlocks = useMemo(() => {
@@ -38,7 +38,7 @@ function Devtools() {
     }, [firstTick, lastTick])
 
     const expectedElapsedTime = useMemo((): number => {
-        return AIMED_TICK_DURATION_IN_MS * tick
+        return Math.floor(AIMED_TICK_DURATION_IN_MS * tick)
     }, [tick])
 
     const diffElapsedTime = useMemo(() => {

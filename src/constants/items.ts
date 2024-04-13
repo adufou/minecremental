@@ -2,7 +2,7 @@ const Items = {
     OAK_LOG: {
         id: 1,
         name: 'Oak Log',
-        stackSize: 64000,
+        stackSize: 64,
         imageName: 'oak_log',
     },
     WOODEN_AXE: {
