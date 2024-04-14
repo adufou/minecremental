@@ -42,7 +42,10 @@ export const createTreeSlice: StateCreator<TreeSliceCreator, [], [], TreeSliceCr
     chopActive: false,
     chopDeactivate: () => {
         set(() => {
-            return { chopActivationTimeout: undefined }
+            return {
+                chopActivationEnd: undefined,
+                chopActivationTimeout: undefined,
+            }
         })
     },
     chopDurationInMs: BASE_CHOP_PROGRESS_DURATION_IN_MS,

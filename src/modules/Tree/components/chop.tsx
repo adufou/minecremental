@@ -2,16 +2,17 @@ import {Button} from "@/components/ui/button.tsx";
 import {useBoundStore} from "@/store/store.ts";
 import {Separator} from "@/components/ui/separator.tsx";
 import {useMemo} from "react";
+import {displayTime} from "@/lib/time.ts";
 
 function Chop() {
     const boundStore = useBoundStore();
 
     const chopRemainingDuration = useMemo(() => {
-        if (boundStore.chopActivationEnd === undefined) {
-            return 0;
+        if (boundStore.chopActivationEnd !== undefined) {
+            return displayTime(boundStore.chopActivationEnd.getTime() - Date.now())
         }
 
-        return new Date(boundStore.chopActivationEnd.getTime() - Date.now()).getSeconds()
+        return 0;
     }, [() => boundStore.chopActivationEnd])
 
     const chopTree = () => {
