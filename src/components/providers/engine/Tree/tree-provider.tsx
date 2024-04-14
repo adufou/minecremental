@@ -19,7 +19,7 @@ export function TreeProvider({
 
     const estimatedChopPerTick = useMemo(() => {
         return tickDurationMovingAverage10 / boundStore.chopDurationInMs;
-    }, [tickDurationMovingAverage10])
+    }, [tickDurationMovingAverage10, boundStore.chopDurationInMs])
 
     useEffect(() => {
         const {nbChopped} = boundStore.chop(estimatedChopPerTick);
@@ -32,7 +32,7 @@ export function TreeProvider({
                 number: nbChopped,
             })
         }
-    }, [tick]);
+    }, [estimatedChopPerTick, tick]);
 
     return(
         <TreeProviderContext.Provider {...props} value={null}>

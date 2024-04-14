@@ -1,6 +1,7 @@
+import {Inventory, Item} from "@/modules/Inventory/models/inventory-types.ts";
 
 export default function inventorySliceMethods() {
-    const addItemToPlayerInventory = (payload: { item: Item, number: number, inventory: ItemStack[] }) => {
+    const addItemToPlayerInventory = (payload: { item: Item, number: number, inventory: Inventory["stacks"] }) => {
         const newInventory = payload.inventory;
         let remaining = payload.number;
 

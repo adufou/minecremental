@@ -1,12 +1,13 @@
 import {Items} from "@/constants/items.ts";
 import inventorySliceMethods from "@/modules/Inventory/store/inventory-slice-methods.ts";
+import {Inventory} from "@/modules/Inventory/models/inventory-types.ts";
 
 describe('inventorySliceMethods', () => {
     describe('addItemToPlayerInventory', () => {
         describe('add 1 item', () => {
             it('should leave 1 item stack with 1 item an empty inventory', () => {
                 // Arrange
-                const inventory: ItemStack[] = [];
+                const inventory: Inventory['stacks'] = [];
 
                 // Act
                 const newInventory = inventorySliceMethods().addItemToPlayerInventory({
@@ -22,7 +23,7 @@ describe('inventorySliceMethods', () => {
 
             it('should leave 1 item stack with 2 items an inventory with 1 of this item', () => {
                 // Arrange
-                const inventory: ItemStack[] = [
+                const inventory: Inventory['stacks'] = [
                     {
                         item: Items.OAK_LOG,
                         size: 1,
@@ -43,7 +44,7 @@ describe('inventorySliceMethods', () => {
 
             it('should add another stack if the one present in the inventory is full', () => {
                 // Arrange
-                const inventory: ItemStack[] = [
+                const inventory: Inventory['stacks'] = [
                     {
                         item: Items.OAK_LOG,
                         size: 64,
@@ -66,7 +67,7 @@ describe('inventorySliceMethods', () => {
         describe('add several items', () => {
             it('should add 8 stack when adding 8 non stackable items', () => {
                 // Arrange
-                const inventory: ItemStack[] = [
+                const inventory: Inventory['stacks'] = [
                     {
                         item: Items.WOODEN_AXE,
                         size: 1,
@@ -88,7 +89,7 @@ describe('inventorySliceMethods', () => {
             })
             it('should fill the current stack and add another stack if the one present in the inventory is almost full', () => {
                 // Arrange
-                const inventory: ItemStack[] = [
+                const inventory: Inventory['stacks'] = [
                     {
                         item: Items.OAK_LOG,
                         size: 32,
@@ -109,7 +110,7 @@ describe('inventorySliceMethods', () => {
             })
             it('should fill the current stack and add other stacks if the one present in the inventory is almost full', () => {
                 // Arrange
-                const inventory: ItemStack[] = [
+                const inventory: Inventory['stacks'] = [
                     {
                         item: Items.OAK_LOG,
                         size: 32,
@@ -131,7 +132,7 @@ describe('inventorySliceMethods', () => {
             })
             it('should fill only stack with the correct item and add other stacks if the one present in the inventory is almost full', () => {
                 // Arrange
-                const inventory: ItemStack[] = [
+                const inventory: Inventory['stacks'] = [
                     {
                         item: Items.OAK_LOG,
                         size: 32,

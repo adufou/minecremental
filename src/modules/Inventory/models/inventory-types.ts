@@ -1,15 +1,15 @@
-type Item = {
+export type Item = {
     id: number;
     name: string;
     stackSize: number;
     imageName: string;
 }
 
-type ItemStack = {
+export type ItemStack = {
     item: Item;
     size: number;
 }
 
-type Inventory = {
+export type Inventory = {
     stacks: ItemStack[];
 }
