@@ -27,6 +27,8 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.2.2",
+    "@commitlint/config-conventional": "^19.2.2",
     "@testing-library/jest-dom": "^6.4.2",
     "@testing-library/react": "^15.0.2",
     "@types/jest": "^29.5.12",
@@ -54,6 +56,8 @@
     "vite": "^5.2.0"
   },
   "lint-staged": {
-    "*.{ts,tsx}": ["eslint --cache --fix --maw-warnings 0"]
+    "*.{ts,tsx}": [
+      "eslint --cache --fix --maw-warnings 0"
+    ]
   }
 }
