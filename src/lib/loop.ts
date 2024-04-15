@@ -21,11 +21,6 @@ const mainLoop = (
     const movingAverageSamplePoints = Math.min(1000, currentTick)
     const newTickDurationMovingAverage1000 = (tickDurationMovingAverage1000 * movingAverageSamplePoints + elapsed) / (movingAverageSamplePoints + 1)
 
-    console.log({
-        movingAverageSamplePoints,
-        newTickDurationMovingAverage1000
-    })
-
     setTickDurationMovingAverage1000(newTickDurationMovingAverage1000)
 
     requestAnimationFrame(() => mainLoop(

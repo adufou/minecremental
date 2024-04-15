@@ -1,5 +1,6 @@
 import {StateCreator} from "zustand";
 import inventorySliceMethods from "@/modules/Inventory/store/inventory-slice-methods.ts";
+import {Item, ItemStack} from "@/modules/Inventory/models/inventory-types.ts";
 
 export interface InventorySliceCreator {
     inventory: ItemStack[];
