@@ -3,6 +3,8 @@ module.exports = {
   env: { browser: true, es2020: true },
   extends: [
     'eslint:recommended',
+    //   Here is config for react recommended, see : https://github.com/microsoft/TypeScript/issues/56042
+    "plugin:react/jsx-runtime",
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
   ],
