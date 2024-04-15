@@ -1,4 +1,4 @@
-import {TreeProvider} from "@/components/providers/engine/Tree/tree-provider.tsx";
+import {ForestProvider} from "@/components/providers/engine/Forest/forest-provider.tsx";
 
 type EngineProviderProps = {
     children: React.ReactNode
@@ -9,9 +9,9 @@ export function EngineProvider({
 }: EngineProviderProps) {
     return (
         <>
-            <TreeProvider>
+            <ForestProvider>
                 {children}
-            </TreeProvider>
+            </ForestProvider>
         </>
     )
 }
