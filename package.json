@@ -57,7 +57,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx}": [
-      "eslint --cache --fix --maw-warnings 0"
+      "eslint --fix --max-warnings 0"
     ]
   }
 }

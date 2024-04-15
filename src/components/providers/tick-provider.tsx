@@ -1,12 +1,5 @@
 import {createContext, useContext, useEffect, useState} from "react";
-
-// Set at -1 to not stop
-export const STOP_AT_TICK: number = -1;
-
-const AIMED_FPS = 60;
-const AIMED_FRAME_DURATION = 1000 / AIMED_FPS;
-const AIMED_FRAME_PER_TICK = 1;
-export const AIMED_TICK_DURATION_IN_MS = AIMED_FRAME_DURATION * AIMED_FRAME_PER_TICK;
+import mainLoop from "@/lib/loop.ts";
 
 type TickProviderProps = {
     children: React.ReactNode
@@ -14,18 +7,16 @@ type TickProviderProps = {
 
 type TickProviderState = {
     firstTick?: Date
-    lastTick: Date
+    lastTick?: Date
     tick: number
-    tickDurationMovingAverage10: number
-    // nextTick: () => void
+    tickDurationMovingAverage1000: number
 }
 
 const initialState: TickProviderState = {
     firstTick: undefined,
-    lastTick: new Date(),
+    lastTick: undefined,
     tick: 0,
-    tickDurationMovingAverage10: AIMED_TICK_DURATION_IN_MS
-    // nextTick: () => null
+    tickDurationMovingAverage1000: 0
 }
 
 const TickProviderContext = createContext<TickProviderState>(initialState)
@@ -37,46 +28,27 @@ export function TickProvider({
     const [firstTick, setFirstTick] = useState<Date | undefined>(
         () => initialState.firstTick
     )
-    const [lastTick, setLastTick] = useState<Date>(
+    const [lastTick, setLastTick] = useState<Date | undefined>(
         () => initialState.lastTick
     )
     const [tick, setTick] = useState<number>(
         // TODO: GET IT FROM A SAVE ?
         () => initialState.tick
     )
-    const [tickDurationMovingAverage10, setTickDurationMovingAverage10] = useState<number>(
-        () => initialState.tickDurationMovingAverage10
+    const [tickDurationMovingAverage1000, setTickDurationMovingAverage1000] = useState<number>(
+        () => initialState.tickDurationMovingAverage1000
     )
 
     // TODO: handle when not enough time between 2 ticks (took too long) + warning in console
     useEffect(() => {
-        // console.log('aimed tick duration', AIMED_TICK_DURATION_IN_MS)
-
-        const setTickOnFrame = () => {
-            setTick(tick + 1)
-
-            const now = new Date();
-            const elapsed = now.getTime() - lastTick.getTime();
-
-            if (!firstTick) {
-                setFirstTick(now)
-            }
-            setLastTick(now)
-            setTickDurationMovingAverage10((tickDurationMovingAverage10 * 9 + elapsed) / 10)
-        }
-
-        if (STOP_AT_TICK === -1 || tick < STOP_AT_TICK ) {
-            setTimeout(() => {
-                requestAnimationFrame(setTickOnFrame)
-            }, AIMED_TICK_DURATION_IN_MS / 2)
-        }
-    }, [tick]);
+        mainLoop(setFirstTick, setLastTick, setTick, setTickDurationMovingAverage1000)
+    }, []);
 
     const value = {
         firstTick,
         lastTick,
         tick,
-        tickDurationMovingAverage10,
+        tickDurationMovingAverage1000,
     }
 
     return (

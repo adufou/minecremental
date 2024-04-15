@@ -1,16 +1,30 @@
-import {AIMED_TICK_DURATION_IN_MS, useTick} from "@/components/providers/tick-provider.tsx";
+import {useTick} from "@/components/providers/tick-provider.tsx";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover.tsx";
 import {Button} from "@/components/ui/button.tsx";
-import {BASE_CHOP_PROGRESS_DURATION_IN_MS} from "@/components/providers/engine/Tree/const.ts";
 import {useBoundStore} from "@/store/store.ts";
 import {useMemo} from "react";
 import {Separator} from "@/components/ui/separator.tsx";
 
 function Devtools() {
-    const { firstTick, lastTick, tick } = useTick();
+    const { firstTick, lastTick, tick, tickDurationMovingAverage1000 } = useTick();
 
     const boundStore = useBoundStore();
 
+    // --- Global ---
+    const tickNumber = useMemo((): number => {
+        return tick
+    }, [tick])
+
+    const elapsedTime = useMemo((): number => {
+        // console.log(firstTick?.getTime())
+        return (lastTick?.getTime() ?? 0) - (firstTick?.getTime() ?? 0)
+    }, [firstTick, lastTick])
+
+    const tickMA1000 = useMemo((): number => {
+        return tickDurationMovingAverage1000
+    }, [tickDurationMovingAverage1000])
+
+    // --- Specific ---
     const nbBlocksInInventory = useMemo(() => {
         let nbBlocks = 0;
         boundStore.inventory.forEach(stack => {
@@ -20,35 +34,6 @@ function Devtools() {
         return nbBlocks;
     }, [tick])
 
-    const expectedNbBlocksInInventory = useMemo(() => {
-        return Math.floor((AIMED_TICK_DURATION_IN_MS * tick) / BASE_CHOP_PROGRESS_DURATION_IN_MS)
-    }, [tick])
-
-    const diffNbBlocks = useMemo(() => {
-        return Math.abs(nbBlocksInInventory - expectedNbBlocksInInventory)
-    }, [nbBlocksInInventory, expectedNbBlocksInInventory])
-
-    const diffNbBlocksPercent = useMemo(() => {
-        return (diffNbBlocks / expectedNbBlocksInInventory) * 100
-    }, [diffNbBlocks, expectedNbBlocksInInventory])
-
-    const elapsedTime = useMemo((): number => {
-        // console.log(firstTick?.getTime())
-        return lastTick.getTime() - (firstTick?.getTime() ?? 0)
-    }, [firstTick, lastTick])
-
-    const expectedElapsedTime = useMemo((): number => {
-        return Math.floor(AIMED_TICK_DURATION_IN_MS * tick)
-    }, [tick])
-
-    const diffElapsedTime = useMemo(() => {
-        return Math.abs(elapsedTime - expectedElapsedTime)
-    }, [elapsedTime, expectedElapsedTime])
-
-    const diffElapsedTimePercent = useMemo(() => {
-        return (diffElapsedTime / expectedElapsedTime) * 100
-    }, [diffElapsedTime, expectedElapsedTime])
-
     return (
         <div className="pl-2">
             <Popover>
@@ -56,21 +41,16 @@ function Devtools() {
                     <Button variant='outline' className='text-red-500'>DEV</Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-96">
-                    <p>Tick : {tick}</p>
-
-                    <Separator/>
-
-                    <p>nbBlocks : {nbBlocksInInventory}</p>
-                    <p>expected nbNblocks : {expectedNbBlocksInInventory}</p>
-                    <p>diff: {diffNbBlocks}</p>
-                    <p>diff (%): {diffNbBlocksPercent}</p>
+                    <p>Tick : {tickNumber}</p>
 
                     <Separator/>
 
                     <p>elpased time : {elapsedTime}</p>
-                    <p>expected elpased time : {expectedElapsedTime}</p>
-                    <p>diff: {diffElapsedTime}</p>
-                    <p>diff (%): {diffElapsedTimePercent}</p>
+                    <p>tickMA1000 : {tickMA1000}</p>
+
+                    <Separator/>
+
+                    <p>nbBlocks : {nbBlocksInInventory}</p>
                 </PopoverContent>
             </Popover>
         </div>
