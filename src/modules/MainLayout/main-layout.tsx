@@ -3,12 +3,8 @@ import MainCard from "@/modules/MainLayout/components/main-card.tsx";
 import StatusBar from "@/modules/MainLayout/components/status-bar.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 import PlayerInventory from "@/modules/Inventory/player-inventory.tsx";
-import {useState} from "react";
-import Sections from "@/modules/MainLayout/constants/sections.ts";
 
 function MainLayout() {
-    const [section, setSection] = useState<Sections>(Sections.FOREST);
-
     return(
         <div className="flex flex-col h-full w-full">
             <StatusBar />
@@ -16,9 +12,9 @@ function MainLayout() {
             <Separator />
 
             <div className="flex flex-row flex-auto">
-                <Sidebar setSection={setSection}/>
+                <Sidebar />
                 <Separator orientation="vertical" className="h-full"/>
-                <MainCard section={section}/>
+                <MainCard />
                 <PlayerInventory />
             </div>
         </div>
