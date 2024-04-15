@@ -7,12 +7,10 @@ const Items = {
     },
     WOODEN_AXE: {
         id: 2,
-        name: "Wooden Axe",
+        name: 'Wooden Axe',
         stackSize: 1,
         imageName: 'wooden_axe',
-    }
-} as const
+    },
+} as const;
 
-export {
-    Items,
-}
+export { Items };
