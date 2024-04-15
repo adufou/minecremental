@@ -1,7 +1,7 @@
-import Chop from "@/modules/Tree/components/chop.tsx";
+import Chop from "@/modules/Forest/components/chop.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
 
-function Tree() {
+function Forest() {
     return(
         <div className="flex flex-col p-2 gap-1 w-full">
             <Chop />
@@ -10,4 +10,4 @@ function Tree() {
     )
 }
 
-export default Tree
+export default Forest
