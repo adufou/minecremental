@@ -1,10 +1,10 @@
 function Village() {
-    return(
+    return (
         <>
             <span>WIP</span>
             <span>Assuming 1 villager is chopping OAK wood for now</span>
         </>
-    )
+    );
 }
 
-export default Village
+export default Village;

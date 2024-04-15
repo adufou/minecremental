@@ -3,13 +3,13 @@ export type Item = {
     name: string;
     stackSize: number;
     imageName: string;
-}
+};
 
 export type ItemStack = {
     item: Item;
     size: number;
-}
+};
 
 export type Inventory = {
     stacks: ItemStack[];
-}
+};

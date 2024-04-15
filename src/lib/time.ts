@@ -1,9 +1,9 @@
-const NB_MILLISECONDS = 1000
-const NB_SECONDS = 60
-const NB_MINUTES = 60
-const NB_HOURS = 24
-const NB_DAYS = 30
-const NB_MONTHS = 12
+const NB_MILLISECONDS = 1000;
+const NB_SECONDS = 60;
+const NB_MINUTES = 60;
+const NB_HOURS = 24;
+const NB_DAYS = 30;
+const NB_MONTHS = 12;
 
 export enum TimeUnitsDuration {
     MILLISECONDS = 1,
@@ -12,7 +12,12 @@ export enum TimeUnitsDuration {
     HOURS = NB_MINUTES * NB_SECONDS * NB_MILLISECONDS,
     DAYS = NB_HOURS * NB_MINUTES * NB_SECONDS * NB_MILLISECONDS,
     MONTHS = NB_DAYS * NB_HOURS * NB_MINUTES * NB_SECONDS * NB_MILLISECONDS,
-    YEARS = NB_MONTHS * NB_DAYS * NB_HOURS * NB_MINUTES * NB_SECONDS * NB_MILLISECONDS,
+    YEARS = NB_MONTHS *
+        NB_DAYS *
+        NB_HOURS *
+        NB_MINUTES *
+        NB_SECONDS *
+        NB_MILLISECONDS,
 }
 
 export enum TimeUnits {
@@ -26,32 +31,34 @@ export enum TimeUnits {
 }
 
 type Time = {
-    years: number | undefined,
-    months: number | undefined,
-    days: number | undefined,
-    hours: number | undefined,
-    minutes: number | undefined,
-    seconds: number | undefined,
-    milliseconds: number | undefined,
-}
+    years: number | undefined;
+    months: number | undefined;
+    days: number | undefined;
+    hours: number | undefined;
+    minutes: number | undefined;
+    seconds: number | undefined;
+    milliseconds: number | undefined;
+};
 
-const threeGreaterTimeValues = (timeValues: Time) : {
-    unit: TimeUnits,
-    value: number,
+const threeGreaterTimeValues = (
+    timeValues: Time,
+): {
+    unit: TimeUnits;
+    value: number;
 }[] => {
-    const NB_GREATER_VALUES = 3
+    const NB_GREATER_VALUES = 3;
 
     const greaterTimeValues: {
-        unit: TimeUnits,
-        value: number,
-    }[] = []
+        unit: TimeUnits;
+        value: number;
+    }[] = [];
 
     // Years
     if (timeValues.years) {
         greaterTimeValues.push({
             unit: TimeUnits.YEARS,
             value: timeValues.years,
-        })
+        });
     }
 
     // Months
@@ -59,7 +66,7 @@ const threeGreaterTimeValues = (timeValues: Time) : {
         greaterTimeValues.push({
             unit: TimeUnits.MONTHS,
             value: timeValues.months,
-        })
+        });
     }
 
     // Days
@@ -67,7 +74,7 @@ const threeGreaterTimeValues = (timeValues: Time) : {
         greaterTimeValues.push({
             unit: TimeUnits.DAYS,
             value: timeValues.days,
-        })
+        });
     }
 
     // Hours
@@ -75,7 +82,7 @@ const threeGreaterTimeValues = (timeValues: Time) : {
         greaterTimeValues.push({
             unit: TimeUnits.HOURS,
             value: timeValues.hours,
-        })
+        });
     }
 
     // Minutes
@@ -83,7 +90,7 @@ const threeGreaterTimeValues = (timeValues: Time) : {
         greaterTimeValues.push({
             unit: TimeUnits.MINUTES,
             value: timeValues.minutes,
-        })
+        });
     }
 
     // Seconds
@@ -91,19 +98,22 @@ const threeGreaterTimeValues = (timeValues: Time) : {
         greaterTimeValues.push({
             unit: TimeUnits.SECONDS,
             value: timeValues.seconds,
-        })
+        });
     }
 
     // Milliseconds
-    if (timeValues.milliseconds && greaterTimeValues.length < NB_GREATER_VALUES) {
+    if (
+        timeValues.milliseconds &&
+        greaterTimeValues.length < NB_GREATER_VALUES
+    ) {
         greaterTimeValues.push({
             unit: TimeUnits.MILLISECONDS,
             value: timeValues.milliseconds,
-        })
+        });
     }
 
     return greaterTimeValues;
-}
+};
 
 export const displayTime = (time: number) => {
     let displayedTime = '';
@@ -149,13 +159,13 @@ export const displayTime = (time: number) => {
 
     const threeGreater = threeGreaterTimeValues(resultTime);
 
-    threeGreater.forEach(unitValue => {
+    threeGreater.forEach((unitValue) => {
         if (displayedTime !== '') {
             displayedTime += ' ';
         }
 
         displayedTime += `${unitValue.value}${unitValue.unit}`;
-    })
+    });
 
     return displayedTime;
-}
+};
