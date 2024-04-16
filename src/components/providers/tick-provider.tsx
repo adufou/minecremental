@@ -1,72 +1,79 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import mainLoop from '@/lib/loop.ts';
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
+import { TickFunction } from '@/types/tick-function.ts';
 
+// Create a context to hold the game state and the pool of tick functions
 type TickProviderProps = {
     children: React.ReactNode;
 };
 
 type TickProviderState = {
-    firstTick?: Date;
-    lastTick?: Date;
-    tick: number;
-    tickDurationMovingAverage1000: number;
+    addTickFunction: (callback: TickFunction) => void;
+    removeTickFunction: (callback: TickFunction) => void;
 };
 
 const initialState: TickProviderState = {
-    firstTick: undefined,
-    lastTick: undefined,
-    tick: 0,
-    tickDurationMovingAverage1000: 0,
+    addTickFunction: () => {},
+    removeTickFunction: () => {},
 };
 
 const TickProviderContext = createContext<TickProviderState>(initialState);
 
+// Provide the context to components
 export function TickProvider({ children, ...props }: TickProviderProps) {
-    const [firstTick, setFirstTick] = useState<Date | undefined>(
-        () => initialState.firstTick,
-    );
-    const [lastTick, setLastTick] = useState<Date | undefined>(
-        () => initialState.lastTick,
-    );
-    const [tick, setTick] = useState<number>(
-        // TODO: GET IT FROM A SAVE ?
-        () => initialState.tick,
-    );
-    const [tickDurationMovingAverage1000, setTickDurationMovingAverage1000] =
-        useState<number>(() => initialState.tickDurationMovingAverage1000);
+    const [tickFunctions, setTickFunctions] = useState<TickFunction[]>([]);
 
-    // TODO: handle when not enough time between 2 ticks (took too long) + warning in console
-    useEffect(() => {
-        mainLoop(
-            setFirstTick,
-            setLastTick,
-            setTick,
-            setTickDurationMovingAverage1000,
-        );
+    const addTickFunction = useCallback((callback: TickFunction) => {
+        setTickFunctions((prev) => [...prev, callback]);
     }, []);
 
-    const value = {
-        firstTick,
-        lastTick,
-        tick,
-        tickDurationMovingAverage1000,
-    };
+    const removeTickFunction = useCallback((callback: TickFunction) => {
+        setTickFunctions((prev) => prev.filter((f) => f !== callback));
+    }, []);
+
+    // Set up the game loop
+    useEffect(() => {
+        const gameLoop = (lastTick?: Date) => {
+            const now = new Date();
+
+            if (lastTick) {
+                const elapsedTime = now.getTime() - lastTick.getTime();
+
+                tickFunctions.forEach((callback) => callback(elapsedTime));
+            }
+            requestAnimationFrame(() => gameLoop(now));
+        };
+
+        gameLoop();
+    }, [tickFunctions]);
 
     return (
         <TickProviderContext.Provider
             {...props}
-            value={value}
+            value={{ addTickFunction, removeTickFunction }}
         >
             {children}
         </TickProviderContext.Provider>
     );
 }
 
-export const useTick = () => {
+// Custom hook to allow components to register their own tick functions
+export function useTick(callback: TickFunction) {
     const context = useContext(TickProviderContext);
 
-    if (context === undefined)
+    if (context === undefined) {
         throw new Error('useTick must be used within a TickProvider');
+    }
 
-    return context;
-};
+    const { addTickFunction, removeTickFunction } = context;
+
+    useEffect(() => {
+        addTickFunction(callback);
+        return () => removeTickFunction(callback);
+    }, []);
+}

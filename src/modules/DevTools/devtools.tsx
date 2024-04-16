@@ -1,46 +1,22 @@
-import { useTick } from '@/components/providers/tick-provider.tsx';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover.tsx';
 import { Button } from '@/components/ui/button.tsx';
-import { useBoundStore } from '@/store/store.ts';
-import { useMemo } from 'react';
-import { Separator } from '@/components/ui/separator.tsx';
-import { displayTime } from '@/lib/time.ts';
+import { useTick } from '@/components/providers/tick-provider.tsx';
+import { useMemo, useState } from 'react';
 
 function Devtools() {
-    const { firstTick, lastTick, tick, tickDurationMovingAverage1000 } =
-        useTick();
+    const [lastTickDuration, setLastTickDuration] = useState<number>(0);
 
-    const boundStore = useBoundStore();
+    const fps = useMemo(() => {
+        return Math.floor(1000 / lastTickDuration);
+    }, [lastTickDuration]);
 
-    // --- Global ---
-    const tickNumber = useMemo((): number => {
-        return tick;
-    }, [tick]);
-
-    const elapsedTime = useMemo((): string => {
-        const elapsed =
-            (lastTick?.getTime() ?? 0) - (firstTick?.getTime() ?? 0);
-
-        return displayTime(elapsed);
-    }, [firstTick, lastTick]);
-
-    const tickMA1000 = useMemo((): number => {
-        return tickDurationMovingAverage1000;
-    }, [tickDurationMovingAverage1000]);
-
-    // --- Specific ---
-    const nbBlocksInInventory = useMemo(() => {
-        let nbBlocks = 0;
-        boundStore.inventory.forEach((stack) => {
-            nbBlocks += stack.size;
-        });
-
-        return nbBlocks;
-    }, [tick]);
+    useTick((elapsedTime: number) => {
+        setLastTickDuration(elapsedTime);
+    });
 
     return (
         <div className='pl-2'>
@@ -54,16 +30,7 @@ function Devtools() {
                     </Button>
                 </PopoverTrigger>
                 <PopoverContent className='w-96'>
-                    <p>Tick : {tickNumber}</p>
-
-                    <Separator />
-
-                    <p>elpased time : {elapsedTime}</p>
-                    <p>tickMA1000 : {tickMA1000}</p>
-
-                    <Separator />
-
-                    <p>nbBlocks : {nbBlocksInInventory}</p>
+                    <p>FPS: {fps}</p>
                 </PopoverContent>
             </Popover>
         </div>
