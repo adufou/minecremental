@@ -31,6 +31,11 @@ export const createTreeSlice: StateCreator<
             nbChopped = Math.floor(totalProgress / 100);
             newProgress = totalProgress % 100;
 
+            if (nbChopped > 0) {
+                console.timeEnd('chopByVillager');
+                console.time('chopByVillager');
+            }
+
             return { chopProgress: newProgress };
         });
 

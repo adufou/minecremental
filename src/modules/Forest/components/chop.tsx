@@ -12,7 +12,7 @@ function Chop() {
         if (nbChopped) {
             boundStore.addItemToPlayerInventory({
                 item: Items.OAK_LOG,
-                number: nbChopped,
+                quantity: nbChopped,
             });
         }
     };

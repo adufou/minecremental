@@ -10,5 +10,5 @@ export const createVillageSlice: StateCreator<
     [],
     VillageSliceCreator
 > = () => ({
-    villagers: 1,
+    villagers: 0,
 });
