@@ -4,7 +4,10 @@ import { Item, ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
 
 export interface InventorySliceCreator {
     inventory: ItemStack[];
-    addItemToPlayerInventory: (payload: { item: Item; number: number }) => void;
+    addItemToPlayerInventory: (payload: {
+        item: Item;
+        quantity: number;
+    }) => void;
 }
 
 export const createInventorySlice: StateCreator<
@@ -19,7 +22,7 @@ export const createInventorySlice: StateCreator<
             const newInventory =
                 inventorySliceMethods().addItemToPlayerInventory({
                     item: payload.item,
-                    number: payload.number,
+                    quantity: payload.quantity,
                     inventory: state.inventory,
                 });
 

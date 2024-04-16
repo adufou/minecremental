@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react';
 import { useTick } from '@/components/providers/tick-provider.tsx';
 import { useBoundStore } from '@/store/store.ts';
+import { Items } from '@/constants/items.ts';
 
 type TreeProviderProps = {
     children: React.ReactNode;
@@ -14,7 +15,11 @@ export function ForestProvider({ children, ...props }: TreeProviderProps) {
     const boundStore = useBoundStore();
 
     useTick((elapsedTime) => {
-        boundStore.chopByVillager(elapsedTime);
+        const chopped = boundStore.chopByVillager(elapsedTime);
+        boundStore.addItemToPlayerInventory({
+            item: Items.OAK_LOG,
+            quantity: chopped,
+        });
     });
 
     return (

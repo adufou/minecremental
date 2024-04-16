@@ -3,11 +3,11 @@ import { Inventory, Item } from '@/modules/Inventory/models/inventory-types.ts';
 export default function inventorySliceMethods() {
     const addItemToPlayerInventory = (payload: {
         item: Item;
-        number: number;
+        quantity: number;
         inventory: Inventory['stacks'];
     }) => {
         const newInventory = payload.inventory;
-        let remaining = payload.number;
+        let remaining = payload.quantity;
 
         if (payload.item.stackSize === 1) {
             for (remaining; remaining > 0; remaining--) {
