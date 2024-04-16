@@ -15,5 +15,6 @@ module.exports = {
     plugins: [],
     rules: {
         'react-hooks/exhaustive-deps': 'off',
+        "curly": "error",
     },
 };

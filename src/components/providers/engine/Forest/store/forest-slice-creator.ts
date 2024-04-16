@@ -1,10 +1,13 @@
 import { StateCreator } from 'zustand';
 import { ChopConstants } from '@/components/providers/engine/Forest/const.ts';
+import {useBoundStore} from "@/store/store.ts";
 
 export interface ForestSliceCreator {
+    chopByVillager: () => number;
     chopClick: () => number;
     chopClickProgress: number;
     chopProgress: number;
+    choppingVillagers: number;
 }
 
 export const createTreeSlice: StateCreator<
@@ -13,6 +16,9 @@ export const createTreeSlice: StateCreator<
     [],
     ForestSliceCreator
 > = (set) => ({
+    chopByVillager: () => {
+        const villager = useBoundStore.getState();
+    },
     chopClick: () => {
         let newProgress = 0;
         let nbChopped = 0;
@@ -35,4 +41,5 @@ export const createTreeSlice: StateCreator<
     },
     chopClickProgress: ChopConstants.BASE_CHOP_CLICK_PROGRESS,
     chopProgress: 0,
+    choppingVillagers: 1,
 });

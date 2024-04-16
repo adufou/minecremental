@@ -21,8 +21,9 @@ export function ForestProvider({ children, ...props }: TreeProviderProps) {
 export const useTree = () => {
     const context = useContext(TreeProviderContext);
 
-    if (context === undefined)
+    if (context === undefined) {
         throw new Error('useTree must be used within a ForestProvider');
+    }
 
     return context;
 };
