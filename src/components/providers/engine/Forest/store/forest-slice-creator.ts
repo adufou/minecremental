@@ -25,7 +25,8 @@ export const createTreeSlice: StateCreator<
         set((state) => {
             const totalProgress =
                 state.chopProgress +
-                villagers * (elapsed / ChopConstants.BASE_CHOP_DURATION_IN_MS);
+                villagers *
+                    ((elapsed / ChopConstants.BASE_CHOP_DURATION_IN_MS) * 100);
 
             nbChopped = Math.floor(totalProgress / 100);
             newProgress = totalProgress % 100;
