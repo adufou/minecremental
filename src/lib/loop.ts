@@ -13,7 +13,7 @@ const mainLoop = (
     const now = new Date();
     const elapsed = lastTick ? now.getTime() - lastTick.getTime() : 0;
 
-    if (currentTick) {
+    if (!currentTick) {
         setFirstTick(now);
     }
     setLastTick(now);

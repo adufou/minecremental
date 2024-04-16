@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button.tsx';
 import { useBoundStore } from '@/store/store.ts';
 import { useMemo } from 'react';
 import { Separator } from '@/components/ui/separator.tsx';
+import { displayTime } from '@/lib/time.ts';
 
 function Devtools() {
     const { firstTick, lastTick, tick, tickDurationMovingAverage1000 } =
@@ -20,9 +21,11 @@ function Devtools() {
         return tick;
     }, [tick]);
 
-    const elapsedTime = useMemo((): number => {
-        // console.log(firstTick?.getTime())
-        return (lastTick?.getTime() ?? 0) - (firstTick?.getTime() ?? 0);
+    const elapsedTime = useMemo((): string => {
+        const elapsed =
+            (lastTick?.getTime() ?? 0) - (firstTick?.getTime() ?? 0);
+
+        return displayTime(elapsed);
     }, [firstTick, lastTick]);
 
     const tickMA1000 = useMemo((): number => {
