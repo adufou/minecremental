@@ -8,15 +8,23 @@ import {
     createTreeSlice,
     ForestSliceCreator,
 } from '@/components/providers/engine/Forest/store/forest-slice-creator.ts';
+import {
+    createVillageSlice,
+    VillageSliceCreator,
+} from '@/components/providers/engine/Village/store/village-slice-creator.ts';
 
-export type State = ForestSliceCreator & InventorySliceCreator;
+export type State = ForestSliceCreator &
+    InventorySliceCreator &
+    VillageSliceCreator;
 
 export const useBoundStore = create<State>()(
     devtools((...a) => ({
-        // Engine
+        // --- Engine ---
         ...createTreeSlice(...a),
 
         // Inventory
         ...createInventorySlice(...a),
+        // Village
+        ...createVillageSlice(...a),
     })),
 );
