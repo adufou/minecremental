@@ -20,6 +20,12 @@ function Sidebar({ ...props }: SidebarProps) {
             >
                 Village
             </Button>
+            <Button
+                className='w-full'
+                onClick={() => props.setSection(Sections.CRAFT)}
+            >
+                Craft
+            </Button>
         </div>
     );
 }

@@ -2,6 +2,7 @@ import { Card } from '@/components/ui/card.tsx';
 import Forest from '@/modules/Forest/forest.tsx';
 import Sections from '@/modules/MainLayout/constants/sections.ts';
 import Village from '@/modules/Village/village.tsx';
+import Craft from '@/modules/Craft/craft.tsx';
 
 type MainCardProps = {
     section: Sections;
@@ -14,6 +15,8 @@ function MainCard({ ...props }: MainCardProps) {
                 return <Forest />;
             case Sections.VILLAGE:
                 return <Village />;
+            case Sections.CRAFT:
+                return <Craft />;
             default:
                 return <></>;
         }
