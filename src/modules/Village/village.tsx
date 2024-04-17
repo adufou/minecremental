@@ -11,7 +11,7 @@ function Village() {
             <span>WIP: this slider is for dev and cheat purpose</span>
             <Slider
                 max={100}
-                onValueChange={(value) => {
+                onValueChange={(value: number[]) => {
                     boundStore.villagers = value[0];
                 }}
                 step={1}

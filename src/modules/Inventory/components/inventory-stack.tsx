@@ -1,5 +1,6 @@
 import { Card } from '@/components/ui/card';
 import { getItemImageUrl } from '@/lib/image.utils.ts';
+import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
 
 function inventoryStack(props: { stack: ItemStack }) {
     return (

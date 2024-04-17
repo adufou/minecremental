@@ -13,7 +13,7 @@ describe('inventorySliceMethods', () => {
                 const newInventory =
                     inventorySliceMethods().addItemToPlayerInventory({
                         item: Items.OAK_LOG,
-                        number: 1,
+                        quantity: 1,
                         inventory,
                     });
 
@@ -35,7 +35,7 @@ describe('inventorySliceMethods', () => {
                 const newInventory =
                     inventorySliceMethods().addItemToPlayerInventory({
                         item: Items.OAK_LOG,
-                        number: 1,
+                        quantity: 1,
                         inventory,
                     });
 
@@ -57,7 +57,7 @@ describe('inventorySliceMethods', () => {
                 const newInventory =
                     inventorySliceMethods().addItemToPlayerInventory({
                         item: Items.OAK_LOG,
-                        number: 1,
+                        quantity: 1,
                         inventory,
                     });
 
@@ -81,7 +81,7 @@ describe('inventorySliceMethods', () => {
                 const newInventory =
                     inventorySliceMethods().addItemToPlayerInventory({
                         item: Items.WOODEN_AXE,
-                        number: 8,
+                        quantity: 8,
                         inventory,
                     });
 
@@ -104,7 +104,7 @@ describe('inventorySliceMethods', () => {
                 const newInventory =
                     inventorySliceMethods().addItemToPlayerInventory({
                         item: Items.OAK_LOG,
-                        number: 64,
+                        quantity: 64,
                         inventory,
                     });
 
@@ -126,7 +126,7 @@ describe('inventorySliceMethods', () => {
                 const newInventory =
                     inventorySliceMethods().addItemToPlayerInventory({
                         item: Items.OAK_LOG,
-                        number: 128,
+                        quantity: 128,
                         inventory,
                     });
 
@@ -153,7 +153,7 @@ describe('inventorySliceMethods', () => {
                 const newInventory =
                     inventorySliceMethods().addItemToPlayerInventory({
                         item: Items.OAK_LOG,
-                        number: 128,
+                        quantity: 128,
                         inventory,
                     });
 
