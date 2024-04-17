@@ -1,5 +1,6 @@
 {
     "name": "minecremental",
+    "homepage": "https://adufou.github.io/minecremental",
     "private": true,
     "version": "0.0.0",
     "type": "module",
@@ -11,7 +12,9 @@
         "prettier-fix": "prettier . --write",
         "preview": "vite preview",
         "test": "jest",
-        "prepare": "husky install"
+        "prepare": "husky install",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build"
     },
     "dependencies": {
         "@radix-ui/react-dropdown-menu": "^2.0.6",
@@ -22,6 +25,7 @@
         "@radix-ui/react-slot": "^1.0.2",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.0",
+        "gh-pages": "^6.1.1",
         "lucide-react": "^0.368.0",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
