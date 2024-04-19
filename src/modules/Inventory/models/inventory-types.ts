@@ -1,9 +1,4 @@
-export type Item = {
-    id: number;
-    name: string;
-    stackSize: number;
-    imageName: string;
-};
+import Item from '@/types/item.ts';
 
 export type ItemStack = {
     item: Item;

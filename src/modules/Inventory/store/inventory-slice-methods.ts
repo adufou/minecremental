@@ -1,30 +1,32 @@
-import { Inventory, Item } from '@/modules/Inventory/models/inventory-types.ts';
+import { Inventory } from '@/modules/Inventory/models/inventory-types.ts';
+import Item from '@/types/item.ts';
 
 export default function inventorySliceMethods() {
     const addItemToPlayerInventory = (payload: {
         item: Item;
         quantity: number;
-        inventory: Inventory['stacks'];
+        stacks: Inventory['stacks'];
     }) => {
-        const newInventory = payload.inventory;
+        const newInventoryStacks = payload.stacks;
         let remaining = payload.quantity;
 
         if (payload.item.stackSize === 1) {
             for (remaining; remaining > 0; remaining--) {
-                newInventory.push({
+                newInventoryStacks.push({
                     item: payload.item,
                     size: 1,
                 });
             }
         } else {
-            for (let i = 0; i < newInventory.length; i++) {
+            for (let i = 0; i < newInventoryStacks.length; i++) {
                 if (remaining === 0) {
                     break;
                 }
 
-                if (newInventory[i].item === payload.item) {
+                if (newInventoryStacks[i].item === payload.item) {
                     const availableStackSpace =
-                        newInventory[i].item.stackSize - newInventory[i].size;
+                        newInventoryStacks[i].item.stackSize -
+                        newInventoryStacks[i].size;
 
                     if (availableStackSpace > 0) {
                         const remainingChunkToAddToStack = Math.min(
@@ -32,7 +34,8 @@ export default function inventorySliceMethods() {
                             availableStackSpace,
                         );
                         remaining -= remainingChunkToAddToStack;
-                        newInventory[i].size += remainingChunkToAddToStack;
+                        newInventoryStacks[i].size +=
+                            remainingChunkToAddToStack;
                     }
                 }
             }
@@ -42,7 +45,7 @@ export default function inventorySliceMethods() {
                     remaining,
                     payload.item.stackSize,
                 );
-                newInventory.push({
+                newInventoryStacks.push({
                     item: payload.item,
                     size: remainingChunkToAddToStack,
                 });
@@ -51,10 +54,61 @@ export default function inventorySliceMethods() {
             }
         }
 
-        return newInventory;
+        return newInventoryStacks;
+    };
+
+    const hasItemInInventory = (
+        item: Item,
+        stacks: Inventory['stacks'],
+        quantity = 1,
+    ) => {
+        let foundItems = 0;
+
+        for (const stack of stacks) {
+            if (foundItems >= quantity) {
+                return true;
+            }
+
+            if (stack.item === item) {
+                foundItems += stack.size;
+            }
+        }
+
+        return foundItems >= quantity;
+    };
+
+    const removeItemFromPlayerInventory = (payload: {
+        item: Item;
+        quantity: number;
+        stacks: Inventory['stacks'];
+    }) => {
+        let remaining = payload.quantity;
+        const newInventoryStacks = payload.stacks;
+
+        while (remaining > 0) {
+            for (let i = 0; i < newInventoryStacks.length; i++) {
+                if (remaining === 0) {
+                    break;
+                }
+
+                if (newInventoryStacks[i].item === payload.item) {
+                    if (newInventoryStacks[i].size > remaining) {
+                        newInventoryStacks[i].size -= remaining;
+                        remaining = 0;
+                    } else {
+                        remaining -= newInventoryStacks[i].size;
+                        newInventoryStacks.splice(i, 1);
+                    }
+                }
+            }
+        }
+
+        return newInventoryStacks;
     };
 
     return {
         addItemToPlayerInventory,
+        hasItemInInventory,
+        removeItemFromPlayerInventory,
     };
 }
