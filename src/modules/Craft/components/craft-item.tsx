@@ -33,6 +33,37 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
         });
     };
 
+    const craftAllItems = () => {
+        let canCraft = true;
+        while (canCraft) {
+            for (const recipeItem of props.itemRecipe.ingredients) {
+                if (
+                    !boundStore.hasItemInInventory(
+                        recipeItem.item,
+                        recipeItem.quantity,
+                    )
+                ) {
+                    canCraft = false;
+                    break;
+                }
+            }
+
+            if (canCraft) {
+                for (const recipeItem of props.itemRecipe.ingredients) {
+                    boundStore.removeItemFromPlayerInventory({
+                        item: recipeItem.item,
+                        quantity: recipeItem.quantity,
+                    });
+                }
+
+                boundStore.addItemToPlayerInventory({
+                    item: props.itemRecipe.item,
+                    quantity: props.itemRecipe.quantity,
+                });
+            }
+        }
+    };
+
     return (
         <div className='flex flex-col w-full'>
             <div className='flex flex-row justify-between items-center gap-2'>
@@ -80,6 +111,12 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
                     onClick={craftItem}
                 >
                     Craft
+                </Button>
+                <Button
+                    className='h-8'
+                    onClick={craftAllItems}
+                >
+                    Craft All
                 </Button>
             </div>
         </div>
