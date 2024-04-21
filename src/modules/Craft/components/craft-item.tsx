@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card.tsx';
-import { getItemImageUrl } from '@/lib/image.utils.ts';
+import { getAssetImageUrl } from '@/lib/image.utils.ts';
 import { Separator } from '@/components/ui/separator.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import ItemRecipe from '@/types/recipe.ts';
@@ -71,7 +71,7 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
                     <Card className='h-16 w-16 overflow-hidden'>
                         <img
                             className='h-full w-full'
-                            src={getItemImageUrl(
+                            src={getAssetImageUrl(
                                 props.itemRecipe.item.imageName,
                             )}
                         />
@@ -94,7 +94,7 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
                             <Card className='h-8 w-8 overflow-clip'>
                                 <img
                                     className='h-full w-full'
-                                    src={getItemImageUrl(
+                                    src={getAssetImageUrl(
                                         recipeItem.item.imageName,
                                     )}
                                 />
