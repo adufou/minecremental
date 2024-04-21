@@ -1,6 +1,7 @@
 import { StateCreator } from 'zustand';
 import { ChopConstants } from '@/components/providers/engine/Forest/const.ts';
 import { useBoundStore } from '@/store/store.ts';
+import ItemTypes from '@/types/item-types.ts';
 
 export interface ForestSliceCreator {
     chopByVillager: (elapsed: number) => number;
@@ -39,9 +40,21 @@ export const createTreeSlice: StateCreator<
     chopClick: () => {
         let newProgress = 0;
         let nbChopped = 0;
+        let multiplier = 1;
+
+        const inventory = useBoundStore.getState().inventory;
+
+        const stack = inventory.find(
+            (stack) => stack.item.type === ItemTypes.AXE,
+        );
+
+        if (stack && stack.item.multiplier) {
+            multiplier = stack.item.multiplier;
+        }
 
         set((state) => {
-            const totalProgress = state.chopProgress + state.chopClickProgress;
+            const totalProgress =
+                state.chopProgress + state.chopClickProgress * multiplier;
 
             nbChopped = Math.floor(totalProgress / 100);
             newProgress = totalProgress % 100;
