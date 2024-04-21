@@ -1,5 +1,7 @@
 function getAssetImageUrl(name: string) {
-    return new URL(`../assets/${name}.png`, import.meta.url).href;
+    // BASE_URL is a special variable that Vite will replace with the base URL of your project
+    // see 'base' in vite.config.ts
+    return `${import.meta.env.BASE_URL}/assets/${name}.png`;
 }
 
 export { getAssetImageUrl };
