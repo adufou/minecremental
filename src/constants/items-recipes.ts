@@ -8,6 +8,11 @@ const ItemsRecipes: { [item: Item['name']]: ItemRecipe } = {
         ingredients: [{ item: Items.OAK_LOG, quantity: 1 }],
         quantity: 4,
     },
+    STICK: {
+        item: Items.STICK,
+        ingredients: [{ item: Items.OAK_PLANKS, quantity: 2 }],
+        quantity: 4,
+    },
 } as const;
 
 export default ItemsRecipes;

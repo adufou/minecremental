@@ -11,6 +11,11 @@ const Items: { [identifier: string]: Item } = {
         stackSize: 64,
         name: 'oak_planks',
     },
+    STICK: {
+        displayName: 'Stick',
+        stackSize: 64,
+        name: 'stick',
+    },
     WOODEN_AXE: {
         displayName: 'Wooden Axe',
         stackSize: 1,
