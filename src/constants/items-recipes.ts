@@ -1,5 +1,5 @@
 import Item from '@/types/item.ts';
-import ItemRecipe from '@/types/recipe.ts';
+import ItemRecipe from '@/types/item-recipe.ts';
 import { Items } from '@/constants/items.ts';
 
 const ItemsRecipes: { [item: Item['name']]: ItemRecipe } = {
