@@ -1,8 +1,7 @@
 type Item = {
-    id: number;
-    name: string;
+    displayName: string;
     stackSize: number;
-    imageName: string;
+    name: string;
 };
 
 export default Item;

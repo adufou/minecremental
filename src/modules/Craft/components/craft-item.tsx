@@ -71,9 +71,7 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
                     <Card className='h-16 w-16 overflow-hidden'>
                         <img
                             className='h-full w-full'
-                            src={getAssetImageUrl(
-                                props.itemRecipe.item.imageName,
-                            )}
+                            src={getAssetImageUrl(props.itemRecipe.item.name)}
                         />
                     </Card>
                     <span className='absolute bottom-1 right-1'>
@@ -94,13 +92,12 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
                             <Card className='h-8 w-8 overflow-clip'>
                                 <img
                                     className='h-full w-full'
-                                    src={getAssetImageUrl(
-                                        recipeItem.item.imageName,
-                                    )}
+                                    src={getAssetImageUrl(recipeItem.item.name)}
                                 />
                             </Card>
                             <span>
-                                {recipeItem.item.name} x{recipeItem.quantity}
+                                {recipeItem.item.displayName} x
+                                {recipeItem.quantity}
                             </span>
                         </div>
                     ))}
