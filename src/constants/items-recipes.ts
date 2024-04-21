@@ -13,6 +13,14 @@ const ItemsRecipes: { [item: Item['name']]: ItemRecipe } = {
         ingredients: [{ item: Items.OAK_PLANKS, quantity: 2 }],
         quantity: 4,
     },
+    WOODEN_AXE: {
+        item: Items.WOODEN_AXE,
+        ingredients: [
+            { item: Items.OAK_PLANKS, quantity: 3 },
+            { item: Items.STICK, quantity: 2 },
+        ],
+        quantity: 1,
+    },
 } as const;
 
 export default ItemsRecipes;
