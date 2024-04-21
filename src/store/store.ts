@@ -3,7 +3,6 @@ import {
     createInventorySlice,
     InventorySliceCreator,
 } from '@/modules/Inventory/store/inventory-slice-creator.ts';
-import { devtools } from 'zustand/middleware';
 import {
     createTreeSlice,
     ForestSliceCreator,
@@ -17,14 +16,12 @@ export type State = ForestSliceCreator &
     InventorySliceCreator &
     VillageSliceCreator;
 
-export const useBoundStore = create<State>()(
-    devtools((...a) => ({
-        // --- Engine ---
-        ...createTreeSlice(...a),
+export const useBoundStore = create<State>()((...a) => ({
+    // --- Engine ---
+    ...createTreeSlice(...a),
 
-        // Inventory
-        ...createInventorySlice(...a),
-        // Village
-        ...createVillageSlice(...a),
-    })),
-);
+    // Inventory
+    ...createInventorySlice(...a),
+    // Village
+    ...createVillageSlice(...a),
+}));
