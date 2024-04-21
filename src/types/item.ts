@@ -6,6 +6,7 @@ type Item = {
     name: string;
     type: ItemTypes;
     multiplier?: number;
+    durability?: number;
 };
 
 export default Item;

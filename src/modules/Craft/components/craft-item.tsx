@@ -68,7 +68,7 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
         <div className='flex flex-col w-full'>
             <div className='flex flex-row justify-between items-center gap-2'>
                 <div className='relative'>
-                    <Card className='h-16 w-16 overflow-hidden'>
+                    <Card className='h-16 w-16 overflow-hidden p-1'>
                         <img
                             className='h-full w-full'
                             src={getAssetImageUrl(props.itemRecipe.item.name)}
@@ -89,7 +89,7 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
                             }
                             className='flex flex-row gap-2'
                         >
-                            <Card className='h-8 w-8 overflow-clip'>
+                            <Card className='h-8 w-8 overflow-clip p-1'>
                                 <img
                                     className='h-full w-full'
                                     src={getAssetImageUrl(recipeItem.item.name)}

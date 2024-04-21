@@ -50,6 +50,7 @@ const Items: { [identifier: string]: Item } = {
     },
     WOODEN_AXE: {
         displayName: 'Wooden Axe',
+        durability: 128,
         stackSize: 1,
         name: 'wooden_axe',
         multiplier: 2,

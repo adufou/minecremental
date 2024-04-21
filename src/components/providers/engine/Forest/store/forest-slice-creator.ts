@@ -44,12 +44,32 @@ export const createTreeSlice: StateCreator<
 
         const inventory = useBoundStore.getState().inventory;
 
-        const stack = inventory.find(
+        const stackIndex = inventory.findIndex(
             (stack) => stack.item.type === ItemTypes.AXE,
         );
 
-        if (stack && stack.item.multiplier) {
+        const stack = inventory[stackIndex];
+
+        if (stack && stack.item.multiplier && stack.durability !== undefined) {
             multiplier = stack.item.multiplier;
+            const durability = stack.durability - 1;
+
+            useBoundStore.setState((state) => {
+                const newInventory = [...state.inventory];
+
+                if (durability === 0) {
+                    newInventory.splice(stackIndex, 1);
+                } else {
+                    newInventory[stackIndex] = {
+                        ...stack,
+                        durability,
+                    };
+                }
+
+                return {
+                    inventory: newInventory,
+                };
+            });
         }
 
         set((state) => {

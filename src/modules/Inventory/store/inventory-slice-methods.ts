@@ -15,6 +15,7 @@ export default function inventorySliceMethods() {
                 newInventoryStacks.push({
                     item: payload.item,
                     size: 1,
+                    durability: payload.item.durability,
                 });
             }
         } else {
