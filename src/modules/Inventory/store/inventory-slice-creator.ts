@@ -33,6 +33,7 @@ export const createInventorySlice: StateCreator<
                 newInventoryStack.set(payload.item.name, {
                     item: payload.item,
                     size: payload.quantity,
+                    durability: payload.item.durability,
                 });
             }
 

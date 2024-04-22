@@ -1,4 +1,4 @@
-import Item from '@/types/item.ts';
+import { Item } from '@/constants/items.ts';
 
 type ItemRecipe = {
     item: Item;

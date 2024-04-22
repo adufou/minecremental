@@ -8,7 +8,7 @@ export type Item = {
     durability?: number;
 };
 
-type ItemsType = {
+export type ItemsType = {
     DIAMOND_AXE: Item;
     IRON_AXE: Item;
     OAK_LOG: Item;

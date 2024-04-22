@@ -17,18 +17,19 @@ export const createTreeSlice: StateCreator<
     [],
     [],
     ForestSliceCreator
-> = (set) => ({
+> = (set, get) => ({
     chopByVillager: (elapsed: number) => {
         let newProgress = 0;
         let nbChopped = 0;
         let availableVillagers = 0;
-        let totalProgress = useBoundStore.getState().chopProgress;
+        let totalProgress = get().chopProgress;
 
         // Progress in ratio
         const oneVillagerChopBaseProgress =
             (elapsed / ChopConstants.BASE_CHOP_DURATION_IN_MS) * 100;
 
         set(() => {
+            // TODO: WTF debug la et les villago
             const villagers = useBoundStore.getState().villagers;
             const newInventory = useBoundStore.getState().inventory;
 
@@ -84,6 +85,12 @@ export const createTreeSlice: StateCreator<
 
                     availableVillagers -= usableVillagers;
 
+                    console.log(
+                        `Chop: ${nbChopped}, Progress: ${totalProgress}, Durability: ${newTotalDurability}, Durability usage: ${durabilityUsage}`,
+                    );
+
+                    console.log(newTotalDurability % stack.item.durability);
+
                     // Update the stack
                     if (newTotalDurability <= 0) {
                         return {
@@ -134,6 +141,7 @@ export const createTreeSlice: StateCreator<
                 stack.item.durability > 0 &&
                 stack.durability
             ) {
+                console.log(stack);
                 hasChopped = true;
                 multiplier = stack.item.multiplier ?? 1;
 

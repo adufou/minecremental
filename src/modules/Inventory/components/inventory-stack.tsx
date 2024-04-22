@@ -49,6 +49,13 @@ function InventoryStack(props: { stack: ItemStack }) {
             </div>
 
             <div className='flex flex-col justify-between items-end h-full'>
+                <span className='text-sm text-stone-50'>Durability</span>
+                <span className='text-sm text-stone-500'>
+                    {props.stack.durability}
+                </span>
+            </div>
+
+            <div className='flex flex-col justify-between items-end h-full'>
                 <span className='text-sm text-stone-50'>
                     {props.stack.item.displayName}
                 </span>

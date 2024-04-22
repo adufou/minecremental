@@ -1,8 +1,7 @@
-import Item from '@/types/item.ts';
 import ItemRecipe from '@/types/item-recipe.ts';
 import { Items } from '@/constants/items.ts';
 
-const ItemsRecipes: { [item: Item['name']]: ItemRecipe } = {
+const ItemsRecipes: { [item: string]: ItemRecipe } = {
     OAK_PLANKS: {
         item: Items.OAK_PLANKS,
         ingredients: [{ item: Items.OAK_LOG, quantity: 1 }],
