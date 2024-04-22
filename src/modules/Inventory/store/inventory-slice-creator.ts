@@ -1,15 +1,14 @@
 import { StateCreator } from 'zustand';
-import inventorySliceMethods from '@/modules/Inventory/store/inventory-slice-methods.ts';
-import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
-import Item from '@/types/item.ts';
+import { Inventory } from '@/modules/Inventory/models/inventory-types.ts';
+import { Item } from '@/constants/items.ts';
 
 export interface InventorySliceCreator {
     addItemToPlayerInventory: (payload: {
         item: Item;
         quantity: number;
     }) => void;
-    inventory: ItemStack[];
-    hasItemInInventory: (item: Item, quantity?: number) => boolean;
+    inventory: Inventory;
+    hasEnoughOfItemInInventory: (item: Item, quantity?: number) => boolean;
     removeItemFromPlayerInventory: (payload: {
         item: Item;
         quantity: number;
@@ -23,35 +22,40 @@ export const createInventorySlice: StateCreator<
     InventorySliceCreator
 > = (set, get) => ({
     addItemToPlayerInventory: (payload) => {
-        set((state) => {
-            const newInventoryStack =
-                inventorySliceMethods().addItemToPlayerInventory({
+        set((state): { inventory: Inventory } => {
+            const newInventoryStack = state.inventory;
+
+            const itemInInventory = state.inventory.get(payload.item.name);
+
+            if (itemInInventory) {
+                itemInInventory.size += payload.quantity;
+            } else {
+                newInventoryStack.set(payload.item.name, {
                     item: payload.item,
-                    quantity: payload.quantity,
-                    stacks: state.inventory,
+                    size: payload.quantity,
                 });
+            }
 
             return {
                 inventory: newInventoryStack,
             };
         });
     },
-    inventory: [],
-    hasItemInInventory: (item, quantity = 1) => {
-        return inventorySliceMethods().hasItemInInventory(
-            item,
-            get().inventory,
-            quantity,
-        );
+    inventory: new Map(),
+    hasEnoughOfItemInInventory: (item, quantity = 1) => {
+        const currentSize = get().inventory.get(item.name)?.size ?? 0;
+
+        return currentSize >= quantity;
     },
     removeItemFromPlayerInventory: (payload) => {
-        set((state) => {
-            const newInventoryStack =
-                inventorySliceMethods().removeItemFromPlayerInventory({
-                    item: payload.item,
-                    quantity: payload.quantity,
-                    stacks: state.inventory,
-                });
+        set((state): { inventory: Inventory } => {
+            const newInventoryStack = state.inventory;
+
+            const itemInInventory = state.inventory.get(payload.item.name);
+
+            if (itemInInventory) {
+                itemInInventory.size -= payload.quantity;
+            }
 
             return {
                 inventory: newInventoryStack,

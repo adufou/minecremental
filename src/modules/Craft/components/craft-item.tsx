@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card.tsx';
-import { getAssetImageUrl } from '@/lib/image.utils.ts';
+import { getImageOfItem } from '@/lib/image.utils.ts';
 import { Separator } from '@/components/ui/separator.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import ItemRecipe from '@/types/item-recipe.ts';
@@ -11,7 +11,7 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
     const craftItem = () => {
         for (const recipeItem of props.itemRecipe.ingredients) {
             if (
-                !boundStore.hasItemInInventory(
+                !boundStore.hasEnoughOfItemInInventory(
                     recipeItem.item,
                     recipeItem.quantity,
                 )
@@ -38,7 +38,7 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
         while (canCraft) {
             for (const recipeItem of props.itemRecipe.ingredients) {
                 if (
-                    !boundStore.hasItemInInventory(
+                    !boundStore.hasEnoughOfItemInInventory(
                         recipeItem.item,
                         recipeItem.quantity,
                     )
@@ -71,7 +71,7 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
                     <Card className='h-16 w-16 overflow-hidden p-1'>
                         <img
                             className='h-full w-full'
-                            src={getAssetImageUrl(props.itemRecipe.item.name)}
+                            src={getImageOfItem(props.itemRecipe.item)}
                         />
                     </Card>
                     <span className='absolute bottom-1 right-1'>
@@ -92,7 +92,7 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
                             <Card className='h-8 w-8 overflow-clip p-1'>
                                 <img
                                     className='h-full w-full'
-                                    src={getAssetImageUrl(recipeItem.item.name)}
+                                    src={getImageOfItem(recipeItem.item)}
                                 />
                             </Card>
                             <span>
