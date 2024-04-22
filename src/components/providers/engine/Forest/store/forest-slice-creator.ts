@@ -2,6 +2,7 @@ import { StateCreator } from 'zustand';
 import { ChopConstants } from '@/components/providers/engine/Forest/const.ts';
 import { useBoundStore } from '@/store/store.ts';
 import ItemTypes from '@/types/item-types.ts';
+import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
 
 export interface ForestSliceCreator {
     chopByVillager: (elapsed: number) => number;
@@ -23,81 +24,86 @@ export const createTreeSlice: StateCreator<
         let availableVillagers = 0;
         let totalProgress = useBoundStore.getState().chopProgress;
 
-        const elapsedRatioOnDuration =
-            elapsed / ChopConstants.BASE_CHOP_DURATION_IN_MS;
-
-        // console.log(elapsedRatioOnDuration);
+        // Progress in ratio
+        const oneVillagerChopBaseProgress =
+            (elapsed / ChopConstants.BASE_CHOP_DURATION_IN_MS) * 100;
 
         set(() => {
-            // const remainingElapsedRatio = elapsedRatioOnDuration;
             const villagers = useBoundStore.getState().villagers;
             const newInventory = useBoundStore.getState().inventory;
 
             availableVillagers = villagers;
 
             // This loop uses tools
-            // 'i' will be incremented manually to take the splices into account
-            for (let i = 0; i < newInventory.length; ) {
+            newInventory.forEach((stack: ItemStack) => {
                 if (availableVillagers === 0) {
-                    break;
+                    return stack;
                 }
 
-                const stack = newInventory[i];
-
                 if (
-                    stack &&
                     stack.item.type === ItemTypes.AXE &&
-                    stack.durability !== undefined
+                    stack.size > 0 &&
+                    stack.item.durability &&
+                    stack.durability
                 ) {
-                    const multiplier = stack.item.multiplier ?? 1;
+                    const usableVillagers = Math.min(
+                        availableVillagers,
+                        stack.size,
+                    );
 
-                    const usableVillagers = availableVillagers;
+                    // THIS SUPPOSES ALL VILLAGER SHARE AND USE THE SAME TOOL
+                    // If the chop time is 1000ms, the elapsed time is 17ms, and there is 1 villager
+                    // If, by click, using exactly 1 durability, we can progress by 10 (%)
+                    // Then when the oneVillagerChopBaseProgress is 1.7 [(17/1000) * 100], we can progress by 1.7 (%)
+                    // Meaning we did 1.7/10 = 0.17 durability worth of progress for 1 villager
 
-                    // console.log(usableVillagers, availableVillagers);
+                    const oneVillagerDurabilityUsageRelativeToBaseClickProgress =
+                        oneVillagerChopBaseProgress /
+                        ChopConstants.BASE_CHOP_CLICK_PROGRESS;
 
-                    totalProgress +=
+                    // Durability usage
+                    const totalDurability =
+                        (stack.size - 1) * stack.item.durability +
+                        stack.durability;
+
+                    const durabilityUsage =
                         usableVillagers *
-                        multiplier *
-                        elapsedRatioOnDuration *
-                        100;
+                        oneVillagerDurabilityUsageRelativeToBaseClickProgress;
+
+                    const newTotalDurability =
+                        totalDurability - durabilityUsage;
+
+                    // Nb chopped computing
+                    const progress =
+                        usableVillagers *
+                        oneVillagerChopBaseProgress *
+                        (stack.item.multiplier ?? 1);
+
+                    nbChopped += Math.floor(progress / 100);
+                    totalProgress += progress % 100;
 
                     availableVillagers -= usableVillagers;
 
-                    const newDurability = Math.max(
-                        stack.durability -
-                            usableVillagers * elapsedRatioOnDuration,
-                        0,
-                    );
-
-                    // console.log(
-                    //     elapsedRatioOnDuration,
-                    //     newDurability,
-                    //     usableVillagers * elapsedRatioOnDuration,
-                    // );
-                    // console.log(
-                    //     newDurability,
-                    //     stack.durability,
-                    //     usableVillagers,
-                    // );
-
-                    if (newDurability === 0) {
-                        newInventory.splice(i, 1);
-                    } else {
-                        newInventory[i] = {
-                            ...stack,
-                            durability: newDurability,
+                    // Update the stack
+                    if (newTotalDurability <= 0) {
+                        return {
+                            size: 0,
+                            durability: stack.item.durability,
                         };
-                        i++;
+                    } else {
+                        return {
+                            size: Math.floor(
+                                newTotalDurability / stack.item.durability,
+                            ),
+                            durability:
+                                newTotalDurability % stack.item.durability,
+                        };
                     }
-                } else {
-                    i++;
                 }
-            }
+            });
 
             // Once we run out of tools, we use the remaining villagers
-
-            totalProgress +=
-                availableVillagers * (elapsedRatioOnDuration * 100);
+            totalProgress += availableVillagers * oneVillagerChopBaseProgress;
 
             nbChopped = Math.floor(totalProgress / 100);
             newProgress = totalProgress % 100;
@@ -111,36 +117,41 @@ export const createTreeSlice: StateCreator<
         let newProgress = 0;
         let nbChopped = 0;
         let multiplier = 1;
+        let hasChopped = false;
 
-        const inventory = useBoundStore.getState().inventory;
+        const newInventory = useBoundStore.getState().inventory;
 
-        const stackIndex = inventory.findIndex(
-            (stack) => stack.item.type === ItemTypes.AXE,
-        );
+        newInventory.forEach((stack: ItemStack) => {
+            // To chop only with the first axe found
+            if (hasChopped) {
+                return stack;
+            }
 
-        const stack = inventory[stackIndex];
+            if (
+                stack.item.type === ItemTypes.AXE &&
+                stack.size > 0 &&
+                stack.item.durability &&
+                stack.item.durability > 0 &&
+                stack.durability
+            ) {
+                hasChopped = true;
+                multiplier = stack.item.multiplier ?? 1;
 
-        if (stack && stack.item.multiplier && stack.durability !== undefined) {
-            multiplier = stack.item.multiplier;
-            const durability = stack.durability - 1;
+                const durability = stack.durability - 1;
 
-            useBoundStore.setState((state) => {
-                const newInventory = [...state.inventory];
-
-                if (durability === 0) {
-                    newInventory.splice(stackIndex, 1);
+                if (durability <= 0) {
+                    return {
+                        size: Math.min(stack.size - 1, 0),
+                        durability: stack.item.durability,
+                    };
                 } else {
-                    newInventory[stackIndex] = {
-                        ...stack,
+                    return {
+                        size: stack.size,
                         durability,
                     };
                 }
-
-                return {
-                    inventory: newInventory,
-                };
-            });
-        }
+            }
+        });
 
         set((state) => {
             const totalProgress =
