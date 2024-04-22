@@ -32,21 +32,29 @@ function InventoryStack(props: { stack: ItemStack }) {
     }, [props.stack.durability]);
 
     return (
-        <Card className='h-8 w-8 overflow-clip relative p-1'>
-            <img
-                className='h-full w-full'
-                src={getAssetImageUrl(props.stack.item.name)}
-            />
-            <span className='absolute bottom-0 right-0'>
-                {props.stack.size}
-            </span>
-            <div className='flex absolute bottom-0 right-0 h-1 w-full justify-center'>
-                <div className='h-1/2 w-1/2 rounded-sm'>
-                    <div
-                        className='h-full rounded-sm'
-                        style={durabilityBarStyle}
-                    />
+        <Card className='flex justify-between h-16 w-full overflow-clip relative p-2'>
+            <div className='relative w-12 h-12'>
+                <img
+                    className='h-full w-full'
+                    src={getAssetImageUrl(props.stack.item.name)}
+                />
+                <div className='flex absolute bottom-0 right-0 h-1 w-full justify-center'>
+                    <div className='h-1/2 w-1/2 rounded-sm'>
+                        <div
+                            className='h-full rounded-sm'
+                            style={durabilityBarStyle}
+                        />
+                    </div>
                 </div>
+            </div>
+
+            <div className='flex flex-col justify-between items-end h-full'>
+                <span className='text-sm text-stone-50'>
+                    {props.stack.item.displayName}
+                </span>
+                <span className='text-sm text-stone-500'>
+                    {props.stack.size}
+                </span>
             </div>
         </Card>
     );
