@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/card';
-import { getAssetImageUrl } from '@/lib/image.utils.ts';
+import { getImageOfItem } from '@/lib/image.utils.ts';
 import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
 import { useMemo } from 'react';
 
@@ -36,7 +36,7 @@ function InventoryStack(props: { stack: ItemStack }) {
             <div className='relative w-12 h-12'>
                 <img
                     className='h-full w-full'
-                    src={getAssetImageUrl(props.stack.item.name)}
+                    src={getImageOfItem(props.stack.item)}
                 />
                 <div className='flex absolute bottom-0 right-0 h-1 w-full justify-center'>
                     <div className='h-1/2 w-1/2 rounded-sm'>
@@ -46,6 +46,13 @@ function InventoryStack(props: { stack: ItemStack }) {
                         />
                     </div>
                 </div>
+            </div>
+
+            <div className='flex flex-col justify-between items-end h-full'>
+                <span className='text-sm text-stone-50'>Durability</span>
+                <span className='text-sm text-stone-500'>
+                    {props.stack.durability}
+                </span>
             </div>
 
             <div className='flex flex-col justify-between items-end h-full'>
