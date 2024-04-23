@@ -2,6 +2,7 @@ import { Card } from '@/components/ui/card';
 import { getImageOfItem } from '@/lib/image.utils.ts';
 import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
 import { useMemo } from 'react';
+import { display } from '@/lib/numbers.ts';
 
 function InventoryStack(props: { stack: ItemStack }) {
     const durabilityBarStyle = useMemo(() => {
@@ -31,8 +32,20 @@ function InventoryStack(props: { stack: ItemStack }) {
         return style;
     }, [props.stack.durability]);
 
+    const durabilityDisplayedValue = (stack: ItemStack): string => {
+        if (
+            stack.item.durability !== undefined &&
+            stack.durability !== undefined &&
+            stack.durability !== stack.item.durability
+        ) {
+            return display(stack.durability);
+        }
+
+        return '';
+    };
+
     return (
-        <Card className='flex justify-between h-16 w-full overflow-clip relative p-2'>
+        <Card className='flex justify-between h-16 w-full overflow-clip relative gap-1 p-2'>
             <div className='relative w-12 h-12'>
                 <img
                     className='h-full w-full'
@@ -48,20 +61,22 @@ function InventoryStack(props: { stack: ItemStack }) {
                 </div>
             </div>
 
-            <div className='flex flex-col justify-between items-end h-full'>
-                <span className='text-sm text-stone-50'>Durability</span>
-                <span className='text-sm text-stone-500'>
-                    {props.stack.durability}
-                </span>
-            </div>
+            <div className='flex flex-auto flex-row justify-between'>
+                <div className='flex flex-col justify-between h-full'>
+                    <span className='text-sm text-stone-50'>Durability</span>
+                    <span className='text-sm text-stone-500'>
+                        {durabilityDisplayedValue(props.stack)}
+                    </span>
+                </div>
 
-            <div className='flex flex-col justify-between items-end h-full'>
-                <span className='text-sm text-stone-50'>
-                    {props.stack.item.displayName}
-                </span>
-                <span className='text-sm text-stone-500'>
-                    {props.stack.size}
-                </span>
+                <div className='flex flex-col justify-between items-end h-full'>
+                    <span className='text-sm text-stone-50'>
+                        {props.stack.item.displayName}
+                    </span>
+                    <span className='text-sm text-stone-500'>
+                        {display(props.stack.size)}
+                    </span>
+                </div>
             </div>
         </Card>
     );
