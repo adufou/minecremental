@@ -95,6 +95,11 @@ export const createTreeSlice: StateCreator<
 
                     console.log(newTotalDurability % value.item.durability);
 
+                    console.log(
+                        newTotalDurability,
+                        newTotalDurability / value.item.durability,
+                    );
+
                     // Update the stack
                     if (newTotalDurability <= 0) {
                         newInventory[key] = {
@@ -107,7 +112,7 @@ export const createTreeSlice: StateCreator<
                             ...value,
                             durability:
                                 newTotalDurability % value.item.durability,
-                            size: Math.floor(
+                            size: Math.ceil(
                                 newTotalDurability / value.item.durability,
                             ),
                         };
