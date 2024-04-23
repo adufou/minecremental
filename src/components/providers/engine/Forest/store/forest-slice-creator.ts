@@ -2,6 +2,8 @@ import { StateCreator } from 'zustand';
 import { ChopConstants } from '@/components/providers/engine/Forest/const.ts';
 import { useBoundStore } from '@/store/store.ts';
 import ItemTypes from '@/types/item-types.ts';
+import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
+import { ItemsType } from '@/constants/items.ts';
 
 export interface ForestSliceCreator {
     chopByVillager: (elapsed: number) => number;
@@ -16,88 +18,110 @@ export const createTreeSlice: StateCreator<
     [],
     [],
     ForestSliceCreator
-> = (set) => ({
+> = (set, get) => ({
     chopByVillager: (elapsed: number) => {
         let newProgress = 0;
         let nbChopped = 0;
         let availableVillagers = 0;
-        let totalProgress = useBoundStore.getState().chopProgress;
+        let totalProgress = get().chopProgress;
 
-        const elapsedRatioOnDuration =
-            elapsed / ChopConstants.BASE_CHOP_DURATION_IN_MS;
-
-        // console.log(elapsedRatioOnDuration);
+        // Progress in ratio
+        const oneVillagerChopBaseProgress =
+            (elapsed / ChopConstants.BASE_CHOP_DURATION_IN_MS) * 100;
 
         set(() => {
-            // const remainingElapsedRatio = elapsedRatioOnDuration;
+            // TODO: WTF debug la et les villago
             const villagers = useBoundStore.getState().villagers;
             const newInventory = useBoundStore.getState().inventory;
 
             availableVillagers = villagers;
 
-            // This loop uses tools
-            // 'i' will be incremented manually to take the splices into account
-            for (let i = 0; i < newInventory.length; ) {
+            // This loop uses tools first
+            for (const [key, value] of Object.entries(newInventory) as Array<
+                [keyof ItemsType, ItemStack]
+            >) {
                 if (availableVillagers === 0) {
                     break;
                 }
 
-                const stack = newInventory[i];
-
                 if (
-                    stack &&
-                    stack.item.type === ItemTypes.AXE &&
-                    stack.durability !== undefined
+                    newInventory[key] !== undefined &&
+                    value.item.type === ItemTypes.AXE &&
+                    value.size > 0 &&
+                    value.item.durability &&
+                    value.durability
                 ) {
-                    const multiplier = stack.item.multiplier ?? 1;
+                    const usableVillagers = Math.min(
+                        availableVillagers,
+                        value.size,
+                    );
 
-                    const usableVillagers = availableVillagers;
+                    // THIS SUPPOSES ALL VILLAGER SHARE AND USE THE SAME TOOL
+                    // If the chop time is 1000ms, the elapsed time is 17ms, and there is 1 villager
+                    // If, by click, using exactly 1 durability, we can progress by 10 (%)
+                    // Then when the oneVillagerChopBaseProgress is 1.7 [(17/1000) * 100], we can progress by 1.7 (%)
+                    // Meaning we did 1.7/10 = 0.17 durability worth of progress for 1 villager
 
-                    // console.log(usableVillagers, availableVillagers);
+                    const oneVillagerDurabilityUsageRelativeToBaseClickProgress =
+                        oneVillagerChopBaseProgress /
+                        ChopConstants.BASE_CHOP_CLICK_PROGRESS;
 
-                    totalProgress +=
+                    // Durability usage
+                    const totalDurability =
+                        (value.size - 1) * value.item.durability +
+                        value.durability;
+
+                    const durabilityUsage =
                         usableVillagers *
-                        multiplier *
-                        elapsedRatioOnDuration *
-                        100;
+                        oneVillagerDurabilityUsageRelativeToBaseClickProgress;
+
+                    const newTotalDurability =
+                        totalDurability - durabilityUsage;
+
+                    // Nb chopped computing
+                    const progress =
+                        usableVillagers *
+                        oneVillagerChopBaseProgress *
+                        (value.item.multiplier ?? 1);
+
+                    nbChopped += Math.floor(progress / 100);
+                    totalProgress += progress % 100;
 
                     availableVillagers -= usableVillagers;
 
-                    const newDurability = Math.max(
-                        stack.durability -
-                            usableVillagers * elapsedRatioOnDuration,
-                        0,
+                    console.log(
+                        `Chop: ${nbChopped}, Progress: ${totalProgress}, Durability: ${newTotalDurability}, Durability usage: ${durabilityUsage}`,
                     );
 
-                    // console.log(
-                    //     elapsedRatioOnDuration,
-                    //     newDurability,
-                    //     usableVillagers * elapsedRatioOnDuration,
-                    // );
-                    // console.log(
-                    //     newDurability,
-                    //     stack.durability,
-                    //     usableVillagers,
-                    // );
+                    console.log(newTotalDurability % value.item.durability);
 
-                    if (newDurability === 0) {
-                        newInventory.splice(i, 1);
-                    } else {
-                        newInventory[i] = {
-                            ...stack,
-                            durability: newDurability,
+                    console.log(
+                        newTotalDurability,
+                        newTotalDurability / value.item.durability,
+                    );
+
+                    // Update the stack
+                    if (newTotalDurability <= 0) {
+                        newInventory[key] = {
+                            ...value,
+                            durability: value.item.durability,
+                            size: 0,
                         };
-                        i++;
+                    } else {
+                        newInventory[key] = {
+                            ...value,
+                            durability:
+                                newTotalDurability % value.item.durability,
+                            size: Math.ceil(
+                                newTotalDurability / value.item.durability,
+                            ),
+                        };
                     }
-                } else {
-                    i++;
                 }
             }
 
             // Once we run out of tools, we use the remaining villagers
-
-            totalProgress +=
-                availableVillagers * (elapsedRatioOnDuration * 100);
+            totalProgress += availableVillagers * oneVillagerChopBaseProgress;
 
             nbChopped = Math.floor(totalProgress / 100);
             newProgress = totalProgress % 100;
@@ -111,35 +135,45 @@ export const createTreeSlice: StateCreator<
         let newProgress = 0;
         let nbChopped = 0;
         let multiplier = 1;
+        let hasChopped = false;
 
-        const inventory = useBoundStore.getState().inventory;
+        const newInventory = useBoundStore.getState().inventory;
 
-        const stackIndex = inventory.findIndex(
-            (stack) => stack.item.type === ItemTypes.AXE,
-        );
+        for (const [key, value] of Object.entries(newInventory) as Array<
+            [keyof ItemsType, ItemStack]
+        >) {
+            // To chop only with the first axe found
+            if (hasChopped) {
+                break;
+            }
 
-        const stack = inventory[stackIndex];
+            if (
+                value.item.type === ItemTypes.AXE &&
+                value.size > 0 &&
+                value.item.durability &&
+                value.item.durability > 0 &&
+                value.durability
+            ) {
+                hasChopped = true;
+                multiplier = value.item.multiplier ?? 1;
 
-        if (stack && stack.item.multiplier && stack.durability !== undefined) {
-            multiplier = stack.item.multiplier;
-            const durability = stack.durability - 1;
+                const durability = value.durability - 1;
 
-            useBoundStore.setState((state) => {
-                const newInventory = [...state.inventory];
-
-                if (durability === 0) {
-                    newInventory.splice(stackIndex, 1);
+                // Update the stack
+                if (durability <= 0) {
+                    newInventory[key] = {
+                        ...value,
+                        durability: value.item.durability,
+                        size: Math.min(value.size - 1, 0),
+                    };
                 } else {
-                    newInventory[stackIndex] = {
-                        ...stack,
+                    newInventory[key] = {
+                        ...value,
                         durability,
+                        size: value.size,
                     };
                 }
-
-                return {
-                    inventory: newInventory,
-                };
-            });
+            }
         }
 
         set((state) => {
