@@ -2,6 +2,7 @@ import ItemTypes from '@/types/item-types.ts';
 
 export type Item = {
     displayName: string;
+    // Still needed ?
     name: keyof ItemsType;
     type: ItemTypes;
     multiplier?: number;

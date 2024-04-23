@@ -3,6 +3,7 @@ import { ChopConstants } from '@/components/providers/engine/Forest/const.ts';
 import { useBoundStore } from '@/store/store.ts';
 import ItemTypes from '@/types/item-types.ts';
 import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
+import { ItemsType } from '@/constants/items.ts';
 
 export interface ForestSliceCreator {
     chopByVillager: (elapsed: number) => number;
@@ -35,21 +36,24 @@ export const createTreeSlice: StateCreator<
 
             availableVillagers = villagers;
 
-            // This loop uses tools
-            newInventory.forEach((stack: ItemStack) => {
+            // This loop uses tools first
+            for (const [key, value] of Object.entries(newInventory) as Array<
+                [keyof ItemsType, ItemStack]
+            >) {
                 if (availableVillagers === 0) {
-                    return stack;
+                    break;
                 }
 
                 if (
-                    stack.item.type === ItemTypes.AXE &&
-                    stack.size > 0 &&
-                    stack.item.durability &&
-                    stack.durability
+                    newInventory[key] !== undefined &&
+                    value.item.type === ItemTypes.AXE &&
+                    value.size > 0 &&
+                    value.item.durability &&
+                    value.durability
                 ) {
                     const usableVillagers = Math.min(
                         availableVillagers,
-                        stack.size,
+                        value.size,
                     );
 
                     // THIS SUPPOSES ALL VILLAGER SHARE AND USE THE SAME TOOL
@@ -64,8 +68,8 @@ export const createTreeSlice: StateCreator<
 
                     // Durability usage
                     const totalDurability =
-                        (stack.size - 1) * stack.item.durability +
-                        stack.durability;
+                        (value.size - 1) * value.item.durability +
+                        value.durability;
 
                     const durabilityUsage =
                         usableVillagers *
@@ -78,7 +82,7 @@ export const createTreeSlice: StateCreator<
                     const progress =
                         usableVillagers *
                         oneVillagerChopBaseProgress *
-                        (stack.item.multiplier ?? 1);
+                        (value.item.multiplier ?? 1);
 
                     nbChopped += Math.floor(progress / 100);
                     totalProgress += progress % 100;
@@ -89,25 +93,27 @@ export const createTreeSlice: StateCreator<
                         `Chop: ${nbChopped}, Progress: ${totalProgress}, Durability: ${newTotalDurability}, Durability usage: ${durabilityUsage}`,
                     );
 
-                    console.log(newTotalDurability % stack.item.durability);
+                    console.log(newTotalDurability % value.item.durability);
 
                     // Update the stack
                     if (newTotalDurability <= 0) {
-                        return {
+                        newInventory[key] = {
+                            ...value,
+                            durability: value.item.durability,
                             size: 0,
-                            durability: stack.item.durability,
                         };
                     } else {
-                        return {
-                            size: Math.floor(
-                                newTotalDurability / stack.item.durability,
-                            ),
+                        newInventory[key] = {
+                            ...value,
                             durability:
-                                newTotalDurability % stack.item.durability,
+                                newTotalDurability % value.item.durability,
+                            size: Math.floor(
+                                newTotalDurability / value.item.durability,
+                            ),
                         };
                     }
                 }
-            });
+            }
 
             // Once we run out of tools, we use the remaining villagers
             totalProgress += availableVillagers * oneVillagerChopBaseProgress;
@@ -128,38 +134,42 @@ export const createTreeSlice: StateCreator<
 
         const newInventory = useBoundStore.getState().inventory;
 
-        newInventory.forEach((stack: ItemStack) => {
+        for (const [key, value] of Object.entries(newInventory) as Array<
+            [keyof ItemsType, ItemStack]
+        >) {
             // To chop only with the first axe found
             if (hasChopped) {
-                return stack;
+                break;
             }
 
             if (
-                stack.item.type === ItemTypes.AXE &&
-                stack.size > 0 &&
-                stack.item.durability &&
-                stack.item.durability > 0 &&
-                stack.durability
+                value.item.type === ItemTypes.AXE &&
+                value.size > 0 &&
+                value.item.durability &&
+                value.item.durability > 0 &&
+                value.durability
             ) {
-                console.log(stack);
                 hasChopped = true;
-                multiplier = stack.item.multiplier ?? 1;
+                multiplier = value.item.multiplier ?? 1;
 
-                const durability = stack.durability - 1;
+                const durability = value.durability - 1;
 
+                // Update the stack
                 if (durability <= 0) {
-                    return {
-                        size: Math.min(stack.size - 1, 0),
-                        durability: stack.item.durability,
+                    newInventory[key] = {
+                        ...value,
+                        durability: value.item.durability,
+                        size: Math.min(value.size - 1, 0),
                     };
                 } else {
-                    return {
-                        size: stack.size,
+                    newInventory[key] = {
+                        ...value,
                         durability,
+                        size: value.size,
                     };
                 }
             }
-        });
+        }
 
         set((state) => {
             const totalProgress =

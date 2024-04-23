@@ -6,4 +6,4 @@ export type ItemStack = {
     durability?: number;
 };
 
-export type Inventory = Map<keyof typeof Items, ItemStack>;
+export type Inventory = Partial<Record<keyof typeof Items, ItemStack>>;

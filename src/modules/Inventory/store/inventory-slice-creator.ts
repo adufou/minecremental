@@ -25,16 +25,16 @@ export const createInventorySlice: StateCreator<
         set((state): { inventory: Inventory } => {
             const newInventoryStack = state.inventory;
 
-            const itemInInventory = state.inventory.get(payload.item.name);
+            const itemInInventory = state.inventory[payload.item.name];
 
             if (itemInInventory) {
                 itemInInventory.size += payload.quantity;
             } else {
-                newInventoryStack.set(payload.item.name, {
+                newInventoryStack[payload.item.name] = {
                     item: payload.item,
                     size: payload.quantity,
                     durability: payload.item.durability,
-                });
+                };
             }
 
             return {
@@ -42,9 +42,9 @@ export const createInventorySlice: StateCreator<
             };
         });
     },
-    inventory: new Map(),
+    inventory: {},
     hasEnoughOfItemInInventory: (item, quantity = 1) => {
-        const currentSize = get().inventory.get(item.name)?.size ?? 0;
+        const currentSize = get().inventory[item.name]?.size ?? 0;
 
         return currentSize >= quantity;
     },
@@ -52,7 +52,7 @@ export const createInventorySlice: StateCreator<
         set((state): { inventory: Inventory } => {
             const newInventoryStack = state.inventory;
 
-            const itemInInventory = state.inventory.get(payload.item.name);
+            const itemInInventory = state.inventory[payload.item.name];
 
             if (itemInInventory) {
                 itemInInventory.size -= payload.quantity;
