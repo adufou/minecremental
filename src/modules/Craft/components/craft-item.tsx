@@ -34,6 +34,11 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
     };
 
     const craftAllItems = () => {
+        // TODO: Optimize the performance of this function, it's not efficient
+        // We should check if we have enough of each item in the inventory
+        // Then compute the maximum number of items we can craft
+        // And then craft the maximum number of items, instead of crafting one by one in a loop
+
         let canCraft = true;
         while (canCraft) {
             for (const recipeItem of props.itemRecipe.ingredients) {

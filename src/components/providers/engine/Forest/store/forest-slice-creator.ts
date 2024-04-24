@@ -48,8 +48,8 @@ export const createTreeSlice: StateCreator<
                     newInventory[key] !== undefined &&
                     value.item.type === ItemTypes.AXE &&
                     value.size > 0 &&
-                    value.item.durability &&
-                    value.durability
+                    value.item.durability !== undefined &&
+                    value.durability !== undefined
                 ) {
                     const usableVillagers = Math.min(
                         availableVillagers,
