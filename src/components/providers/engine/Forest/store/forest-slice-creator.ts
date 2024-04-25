@@ -84,9 +84,7 @@ export const createTreeSlice: StateCreator<
                         oneVillagerChopBaseProgress *
                         (value.item.multiplier ?? 1);
 
-                    nbChopped += Math.floor(progress / 100);
-                    totalProgress += progress % 100;
-
+                    totalProgress += progress;
                     availableVillagers -= usableVillagers;
 
                     // Update the stack
