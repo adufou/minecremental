@@ -23,7 +23,15 @@ function Village() {
                 <span>WIP: this slider is for dev and cheat purpose</span>
             </div>
             <Separator />
-            <CraftBuild buildingRecipe={BuildingsRecipes.OAK_HOUSE} />
+            <div className='grid grid-cols-3 gap-2'>
+                <CraftBuild buildingRecipe={BuildingsRecipes.OAK_HOUSE} />
+                <CraftBuild buildingRecipe={BuildingsRecipes.OAK_HOUSE} />
+                <CraftBuild buildingRecipe={BuildingsRecipes.OAK_HOUSE} />
+                <CraftBuild buildingRecipe={BuildingsRecipes.OAK_HOUSE} />
+                <CraftBuild buildingRecipe={BuildingsRecipes.OAK_HOUSE} />
+                <CraftBuild buildingRecipe={BuildingsRecipes.OAK_HOUSE} />
+                <CraftBuild buildingRecipe={BuildingsRecipes.OAK_HOUSE} />
+            </div>
         </div>
     );
 }
