@@ -1,10 +1,17 @@
 import { Card } from '@/components/ui/card';
 import { getImageOfItem } from '@/lib/image.utils.ts';
 import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { display } from '@/lib/numbers.ts';
+import { useTick } from '@/components/providers/tick-provider.tsx';
 
 function InventoryStack(props: { stack: ItemStack }) {
+    const [lastTickDuration, setLastTickDuration] = useState<number>(0);
+    const [gain, setGain] = useState<number>(0);
+    const [gainSmoothed, setGainSmoothed] = useState<number>(0);
+    const [lastSize, setLastSize] = useState<number>(0);
+
+    // Memos
     const durabilityBarStyle = useMemo(() => {
         const style: {
             backgroundColor?: string;
@@ -32,6 +39,28 @@ function InventoryStack(props: { stack: ItemStack }) {
         return style;
     }, [props.stack.durability]);
 
+    // Auto get gains when the stack size changes
+    useMemo(() => {
+        if (lastTickDuration !== 0) {
+            const tickGain =
+                (props.stack.size - lastSize) / (lastTickDuration / 1000);
+
+            if (
+                tickGain !== gain ||
+                (tickGain === 0 && props.stack.size === 0)
+            ) {
+                // Try to smooth this out a bit
+                setGain(tickGain);
+                setGainSmoothed((tickGain + gain * 99) / 100);
+            }
+
+            setLastSize(props.stack.size);
+        }
+
+        return gain;
+    }, [lastSize, props.stack.size]);
+
+    // Methods
     const durabilityDisplayedValue = (stack: ItemStack): string => {
         if (
             stack.item.durability !== undefined &&
@@ -43,6 +72,10 @@ function InventoryStack(props: { stack: ItemStack }) {
 
         return '';
     };
+
+    useTick((elapsedTime: number) => {
+        setLastTickDuration(elapsedTime);
+    });
 
     return (
         <Card className='flex justify-between h-16 w-full overflow-clip relative gap-1 p-2'>
@@ -75,6 +108,9 @@ function InventoryStack(props: { stack: ItemStack }) {
                     </span>
                     <span className='text-sm text-stone-500'>
                         {display(props.stack.size)}
+                    </span>
+                    <span className='text-xs text-stone-500'>
+                        {display(gainSmoothed)} /s
                     </span>
                 </div>
             </div>
