@@ -3,10 +3,10 @@ import { ChopConstants } from '@/components/providers/engine/Forest/const.ts';
 import { useBoundStore } from '@/store/store.ts';
 import ItemTypes from '@/types/item-types.ts';
 import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
-import { ItemsType } from '@/constants/items.ts';
+import { Item, ItemsType } from '@/constants/items.ts';
 
 export interface ForestSliceCreator {
-    chopByVillager: (elapsed: number) => number;
+    chopByVillager: (elapsed: number, item: Item) => void;
     chopClick: () => number;
     chopClickProgress: number;
     chopProgress: number;
@@ -19,18 +19,18 @@ export const createTreeSlice: StateCreator<
     [],
     ForestSliceCreator
 > = (set, get) => ({
-    chopByVillager: (elapsed: number) => {
+    chopByVillager: (elapsed: number, item: Item) => {
         let newProgress = 0;
         let nbChopped = 0;
         let availableVillagers = 0;
-        let totalProgress = get().chopProgress;
+        const initialProgress = get().chopProgress;
+        let totalProgress = initialProgress;
 
         // Progress in ratio
         const oneVillagerChopBaseProgress =
             (elapsed / ChopConstants.BASE_CHOP_DURATION_IN_MS) * 100;
 
         set(() => {
-            // TODO: WTF debug la et les villago
             const villagers = useBoundStore.getState().villagers;
             const newInventory = useBoundStore.getState().inventory;
 
@@ -84,9 +84,7 @@ export const createTreeSlice: StateCreator<
                         oneVillagerChopBaseProgress *
                         (value.item.multiplier ?? 1);
 
-                    nbChopped += Math.floor(progress / 100);
-                    totalProgress += progress % 100;
-
+                    totalProgress += progress;
                     availableVillagers -= usableVillagers;
 
                     // Update the stack
@@ -115,10 +113,21 @@ export const createTreeSlice: StateCreator<
             nbChopped = Math.floor(totalProgress / 100);
             newProgress = totalProgress % 100;
 
-            return { chopProgress: newProgress, inventory: newInventory };
-        });
+            const chopSpeedThisTick =
+                (totalProgress - initialProgress) / 100 / (elapsed / 1000);
 
-        return nbChopped;
+            newInventory[item.name] = {
+                item,
+                size: (newInventory[item.name]?.size ?? 0) + nbChopped,
+                durability: item.durability,
+                perSecond: chopSpeedThisTick,
+            };
+
+            return {
+                chopProgress: newProgress,
+                inventory: newInventory,
+            };
+        });
     },
     chopClick: () => {
         let newProgress = 0;

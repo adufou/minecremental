@@ -15,11 +15,7 @@ export function ForestProvider({ children, ...props }: TreeProviderProps) {
     const boundStore = useBoundStore();
 
     useTick((elapsedTime) => {
-        const chopped = boundStore.chopByVillager(elapsedTime);
-        boundStore.addItemToPlayerInventory({
-            item: Items.OAK_LOG,
-            quantity: chopped,
-        });
+        boundStore.chopByVillager(elapsedTime, Items.OAK_LOG);
     });
 
     return (
