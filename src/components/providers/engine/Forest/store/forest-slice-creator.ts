@@ -9,6 +9,7 @@ export interface ForestSliceCreator {
     chopByVillager: (elapsed: number) => number;
     chopClick: () => number;
     chopClickProgress: number;
+    chopCurrentSpeed: number;
     chopProgress: number;
     choppingVillagers: number;
 }
@@ -23,14 +24,14 @@ export const createTreeSlice: StateCreator<
         let newProgress = 0;
         let nbChopped = 0;
         let availableVillagers = 0;
-        let totalProgress = get().chopProgress;
+        const initialProgress = get().chopProgress;
+        let totalProgress = initialProgress;
 
         // Progress in ratio
         const oneVillagerChopBaseProgress =
             (elapsed / ChopConstants.BASE_CHOP_DURATION_IN_MS) * 100;
 
         set(() => {
-            // TODO: WTF debug la et les villago
             const villagers = useBoundStore.getState().villagers;
             const newInventory = useBoundStore.getState().inventory;
 
@@ -115,7 +116,14 @@ export const createTreeSlice: StateCreator<
             nbChopped = Math.floor(totalProgress / 100);
             newProgress = totalProgress % 100;
 
-            return { chopProgress: newProgress, inventory: newInventory };
+            const chopSpeedThisTick =
+                (totalProgress - initialProgress) / 100 / (elapsed / 1000);
+
+            return {
+                chopCurrentSpeed: chopSpeedThisTick,
+                chopProgress: newProgress,
+                inventory: newInventory,
+            };
         });
 
         return nbChopped;
@@ -178,6 +186,7 @@ export const createTreeSlice: StateCreator<
         return nbChopped;
     },
     chopClickProgress: ChopConstants.BASE_CHOP_CLICK_PROGRESS,
+    chopCurrentSpeed: 0,
     chopProgress: 0,
     choppingVillagers: 1,
 });
