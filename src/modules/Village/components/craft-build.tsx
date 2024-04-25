@@ -7,20 +7,12 @@ import { Button } from '@/components/ui/button.tsx';
 function CraftBuilding(props: { buildingRecipe: BuildingRecipe }) {
     return (
         <div className='flex flex-col w-full'>
-            <div className='flex flex-row justify-between items-center gap-2'>
-                <div className='relative'>
-                    <Card className='h-16 w-16 overflow-hidden p-1'>
-                        {/*<img*/}
-                        {/*    className='h-full w-full'*/}
-                        {/*    src={getImageOfItem(props.buildingRecipe.building)}*/}
-                        {/*/>*/}
-                    </Card>
-                    <span className='absolute bottom-1 right-1'>
-                        x{props.buildingRecipe.quantity}
-                    </span>
+            <div className='flex flex-row items-center gap-2'>
+                <div className='w-32'>
+                    <span>{props.buildingRecipe.building.displayName}</span>
                 </div>
                 <Separator orientation='vertical' />
-                <div className='flex flex-row w-full flex-wrap'>
+                <div className='flex flex-row flex-auto flex-wrap gap-2'>
                     {props.buildingRecipe.ingredients.map((recipeItem) => (
                         <div
                             key={
@@ -28,7 +20,7 @@ function CraftBuilding(props: { buildingRecipe: BuildingRecipe }) {
                                 '-' +
                                 recipeItem.item.name
                             }
-                            className='flex flex-row gap-2'
+                            className='flex flex-row items-center gap-1'
                         >
                             <Card className='h-8 w-8 overflow-clip p-1'>
                                 <img
