@@ -105,7 +105,7 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
                     </span>
                 </div>
                 <Separator orientation='vertical' />
-                <div className='flex flex-row w-full flex-wrap'>
+                <div className='flex flex-row w-full flex-wrap gap-2'>
                     {props.itemRecipe.ingredients.map((recipeItem) => (
                         <div
                             key={
@@ -113,7 +113,7 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
                                 '-' +
                                 recipeItem.item.name
                             }
-                            className='flex flex-row gap-2'
+                            className='flex flex-row items-center gap-1'
                         >
                             <Card className='h-8 w-8 overflow-clip p-1'>
                                 <img
