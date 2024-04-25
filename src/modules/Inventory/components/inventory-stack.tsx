@@ -3,11 +3,8 @@ import { getImageOfItem } from '@/lib/image.utils.ts';
 import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
 import { useMemo } from 'react';
 import { display } from '@/lib/numbers.ts';
-import { useBoundStore } from '@/store/store.ts';
 
 function InventoryStack(props: { stack: ItemStack }) {
-    const boundStore = useBoundStore();
-
     // Memos
     const durabilityBarStyle = useMemo(() => {
         const style: {
@@ -35,6 +32,12 @@ function InventoryStack(props: { stack: ItemStack }) {
 
         return style;
     }, [props.stack.durability]);
+
+    const perSecond = useMemo(() => {
+        return props.stack.perSecond
+            ? `${display(props.stack.perSecond)} /s`
+            : '';
+    }, [props.stack.perSecond]);
 
     // Methods
     const durabilityDisplayedValue = (stack: ItemStack): string => {
@@ -81,9 +84,7 @@ function InventoryStack(props: { stack: ItemStack }) {
                     <span className='text-sm text-stone-500'>
                         {display(props.stack.size)}
                     </span>
-                    <span className='text-xs text-stone-500'>
-                        {display(boundStore.chopCurrentSpeed)} /s
-                    </span>
+                    <span className='text-xs text-stone-500'>{perSecond}</span>
                 </div>
             </div>
         </Card>

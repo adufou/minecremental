@@ -3,13 +3,12 @@ import { ChopConstants } from '@/components/providers/engine/Forest/const.ts';
 import { useBoundStore } from '@/store/store.ts';
 import ItemTypes from '@/types/item-types.ts';
 import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
-import { ItemsType } from '@/constants/items.ts';
+import { Item, ItemsType } from '@/constants/items.ts';
 
 export interface ForestSliceCreator {
-    chopByVillager: (elapsed: number) => number;
+    chopByVillager: (elapsed: number, item: Item) => void;
     chopClick: () => number;
     chopClickProgress: number;
-    chopCurrentSpeed: number;
     chopProgress: number;
     choppingVillagers: number;
 }
@@ -20,7 +19,7 @@ export const createTreeSlice: StateCreator<
     [],
     ForestSliceCreator
 > = (set, get) => ({
-    chopByVillager: (elapsed: number) => {
+    chopByVillager: (elapsed: number, item: Item) => {
         let newProgress = 0;
         let nbChopped = 0;
         let availableVillagers = 0;
@@ -119,14 +118,18 @@ export const createTreeSlice: StateCreator<
             const chopSpeedThisTick =
                 (totalProgress - initialProgress) / 100 / (elapsed / 1000);
 
+            newInventory[item.name] = {
+                item,
+                size: (newInventory[item.name]?.size ?? 0) + nbChopped,
+                durability: item.durability,
+                perSecond: chopSpeedThisTick,
+            };
+
             return {
-                chopCurrentSpeed: chopSpeedThisTick,
                 chopProgress: newProgress,
                 inventory: newInventory,
             };
         });
-
-        return nbChopped;
     },
     chopClick: () => {
         let newProgress = 0;
@@ -186,7 +189,6 @@ export const createTreeSlice: StateCreator<
         return nbChopped;
     },
     chopClickProgress: ChopConstants.BASE_CHOP_CLICK_PROGRESS,
-    chopCurrentSpeed: 0,
     chopProgress: 0,
     choppingVillagers: 1,
 });
