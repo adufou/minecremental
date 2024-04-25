@@ -4,6 +4,7 @@ import { Separator } from '@/components/ui/separator.tsx';
 import { Button } from '@/components/ui/button.tsx';
 import ItemRecipe from '@/types/item-recipe.ts';
 import { useBoundStore } from '@/store/store.ts';
+import { Item } from '@/constants/items.ts';
 
 function CraftItem(props: { itemRecipe: ItemRecipe }) {
     const boundStore = useBoundStore();
@@ -39,34 +40,59 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
         // Then compute the maximum number of items we can craft
         // And then craft the maximum number of items, instead of crafting one by one in a loop
 
-        let canCraft = true;
-        while (canCraft) {
-            for (const recipeItem of props.itemRecipe.ingredients) {
-                if (
-                    !boundStore.hasEnoughOfItemInInventory(
-                        recipeItem.item,
-                        recipeItem.quantity,
-                    )
-                ) {
-                    canCraft = false;
-                    break;
-                }
+        const ingredients: {
+            item: Item;
+            recipeQuantity: number;
+            inventoryQuantity: number;
+        }[] = [];
+
+        for (const recipeItem of props.itemRecipe.ingredients) {
+            const itemInInventory = boundStore.inventory[recipeItem.item.name];
+
+            // If we don't have enough of the item in the inventory, we can't craft
+            if (itemInInventory === undefined || itemInInventory.size === 0) {
+                return;
             }
 
-            if (canCraft) {
-                for (const recipeItem of props.itemRecipe.ingredients) {
-                    boundStore.removeItemFromPlayerInventory({
-                        item: recipeItem.item,
-                        quantity: recipeItem.quantity,
-                    });
-                }
-
-                boundStore.addItemToPlayerInventory({
-                    item: props.itemRecipe.item,
-                    quantity: props.itemRecipe.quantity,
-                });
-            }
+            ingredients.push({
+                item: itemInInventory.item,
+                recipeQuantity: recipeItem.quantity,
+                inventoryQuantity: itemInInventory.size,
+            });
         }
+
+        const nbCraftableItems = Math.min(
+            ...ingredients.map((i) => {
+                console.log({
+                    item: i.item.name,
+                    inventoryQuantity: i.inventoryQuantity,
+                    recipeQuantity: i.recipeQuantity,
+                });
+                console.log(
+                    i.item.name,
+                    Math.floor(i.inventoryQuantity / i.recipeQuantity),
+                );
+                return Math.floor(i.inventoryQuantity / i.recipeQuantity);
+            }),
+        );
+
+        console.log({ nbCraftableItems });
+
+        if (nbCraftableItems === 0) {
+            return;
+        }
+
+        for (const ingredient of ingredients) {
+            boundStore.removeItemFromPlayerInventory({
+                item: ingredient.item,
+                quantity: ingredient.recipeQuantity * nbCraftableItems,
+            });
+        }
+
+        boundStore.addItemToPlayerInventory({
+            item: props.itemRecipe.item,
+            quantity: props.itemRecipe.quantity * nbCraftableItems,
+        });
     };
 
     return (

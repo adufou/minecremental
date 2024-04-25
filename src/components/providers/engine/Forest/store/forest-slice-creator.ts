@@ -89,17 +89,6 @@ export const createTreeSlice: StateCreator<
 
                     availableVillagers -= usableVillagers;
 
-                    console.log(
-                        `Chop: ${nbChopped}, Progress: ${totalProgress}, Durability: ${newTotalDurability}, Durability usage: ${durabilityUsage}`,
-                    );
-
-                    console.log(newTotalDurability % value.item.durability);
-
-                    console.log(
-                        newTotalDurability,
-                        newTotalDurability / value.item.durability,
-                    );
-
                     // Update the stack
                     if (newTotalDurability <= 0) {
                         newInventory[key] = {

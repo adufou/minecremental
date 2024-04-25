@@ -17,3 +17,11 @@ export const display = (
 
     return '';
 };
+
+export const gcd = (...numbers: number[]): number => {
+    const _gcd = (a: number, b: number): number => {
+        return b === 0 ? a : _gcd(b, a % b);
+    };
+
+    return numbers.reduce((acc, val) => _gcd(acc, val));
+};
