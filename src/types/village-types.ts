@@ -26,6 +26,7 @@ export type BuildingRecipe = {
 export type VillageBuilding = {
     building: Building;
     quantity: number;
+    perSecond?: number;
 };
 
 export type Village = Partial<Record<keyof BuildingsType, VillageBuilding>>;

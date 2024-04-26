@@ -51,7 +51,6 @@ export const createInventorySlice: StateCreator<
     removeItemFromPlayerInventory: (payload) => {
         set((state): { inventory: Inventory } => {
             const newInventoryStack = state.inventory;
-
             const itemInInventory = state.inventory[payload.item.name];
 
             if (itemInInventory) {
