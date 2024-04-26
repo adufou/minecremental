@@ -12,6 +12,7 @@
         "prettier-fix": "prettier . --write",
         "preview": "vite preview",
         "test": "jest",
+        "type-check": "tsc --noEmit",
         "prepare": "husky install",
         "predeploy": "npm run build",
         "deploy": "gh-pages -d dist"
