@@ -12,16 +12,14 @@ function BuildingCell(props: { building: VillageBuilding }) {
 
     return (
         <Card className='flex justify-between h-16 w-full overflow-clip relative gap-1 p-2'>
-            <div className='flex flex-auto flex-row justify-between'>
-                <div className='flex flex-col justify-between items-end h-full'>
-                    <span className='text-sm text-stone-50'>
-                        {props.building.building.displayName}
-                    </span>
-                    <span className='text-sm text-stone-500'>
-                        {display(props.building.quantity)}
-                    </span>
-                    <span className='text-xs text-stone-500'>{perSecond}</span>
-                </div>
+            <div className='flex flex-row justify-between items-center w-full h-full'>
+                <span className='text-lg text-stone-50'>
+                    {props.building.building.displayName}
+                </span>
+                <span className='text-sm text-stone-500'>
+                    {display(props.building.quantity)}
+                </span>
+                <span className='text-xs text-stone-500'>{perSecond}</span>
             </div>
         </Card>
     );
