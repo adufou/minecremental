@@ -5,7 +5,7 @@ on:
 
 jobs:
     lint-check:
-        name: "Lint Check"
+        name: "Run lint check"
         runs-on: ubuntu-latest
 
         steps:

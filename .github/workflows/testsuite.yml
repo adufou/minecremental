@@ -5,7 +5,7 @@ on:
 
 jobs:
     testsuite:
-        name: "Run Testsuite"
+        name: "Run testsuite"
         runs-on: ubuntu-latest
 
         steps:
