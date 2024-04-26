@@ -1,9 +1,9 @@
-import { StateCreator } from 'zustand';
 import { ChopConstants } from '@/components/providers/engine/Forest/const.ts';
+import { Item, ItemsType } from '@/constants/items.ts';
+import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
 import { useBoundStore } from '@/store/store.ts';
 import ItemTypes from '@/types/item-types.ts';
-import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
-import { Item, ItemsType } from '@/constants/items.ts';
+import { StateCreator } from 'zustand';
 
 export interface ForestSliceCreator {
     chopByVillager: (elapsed: number, item: Item) => void;

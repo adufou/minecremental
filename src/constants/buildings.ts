@@ -1,4 +1,4 @@
-import { BuildingTypes, BuildingsType } from '@/types/village-types.ts';
+import { BuildingsType, BuildingTypes } from '@/types/village-types.ts';
 
 const Buildings: BuildingsType = {
     OAK_HOUSE: {

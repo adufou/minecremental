@@ -1,8 +1,8 @@
-import { BuildingRecipe } from '@/types/village-types.ts';
-import { Card } from '@/components/ui/card.tsx';
-import { getImageOfItem } from '@/lib/image.utils.ts';
-import { Separator } from '@/components/ui/separator.tsx';
 import { Button } from '@/components/ui/button.tsx';
+import { Card } from '@/components/ui/card.tsx';
+import { Separator } from '@/components/ui/separator.tsx';
+import { getImageOfItem } from '@/lib/image.utils.ts';
+import { BuildingRecipe } from '@/types/village-types.ts';
 
 function CraftBuilding(props: { buildingRecipe: BuildingRecipe }) {
     return (

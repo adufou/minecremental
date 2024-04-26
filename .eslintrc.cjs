@@ -12,9 +12,28 @@ module.exports = {
     ],
     ignorePatterns: ['dist', '.eslintrc.cjs'],
     parser: '@typescript-eslint/parser',
-    plugins: [],
+    plugins: ['import'],
     rules: {
         'react-hooks/exhaustive-deps': 'off',
         "curly": "error",
+        'import/order': [
+            'error',
+            {
+                groups: ['builtin', 'unknown', 'external'],
+                alphabetize: {
+                    order: 'asc',
+                    caseInsensitive: true,
+                },
+            },
+        ],
+        'sort-imports': [
+            'error',
+            {
+                ignoreCase: true,
+                ignoreDeclarationSort: true,
+                ignoreMemberSort: false,
+                memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+            },
+        ],
     },
 };

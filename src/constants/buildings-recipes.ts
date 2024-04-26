@@ -1,6 +1,6 @@
-import { BuildingRecipe } from '@/types/village-types.ts';
-import { Items } from '@/constants/items.ts';
 import Buildings from '@/constants/buildings.ts';
+import { Items } from '@/constants/items.ts';
+import { BuildingRecipe } from '@/types/village-types.ts';
 
 const BuildingsRecipes: { [building: string]: BuildingRecipe } = {
     OAK_HOUSE: {

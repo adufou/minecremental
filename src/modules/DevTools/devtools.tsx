@@ -1,10 +1,10 @@
+import { useTick } from '@/components/providers/tick-provider.tsx';
+import { Button } from '@/components/ui/button.tsx';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover.tsx';
-import { Button } from '@/components/ui/button.tsx';
-import { useTick } from '@/components/providers/tick-provider.tsx';
 import { useMemo, useState } from 'react';
 
 function Devtools() {
