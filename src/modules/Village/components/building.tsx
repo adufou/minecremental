@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator.tsx';
 import { getImageOfItem } from '@/lib/image.utils.ts';
 import { BuildingRecipe } from '@/types/village-types.ts';
 
-function CraftBuilding(props: { buildingRecipe: BuildingRecipe }) {
+function Building(props: { buildingRecipe: BuildingRecipe }) {
     return (
         <Card className='flex flex-col items-center gap-2 p-2'>
             <div className='align-middle'>
@@ -54,4 +54,4 @@ function CraftBuilding(props: { buildingRecipe: BuildingRecipe }) {
     );
 }
 
-export default CraftBuilding;
+export default Building;
