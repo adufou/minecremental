@@ -1,0 +1,16 @@
+name: 'Lint check'
+
+on:
+    pull_request:
+
+jobs:
+    lint-check:
+        name: "Lint check"
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout the code
+              uses: actions/checkout@v3
+
+            - name: Run the check
+              run: npm run lint

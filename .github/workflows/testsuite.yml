@@ -1,0 +1,16 @@
+name: 'Testsuite'
+
+on:
+    pull_request:
+
+jobs:
+    testsuite:
+        name: "Run testsuite"
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout the code
+              uses: actions/checkout@v3
+
+            - name: Run the check
+              run: npm run test
