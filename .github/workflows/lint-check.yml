@@ -1,16 +1,19 @@
-name: 'Lint check'
+name: 'Lint Check'
 
 on:
     pull_request:
 
 jobs:
     lint-check:
-        name: "Lint check"
+        name: "Lint Check"
         runs-on: ubuntu-latest
 
         steps:
             - name: Checkout the code
               uses: actions/checkout@v3
+
+            - name: JS Setup
+              uses: ./.github/actions/js-setup
 
             - name: Run the check
               run: npm run lint

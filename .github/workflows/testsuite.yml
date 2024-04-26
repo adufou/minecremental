@@ -5,12 +5,15 @@ on:
 
 jobs:
     testsuite:
-        name: "Run testsuite"
+        name: "Run Testsuite"
         runs-on: ubuntu-latest
 
         steps:
             - name: Checkout the code
               uses: actions/checkout@v3
+
+            - name: JS Setup
+              uses: ./.github/actions/js-setup
 
             - name: Run the check
               run: npm run test
