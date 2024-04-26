@@ -1,8 +1,8 @@
 import { Card } from '@/components/ui/card.tsx';
+import Craft from '@/modules/Craft/craft.tsx';
 import Forest from '@/modules/Forest/forest.tsx';
 import Sections from '@/modules/MainLayout/constants/sections.ts';
 import Village from '@/modules/Village/village.tsx';
-import Craft from '@/modules/Craft/craft.tsx';
 
 type MainCardProps = {
     section: Sections;

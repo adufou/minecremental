@@ -1,6 +1,6 @@
-import { StateCreator } from 'zustand';
-import { Inventory } from '@/modules/Inventory/models/inventory-types.ts';
 import { Item } from '@/constants/items.ts';
+import { Inventory } from '@/modules/Inventory/models/inventory-types.ts';
+import { StateCreator } from 'zustand';
 
 export interface InventorySliceCreator {
     addItemToPlayerInventory: (payload: {

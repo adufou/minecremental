@@ -1,8 +1,8 @@
 import { Card } from '@/components/ui/card';
 import { getImageOfItem } from '@/lib/image.utils.ts';
+import { display } from '@/lib/numbers.ts';
 import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
 import { useMemo } from 'react';
-import { display } from '@/lib/numbers.ts';
 
 function InventoryStack(props: { stack: ItemStack }) {
     // Memos

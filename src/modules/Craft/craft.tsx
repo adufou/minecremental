@@ -1,6 +1,6 @@
-import CraftItem from '@/modules/Craft/components/craft-item.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
 import ItemsRecipes from '@/constants/items-recipes.ts';
+import CraftItem from '@/modules/Craft/components/craft-item.tsx';
 
 function Craft() {
     return (

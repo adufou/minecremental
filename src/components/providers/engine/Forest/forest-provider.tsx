@@ -1,7 +1,7 @@
-import { createContext, useContext } from 'react';
 import { useTick } from '@/components/providers/tick-provider.tsx';
-import { useBoundStore } from '@/store/store.ts';
 import { Items } from '@/constants/items.ts';
+import { useBoundStore } from '@/store/store.ts';
+import { createContext, useContext } from 'react';
 
 type TreeProviderProps = {
     children: React.ReactNode;

@@ -1,5 +1,5 @@
-import ItemRecipe from '@/types/item-recipe.ts';
 import { Items } from '@/constants/items.ts';
+import ItemRecipe from '@/types/item-recipe.ts';
 
 const ItemsRecipes: { [item: string]: ItemRecipe } = {
     OAK_PLANKS: {

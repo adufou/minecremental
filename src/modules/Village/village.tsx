@@ -1,8 +1,8 @@
-import { useBoundStore } from '@/store/store.ts';
-import { Slider } from '@/components/ui/slider.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
-import CraftBuild from '@/modules/Village/components/craft-build.tsx';
+import { Slider } from '@/components/ui/slider.tsx';
 import BuildingsRecipes from '@/constants/buildings-recipes.ts';
+import CraftBuild from '@/modules/Village/components/craft-build.tsx';
+import { useBoundStore } from '@/store/store.ts';
 
 function Village() {
     const boundStore = useBoundStore();

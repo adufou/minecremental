@@ -1,3 +1,4 @@
+import { TickFunction } from '@/types/tick-function.ts';
 import {
     createContext,
     useCallback,
@@ -5,7 +6,6 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { TickFunction } from '@/types/tick-function.ts';
 
 // Create a context to hold the game state and the pool of tick functions
 type TickProviderProps = {

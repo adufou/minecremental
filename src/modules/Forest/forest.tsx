@@ -1,5 +1,5 @@
-import Chop from '@/modules/Forest/components/chop.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
+import Chop from '@/modules/Forest/components/chop.tsx';
 
 function Forest() {
     return (

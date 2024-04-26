@@ -1,6 +1,6 @@
 import { Card } from '@/components/ui/card.tsx';
-import { useBoundStore } from '@/store/store.ts';
 import InventoryStack from '@/modules/Inventory/components/inventory-stack.tsx';
+import { useBoundStore } from '@/store/store.ts';
 
 function PlayerInventory() {
     const boundStore = useBoundStore();

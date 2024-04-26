@@ -1,7 +1,7 @@
-import { useBoundStore } from '@/store/store.ts';
+import ProgressButton from '@/components/ui/progress-button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
 import { Items } from '@/constants/items.ts';
-import ProgressButton from '@/components/ui/progress-button.tsx';
+import { useBoundStore } from '@/store/store.ts';
 
 function Chop() {
     const boundStore = useBoundStore();

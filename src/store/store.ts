@@ -1,8 +1,3 @@
-import { create } from 'zustand';
-import {
-    createInventorySlice,
-    InventorySliceCreator,
-} from '@/modules/Inventory/store/inventory-slice-creator.ts';
 import {
     createTreeSlice,
     ForestSliceCreator,
@@ -11,6 +6,11 @@ import {
     createVillageSlice,
     VillageSliceCreator,
 } from '@/components/providers/engine/Village/store/village-slice-creator.ts';
+import {
+    createInventorySlice,
+    InventorySliceCreator,
+} from '@/modules/Inventory/store/inventory-slice-creator.ts';
+import { create } from 'zustand';
 
 export type State = ForestSliceCreator &
     InventorySliceCreator &
