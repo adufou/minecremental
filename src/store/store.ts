@@ -7,6 +7,10 @@ import {
     InventorySliceCreator,
 } from '@/modules/Inventory/store/inventory-slice-creator.ts';
 import {
+    createMineSlice,
+    MineSliceCreator,
+} from '@/modules/Mine/store/mine-slice-creator.ts';
+import {
     createVillageSlice,
     VillageSliceCreator,
 } from '@/modules/Village/store/village-slice-creator.ts';
@@ -14,7 +18,8 @@ import { create } from 'zustand';
 
 export type State = ForestSliceCreator &
     InventorySliceCreator &
-    VillageSliceCreator;
+    VillageSliceCreator &
+    MineSliceCreator;
 
 export const useBoundStore = create<State>()((...a) => ({
     // --- Engine ---
@@ -24,4 +29,6 @@ export const useBoundStore = create<State>()((...a) => ({
     ...createInventorySlice(...a),
     // Village
     ...createVillageSlice(...a),
+    // Mine
+    ...createMineSlice(...a),
 }));

@@ -7,7 +7,7 @@ function Chop() {
     const boundStore = useBoundStore();
 
     const chopTree = () => {
-        const nbChopped = boundStore.chopClick();
+        const nbChopped = boundStore.chopByClick();
 
         if (nbChopped) {
             boundStore.addItemToPlayerInventory({
