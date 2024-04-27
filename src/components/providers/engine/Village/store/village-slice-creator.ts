@@ -6,10 +6,6 @@ export interface VillageSliceCreator {
         building: Building;
         quantity: number;
     }) => void;
-    removeBuildingFromVillage: (payload: {
-        building: Building;
-        quantity: number;
-    }) => void;
     village: Village;
     villagers: number;
 }
@@ -21,7 +17,7 @@ export const createVillageSlice: StateCreator<
     VillageSliceCreator
 > = (set) => ({
     addBuildingToVillage: (payload) => {
-        set((state): { village: Village } => {
+        set((state): { village: Village; villagers: number } => {
             const newVillage = state.village;
             const buildingInVillage = state.village[payload.building.name];
 
@@ -36,20 +32,7 @@ export const createVillageSlice: StateCreator<
 
             return {
                 village: newVillage,
-            };
-        });
-    },
-    removeBuildingFromVillage: (payload) => {
-        set((state): { village: Village } => {
-            const newVillage = state.village;
-            const buildingInVillage = state.village[payload.building.name];
-
-            if (buildingInVillage) {
-                buildingInVillage.quantity -= payload.quantity;
-            }
-
-            return {
-                village: newVillage,
+                villagers: state.villagers + payload.quantity,
             };
         });
     },
