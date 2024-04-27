@@ -58,20 +58,9 @@ function CraftItem(props: { itemRecipe: ItemRecipe }) {
 
         const nbCraftableItems = Math.min(
             ...ingredients.map((i) => {
-                console.log({
-                    item: i.item.name,
-                    inventoryQuantity: i.inventoryQuantity,
-                    recipeQuantity: i.recipeQuantity,
-                });
-                console.log(
-                    i.item.name,
-                    Math.floor(i.inventoryQuantity / i.recipeQuantity),
-                );
                 return Math.floor(i.inventoryQuantity / i.recipeQuantity);
             }),
         );
-
-        console.log({ nbCraftableItems });
 
         if (nbCraftableItems === 0) {
             return;

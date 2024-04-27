@@ -16,15 +16,15 @@ function Sidebar({ ...props }: SidebarProps) {
             </Button>
             <Button
                 className='w-full'
-                onClick={() => props.setSection(Sections.VILLAGE)}
-            >
-                Village
-            </Button>
-            <Button
-                className='w-full'
                 onClick={() => props.setSection(Sections.CRAFT)}
             >
                 Craft
+            </Button>
+            <Button
+                className='w-full'
+                onClick={() => props.setSection(Sections.VILLAGE)}
+            >
+                Village
             </Button>
         </div>
     );

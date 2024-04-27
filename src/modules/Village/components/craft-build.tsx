@@ -1,10 +1,84 @@
 import { Button } from '@/components/ui/button.tsx';
 import { Card } from '@/components/ui/card.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
+import { Item } from '@/constants/items.ts';
 import { getImageOfItem } from '@/lib/image.utils.ts';
+import { useBoundStore } from '@/store/store.ts';
 import { BuildingRecipe } from '@/types/village-types.ts';
 
-function CraftBuilding(props: { buildingRecipe: BuildingRecipe }) {
+function CraftBuild(props: { buildingRecipe: BuildingRecipe }) {
+    const boundStore = useBoundStore();
+
+    const craftBuilding = () => {
+        for (const recipeItem of props.buildingRecipe.ingredients) {
+            if (
+                !boundStore.hasEnoughOfItemInInventory(
+                    recipeItem.item,
+                    recipeItem.quantity,
+                )
+            ) {
+                return false;
+            }
+        }
+
+        for (const recipeItem of props.buildingRecipe.ingredients) {
+            boundStore.removeItemFromPlayerInventory({
+                item: recipeItem.item,
+                quantity: recipeItem.quantity,
+            });
+        }
+
+        boundStore.addBuildingToVillage({
+            building: props.buildingRecipe.building,
+            quantity: props.buildingRecipe.quantity,
+        });
+    };
+
+    const craftAllItems = () => {
+        const ingredients: {
+            item: Item;
+            recipeQuantity: number;
+            inventoryQuantity: number;
+        }[] = [];
+
+        for (const recipeItem of props.buildingRecipe.ingredients) {
+            const itemInInventory = boundStore.inventory[recipeItem.item.name];
+
+            // If we don't have enough of the item in the inventory, we can't craft
+            if (itemInInventory === undefined || itemInInventory.size === 0) {
+                return;
+            }
+
+            ingredients.push({
+                item: itemInInventory.item,
+                recipeQuantity: recipeItem.quantity,
+                inventoryQuantity: itemInInventory.size,
+            });
+        }
+
+        const nbCraftableItems = Math.min(
+            ...ingredients.map((i) => {
+                return Math.floor(i.inventoryQuantity / i.recipeQuantity);
+            }),
+        );
+
+        if (nbCraftableItems === 0) {
+            return;
+        }
+
+        for (const ingredient of ingredients) {
+            boundStore.removeItemFromPlayerInventory({
+                item: ingredient.item,
+                quantity: ingredient.recipeQuantity * nbCraftableItems,
+            });
+        }
+
+        boundStore.addBuildingToVillage({
+            building: props.buildingRecipe.building,
+            quantity: props.buildingRecipe.quantity * nbCraftableItems,
+        });
+    };
+
     return (
         <Card className='flex flex-col items-center gap-2 p-2'>
             <div className='align-middle'>
@@ -39,13 +113,13 @@ function CraftBuilding(props: { buildingRecipe: BuildingRecipe }) {
             <div className='flex flex-row gap-2'>
                 <Button
                     className='h-8'
-                    onClick={undefined}
+                    onClick={craftBuilding}
                 >
                     Craft
                 </Button>
                 <Button
                     className='h-8'
-                    onClick={undefined}
+                    onClick={craftAllItems}
                 >
                     Craft All
                 </Button>
@@ -54,4 +128,4 @@ function CraftBuilding(props: { buildingRecipe: BuildingRecipe }) {
     );
 }
 
-export default CraftBuilding;
+export default CraftBuild;

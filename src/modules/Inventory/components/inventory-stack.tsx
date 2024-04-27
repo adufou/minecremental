@@ -35,7 +35,7 @@ function InventoryStack(props: { stack: ItemStack }) {
 
     const perSecond = useMemo(() => {
         return props.stack.perSecond
-            ? `${display(props.stack.perSecond)} /s`
+            ? `(${display(props.stack.perSecond)} /s)`
             : '';
     }, [props.stack.perSecond]);
 
@@ -54,7 +54,7 @@ function InventoryStack(props: { stack: ItemStack }) {
 
     return (
         <Card className='flex justify-between h-16 w-full overflow-clip relative gap-1 p-2'>
-            <div className='relative w-12 h-12'>
+            <div className='relative w-12 h-12 flex-shrink-0'>
                 <img
                     className='h-full w-full'
                     src={getImageOfItem(props.stack.item)}
@@ -69,22 +69,30 @@ function InventoryStack(props: { stack: ItemStack }) {
                 </div>
             </div>
 
-            <div className='flex flex-auto flex-row justify-between'>
-                <div className='flex flex-col justify-between h-full'>
-                    <span className='text-sm text-stone-50'>Durability</span>
-                    <span className='text-sm text-stone-500'>
-                        {durabilityDisplayedValue(props.stack)}
-                    </span>
-                </div>
-
-                <div className='flex flex-col justify-between items-end h-full'>
+            <div className='flex flex-col justify-between w-full h-full'>
+                <div className='flex flex-row justify-between'>
                     <span className='text-sm text-stone-50'>
                         {props.stack.item.displayName}
                     </span>
-                    <span className='text-sm text-stone-500'>
-                        {display(props.stack.size)}
+                    <div className='flex gap-1 items-baseline'>
+                        <span className='text-sm text-stone-500'>
+                            {display(props.stack.size)}
+                        </span>
+                        <span className='text-xs text-stone-500'>
+                            {perSecond}
+                        </span>
+                    </div>
+                </div>
+
+                <div className='flex flex-row justify-between'>
+                    <span className='text-sm text-stone-50'>
+                        {props.stack.durability !== undefined
+                            ? 'Durability'
+                            : ''}
                     </span>
-                    <span className='text-xs text-stone-500'>{perSecond}</span>
+                    <span className='text-sm text-stone-500'>
+                        {durabilityDisplayedValue(props.stack)}
+                    </span>
                 </div>
             </div>
         </Card>
