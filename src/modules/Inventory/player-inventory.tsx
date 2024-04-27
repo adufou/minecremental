@@ -31,7 +31,7 @@ function PlayerInventory() {
     };
 
     return (
-        <div className='flex flex-0 w-64 m-2 ml-0'>
+        <div className='flex flex-shrink-0 w-64 m-2 ml-0'>
             <Card className='h-full w-full'>
                 <div className='flex flex-col p-2 gap-1'>
                     <Accordion
