@@ -1,5 +1,6 @@
 enum ItemTypes {
     AXE,
+    PICKAXE,
     BLOCK,
     INGREDIENT,
 }
