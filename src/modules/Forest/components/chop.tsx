@@ -7,14 +7,7 @@ function Chop() {
     const boundStore = useBoundStore();
 
     const chopTree = () => {
-        const nbChopped = boundStore.chopByClick();
-
-        if (nbChopped) {
-            boundStore.addItemToPlayerInventory({
-                item: Items.OAK_LOG,
-                quantity: nbChopped,
-            });
-        }
+        boundStore.chopByClick(Items.OAK_LOG);
     };
 
     return (

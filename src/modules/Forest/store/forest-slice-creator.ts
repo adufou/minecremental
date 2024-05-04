@@ -7,7 +7,7 @@ import { StateCreator } from 'zustand';
 
 export interface ForestSliceCreator {
     chopByVillager: (elapsed: number, item: Item) => void;
-    chopByClick: () => number;
+    chopByClick: (item: Item) => void;
     chopClickProgress: number;
     chopProgress: number;
     choppingVillagers: number;
@@ -129,7 +129,7 @@ export const createTreeSlice: StateCreator<
             };
         });
     },
-    chopByClick: () => {
+    chopByClick: (item: Item) => {
         let newProgress = 0;
         let nbChopped = 0;
         let multiplier = 1;
@@ -181,10 +181,15 @@ export const createTreeSlice: StateCreator<
             nbChopped = Math.floor(totalProgress / 100);
             newProgress = totalProgress % 100;
 
-            return { chopProgress: newProgress };
-        });
+            const newInventory = useBoundStore.getState().inventory;
 
-        return nbChopped;
+            newInventory[item.name] = {
+                item,
+                size: (newInventory[item.name]?.size ?? 0) + nbChopped,
+            };
+
+            return { chopProgress: newProgress, inventory: newInventory };
+        });
     },
     chopClickProgress: ChopConstants.BASE_CHOP_CLICK_PROGRESS,
     chopProgress: 0,
