@@ -187,6 +187,7 @@ export const createMineSlice: StateCreator<
 
             const newInventory = useBoundStore.getState().inventory;
 
+            // TODO: Here we should return the list of items mined based on nbMined and a distribution based on the depth
             newInventory[Items.STONE.name] = {
                 item: Items.STONE,
                 size: (newInventory[Items.STONE.name]?.size ?? 0) + nbMined,
