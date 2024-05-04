@@ -1,5 +1,5 @@
 import { MineConstants } from '@/components/providers/engine/Mine/const.ts';
-import { ItemsType } from '@/constants/items.ts';
+import { Items, ItemsType } from '@/constants/items.ts';
 import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
 import { useBoundStore } from '@/store/store.ts';
 import ItemTypes from '@/types/item-types.ts';
@@ -23,8 +23,8 @@ export const createMineSlice: StateCreator<
 > = (set, get) => ({
     mineByVillager: (elapsed: number, depth: number) => {
         console.log(elapsed, depth);
-        const newProgress = 0;
-        const nbMined = 0;
+        let newProgress = 0;
+        let nbMined = 0;
         let availableVillagers = 0;
         const initialProgress = get().mineProgress;
         let totalProgress = initialProgress;
@@ -116,9 +116,20 @@ export const createMineSlice: StateCreator<
             newProgress = totalProgress % 100;
 
             // Can we really use this ? Works only when there is a single item.
-            const mineSpeedThisTick = (totalProgress - initialProgress) / 100 / (elapsed / 1000);
+            const mineSpeedThisTick =
+                (totalProgress - initialProgress) / 100 / (elapsed / 1000);
 
-            // Here we should return the list of items mined based on nbMined and a distribution based on the depth
+            // TODO: Here we should return the list of items mined based on nbMined and a distribution based on the depth
+            newInventory[Items.STONE.name] = {
+                item: Items.STONE,
+                size: (newInventory[Items.STONE.name]?.size ?? 0) + nbMined,
+                perSecond: mineSpeedThisTick,
+            };
+
+            return {
+                mineProgress: newProgress,
+                inventory: newInventory,
+            };
         });
     },
     mineByClick: (depth: number) => {
