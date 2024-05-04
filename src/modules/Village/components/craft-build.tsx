@@ -2,9 +2,9 @@ import { Button } from '@/components/ui/button.tsx';
 import { Card } from '@/components/ui/card.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
 import { Item } from '@/constants/items.ts';
-import { getImageOfItem } from '@/lib/image.utils.ts';
 import { useBoundStore } from '@/store/store.ts';
 import { BuildingRecipe } from '@/types/village-types.ts';
+import { getImageOfItem } from '@/utils/image.utils.ts';
 
 function CraftBuild(props: { buildingRecipe: BuildingRecipe }) {
     const boundStore = useBoundStore();

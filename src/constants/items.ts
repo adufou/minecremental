@@ -13,6 +13,7 @@ export type ItemsType = {
     DIAMOND_AXE: Item;
     GLASS: Item;
     IRON_AXE: Item;
+    IRON_ORE: Item;
     OAK_FENCE: Item;
     OAK_LOG: Item;
     OAK_PLANKS: Item;
@@ -48,6 +49,11 @@ const Items: ItemsType = {
         name: 'IRON_AXE',
         multiplier: 8,
         type: ItemTypes.AXE,
+    },
+    IRON_ORE: {
+        displayName: 'Iron Ore',
+        name: 'IRON_ORE',
+        type: ItemTypes.BLOCK,
     },
     OAK_FENCE: {
         displayName: 'Oak Fence',
