@@ -5,13 +5,17 @@ import { useBoundStore } from '@/store/store.ts';
 function MineDepth(props: { depth: number }) {
     const boundStore = useBoundStore();
 
+    const mineAtDepth = () => {
+        boundStore.mineByClick(props.depth);
+    };
+
     return (
         <div className='flex flex-col gap-2'>
             <div className='flex flex-row gap-2 h-11'>
                 <span>Depth: {props.depth}</span>
                 <Separator orientation='vertical' />
                 <ProgressButton
-                    onClick={undefined}
+                    onClick={mineAtDepth}
                     progress={boundStore.mineProgress}
                 >
                     Mine

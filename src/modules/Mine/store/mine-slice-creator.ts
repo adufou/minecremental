@@ -21,8 +21,8 @@ export const createMineSlice: StateCreator<
     [],
     MineSliceCreator
 > = (set, get) => ({
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mineByVillager: (elapsed: number, depth: number) => {
-        console.log(elapsed, depth);
         let newProgress = 0;
         let nbMined = 0;
         let availableVillagers = 0;
@@ -132,10 +132,70 @@ export const createMineSlice: StateCreator<
             };
         });
     },
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mineByClick: (depth: number) => {
-        console.log(depth);
+        let newProgress = 0;
+        let nbMined = 0;
+        let multiplier = 1;
+        let hasMined = false;
+
+        const newInventory = useBoundStore.getState().inventory;
+
+        for (const [key, value] of Object.entries(newInventory) as Array<
+            [keyof ItemsType, ItemStack]
+        >) {
+            // To chop only with the first axe found
+            if (hasMined) {
+                break;
+            }
+
+            if (
+                value.item.type === ItemTypes.PICKAXE &&
+                value.size > 0 &&
+                value.item.durability &&
+                value.item.durability > 0 &&
+                value.durability
+            ) {
+                hasMined = true;
+                multiplier = value.item.multiplier ?? 1;
+
+                const durability = value.durability - 1;
+
+                // Update the stack
+                if (durability <= 0) {
+                    newInventory[key] = {
+                        ...value,
+                        durability: value.item.durability,
+                        size: Math.min(value.size - 1, 0),
+                    };
+                } else {
+                    newInventory[key] = {
+                        ...value,
+                        durability,
+                        size: value.size,
+                    };
+                }
+            }
+        }
+
+        set((state) => {
+            const totalProgress =
+                state.mineProgress + state.mineClickProgress * multiplier;
+
+            nbMined = Math.floor(totalProgress / 100);
+            newProgress = totalProgress % 100;
+
+            const newInventory = useBoundStore.getState().inventory;
+
+            newInventory[Items.STONE.name] = {
+                item: Items.STONE,
+                size: (newInventory[Items.STONE.name]?.size ?? 0) + nbMined,
+            };
+
+            return { mineProgress: newProgress, inventory: newInventory };
+        });
     },
-    mineClickProgress: 0,
+    mineClickProgress: MineConstants.BASE_MINE_CLICK_PROGRESS,
     mineProgress: 0,
     miningVillagers: 0,
 });
