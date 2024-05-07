@@ -22,7 +22,6 @@ export const createMineSlice: StateCreator<
     [],
     MineSliceCreator
 > = (set, get) => ({
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mineByVillager: (elapsed: number, depth: number) => {
         let newProgress = 0;
         let nbMined = 0;
@@ -137,7 +136,6 @@ export const createMineSlice: StateCreator<
             };
         });
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     mineByClick: (depth: number) => {
         let newProgress = 0;
         let nbMined = 0;
