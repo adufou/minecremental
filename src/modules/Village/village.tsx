@@ -1,8 +1,8 @@
 import { Separator } from '@/components/ui/separator.tsx';
 import BuildingsRecipes from '@/constants/buildings-recipes.ts';
-import { display } from '@/lib/numbers.ts';
 import CraftBuild from '@/modules/Village/components/craft-build.tsx';
 import { useBoundStore } from '@/store/store.ts';
+import { display } from '@/utils/numbers.ts';
 
 function Village() {
     const boundStore = useBoundStore();

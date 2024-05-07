@@ -1,4 +1,5 @@
 import { ForestProvider } from '@/components/providers/engine/Forest/forest-provider.tsx';
+import { MineProvider } from '@/components/providers/engine/Mine/mine-provider.tsx';
 import { VillageProvider } from '@/components/providers/engine/Village/village-provider.tsx';
 
 type EngineProviderProps = {
@@ -9,7 +10,9 @@ export function EngineProvider({ children }: EngineProviderProps) {
     return (
         <>
             <VillageProvider>
-                <ForestProvider>{children}</ForestProvider>
+                <MineProvider>
+                    <ForestProvider>{children}</ForestProvider>
+                </MineProvider>
             </VillageProvider>
         </>
     );

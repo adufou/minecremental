@@ -13,6 +13,7 @@ export type ItemsType = {
     DIAMOND_AXE: Item;
     GLASS: Item;
     IRON_AXE: Item;
+    IRON_ORE: Item;
     OAK_FENCE: Item;
     OAK_LOG: Item;
     OAK_PLANKS: Item;
@@ -21,9 +22,11 @@ export type ItemsType = {
     STICK: Item;
     STONE: Item;
     STONE_AXE: Item;
+    STONE_PICKAXE: Item;
     WHITE_BED: Item;
     WHITE_WOOL: Item;
     WOODEN_AXE: Item;
+    WOODEN_PICKAXE: Item;
 };
 
 const Items: ItemsType = {
@@ -48,6 +51,11 @@ const Items: ItemsType = {
         name: 'IRON_AXE',
         multiplier: 8,
         type: ItemTypes.AXE,
+    },
+    IRON_ORE: {
+        displayName: 'Iron Ore',
+        name: 'IRON_ORE',
+        type: ItemTypes.BLOCK,
     },
     OAK_FENCE: {
         displayName: 'Oak Fence',
@@ -87,9 +95,17 @@ const Items: ItemsType = {
     },
     STONE_AXE: {
         displayName: 'Stone Axe',
+        durability: 256,
         name: 'STONE_AXE',
         multiplier: 4,
         type: ItemTypes.AXE,
+    },
+    STONE_PICKAXE: {
+        displayName: 'Stone Pickaxe',
+        durability: 256,
+        name: 'STONE_PICKAXE',
+        multiplier: 4,
+        type: ItemTypes.PICKAXE,
     },
     WHITE_BED: {
         displayName: 'White Bed',
@@ -107,6 +123,13 @@ const Items: ItemsType = {
         name: 'WOODEN_AXE',
         multiplier: 2,
         type: ItemTypes.AXE,
+    },
+    WOODEN_PICKAXE: {
+        displayName: 'Wooden Pickaxe',
+        durability: 128,
+        name: 'WOODEN_PICKAXE',
+        multiplier: 2,
+        type: ItemTypes.PICKAXE,
     },
 } as const;
 

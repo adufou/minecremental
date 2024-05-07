@@ -1,31 +1,32 @@
 import ProgressButton from '@/components/ui/progress-button.tsx';
 import { Separator } from '@/components/ui/separator.tsx';
-import { Items } from '@/constants/items.ts';
 import { useBoundStore } from '@/store/store.ts';
 
-function Chop() {
+function MineDepth(props: { depth: number }) {
     const boundStore = useBoundStore();
 
-    const chopTree = () => {
-        boundStore.chopByClick(Items.OAK_LOG);
+    const mineAtDepth = () => {
+        boundStore.mineByClick(props.depth);
     };
 
     return (
         <div className='flex flex-col gap-2'>
             <div className='flex flex-row gap-2 h-11'>
+                <span>Depth: {props.depth}</span>
+                <Separator orientation='vertical' />
                 <ProgressButton
-                    onClick={chopTree}
-                    progress={boundStore.chopProgress}
+                    onClick={mineAtDepth}
+                    progress={boundStore.mineProgress}
                 >
-                    Chop
+                    Mine
                 </ProgressButton>
                 <Separator orientation='vertical' />
                 <div className='flex flex-col items-end w-24 '>
-                    <p>{boundStore.chopProgress.toFixed(2)}%</p>
+                    <p>{boundStore.mineProgress.toFixed(2)}%</p>
                 </div>
             </div>
         </div>
     );
 }
 
-export default Chop;
+export default MineDepth;

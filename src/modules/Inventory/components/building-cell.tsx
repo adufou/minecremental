@@ -1,6 +1,6 @@
 import { Card } from '@/components/ui/card.tsx';
-import { display } from '@/lib/numbers.ts';
 import { VillageBuilding } from '@/types/village-types.ts';
+import { display } from '@/utils/numbers.ts';
 import { useMemo } from 'react';
 
 function BuildingCell(props: { building: VillageBuilding }) {

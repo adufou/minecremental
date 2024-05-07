@@ -1,4 +1,4 @@
-import { displayTime } from '@/lib/time.ts';
+import { displayTime } from '@/utils/time.ts';
 
 enum TimeUnitsDurationMock {
     MILLISECONDS = 1,

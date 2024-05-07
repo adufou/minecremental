@@ -1,34 +1,37 @@
-import { ChopConstants } from '@/components/providers/engine/Forest/const.ts';
-import { Item, ItemsType } from '@/constants/items.ts';
+import { MineConstants } from '@/components/providers/engine/Mine/const.ts';
+import { Items, ItemsType } from '@/constants/items.ts';
 import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
+import getOresDistributionAtDepth from '@/modules/Mine/utils/ores-distribution.utils.ts';
 import { useBoundStore } from '@/store/store.ts';
 import ItemTypes from '@/types/item-types.ts';
 import { StateCreator } from 'zustand';
 
-export interface ForestSliceCreator {
-    chopByVillager: (elapsed: number, item: Item) => void;
-    chopByClick: (item: Item) => void;
-    chopClickProgress: number;
-    chopProgress: number;
-    choppingVillagers: number;
+export interface MineSliceCreator {
+    mineByVillager: (elapsedTime: number, depth: number) => void;
+    mineByClick: (depth: number) => void;
+    mineClickProgress: number;
+    // TODO: handle mine progress on multiple depths
+    mineProgress: number;
+    // TODO: handle mining villagers by depths
+    miningVillagers: number;
 }
 
-export const createTreeSlice: StateCreator<
-    ForestSliceCreator,
+export const createMineSlice: StateCreator<
+    MineSliceCreator,
     [],
     [],
-    ForestSliceCreator
+    MineSliceCreator
 > = (set, get) => ({
-    chopByVillager: (elapsed: number, item: Item) => {
+    mineByVillager: (elapsed: number, depth: number) => {
         let newProgress = 0;
-        let nbChopped = 0;
+        let nbMined = 0;
         let availableVillagers = 0;
-        const initialProgress = get().chopProgress;
+        const initialProgress = get().mineProgress;
         let totalProgress = initialProgress;
 
         // Progress in ratio
-        const oneVillagerChopBaseProgress =
-            (elapsed / ChopConstants.BASE_CHOP_DURATION_IN_MS) * 100;
+        const oneVillagerMineBaseProgress =
+            (elapsed / MineConstants.BASE_MINE_DURATION_IN_MS) * 100;
 
         set(() => {
             const villagers = useBoundStore.getState().villagers;
@@ -36,7 +39,6 @@ export const createTreeSlice: StateCreator<
 
             availableVillagers = villagers;
 
-            // This loop uses tools first
             for (const [key, value] of Object.entries(newInventory) as Array<
                 [keyof ItemsType, ItemStack]
             >) {
@@ -46,7 +48,7 @@ export const createTreeSlice: StateCreator<
 
                 if (
                     newInventory[key] !== undefined &&
-                    value.item.type === ItemTypes.AXE &&
+                    value.item.type === ItemTypes.PICKAXE &&
                     value.size > 0 &&
                     value.item.durability !== undefined &&
                     value.durability !== undefined
@@ -57,14 +59,14 @@ export const createTreeSlice: StateCreator<
                     );
 
                     // THIS SUPPOSES ALL VILLAGER SHARE AND USE THE SAME TOOL
-                    // If the chop time is 1000ms, the elapsed time is 17ms, and there is 1 villager
+                    // If the mine time is 1000ms, the elapsed time is 17ms, and there is 1 villager
                     // If, by click, using exactly 1 durability, we can progress by 10 (%)
-                    // Then when the oneVillagerChopBaseProgress is 1.7 [(17/1000) * 100], we can progress by 1.7 (%)
+                    // Then when the oneVillagerMineBaseProgress is 1.7 [(17/1000) * 100], we can progress by 1.7 (%)
                     // Meaning we did 1.7/10 = 0.17 durability worth of progress for 1 villager
 
                     const oneVillagerDurabilityUsageRelativeToBaseClickProgress =
-                        oneVillagerChopBaseProgress /
-                        ChopConstants.BASE_CHOP_CLICK_PROGRESS;
+                        oneVillagerMineBaseProgress /
+                        MineConstants.BASE_MINE_CLICK_PROGRESS;
 
                     // Durability usage
                     const totalDurability =
@@ -81,7 +83,7 @@ export const createTreeSlice: StateCreator<
                     // Nb chopped computing
                     const progress =
                         usableVillagers *
-                        oneVillagerChopBaseProgress *
+                        oneVillagerMineBaseProgress *
                         (value.item.multiplier ?? 1);
 
                     totalProgress += progress;
@@ -108,32 +110,37 @@ export const createTreeSlice: StateCreator<
             }
 
             // Once we run out of tools, we use the remaining villagers
-            totalProgress += availableVillagers * oneVillagerChopBaseProgress;
+            totalProgress += availableVillagers * oneVillagerMineBaseProgress;
 
-            nbChopped = Math.floor(totalProgress / 100);
+            nbMined = Math.floor(totalProgress / 100);
             newProgress = totalProgress % 100;
 
-            const chopSpeedThisTick =
+            // Can we really use this ? Works only when there is a single item.
+            const mineSpeedThisTick =
                 (totalProgress - initialProgress) / 100 / (elapsed / 1000);
 
-            newInventory[item.name] = {
-                item,
-                size: (newInventory[item.name]?.size ?? 0) + nbChopped,
-                durability: item.durability,
-                perSecond: chopSpeedThisTick,
-            };
+            const oresDistribution = getOresDistributionAtDepth(depth);
+            oresDistribution.forEach((ore) => {
+                newInventory[ore.item] = {
+                    item: Items[ore.item],
+                    size:
+                        (newInventory[ore.item]?.size ?? 0) +
+                        nbMined * ore.probability,
+                    perSecond: mineSpeedThisTick * ore.probability,
+                };
+            });
 
             return {
-                chopProgress: newProgress,
+                mineProgress: newProgress,
                 inventory: newInventory,
             };
         });
     },
-    chopByClick: (item: Item) => {
+    mineByClick: (depth: number) => {
         let newProgress = 0;
-        let nbChopped = 0;
+        let nbMined = 0;
         let multiplier = 1;
-        let hasChopped = false;
+        let hasMined = false;
 
         const newInventory = useBoundStore.getState().inventory;
 
@@ -141,18 +148,18 @@ export const createTreeSlice: StateCreator<
             [keyof ItemsType, ItemStack]
         >) {
             // To chop only with the first axe found
-            if (hasChopped) {
+            if (hasMined) {
                 break;
             }
 
             if (
-                value.item.type === ItemTypes.AXE &&
+                value.item.type === ItemTypes.PICKAXE &&
                 value.size > 0 &&
                 value.item.durability &&
                 value.item.durability > 0 &&
                 value.durability
             ) {
-                hasChopped = true;
+                hasMined = true;
                 multiplier = value.item.multiplier ?? 1;
 
                 const durability = value.durability - 1;
@@ -176,22 +183,27 @@ export const createTreeSlice: StateCreator<
 
         set((state) => {
             const totalProgress =
-                state.chopProgress + state.chopClickProgress * multiplier;
+                state.mineProgress + state.mineClickProgress * multiplier;
 
-            nbChopped = Math.floor(totalProgress / 100);
+            nbMined = Math.floor(totalProgress / 100);
             newProgress = totalProgress % 100;
 
             const newInventory = useBoundStore.getState().inventory;
 
-            newInventory[item.name] = {
-                item,
-                size: (newInventory[item.name]?.size ?? 0) + nbChopped,
-            };
+            const oresDistribution = getOresDistributionAtDepth(depth);
+            oresDistribution.forEach((ore) => {
+                newInventory[ore.item] = {
+                    item: Items[ore.item],
+                    size:
+                        (newInventory[ore.item]?.size ?? 0) +
+                        nbMined * ore.probability,
+                };
+            });
 
-            return { chopProgress: newProgress, inventory: newInventory };
+            return { mineProgress: newProgress, inventory: newInventory };
         });
     },
-    chopClickProgress: ChopConstants.BASE_CHOP_CLICK_PROGRESS,
-    chopProgress: 0,
-    choppingVillagers: 1,
+    mineClickProgress: MineConstants.BASE_MINE_CLICK_PROGRESS,
+    mineProgress: 0,
+    miningVillagers: 0,
 });

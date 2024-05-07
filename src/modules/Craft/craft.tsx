@@ -6,7 +6,10 @@ function Craft() {
     return (
         <div className='flex flex-col w-full h-full p-2 gap-2'>
             {Object.entries(ItemsRecipes).map(([key, value]) => (
-                <div key={key}>
+                <div
+                    className='flex flex-col gap-2'
+                    key={key}
+                >
                     <CraftItem itemRecipe={value} />
                     <Separator />
                 </div>

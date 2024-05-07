@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 interface ProgressButtonProps {
     children: React.ReactNode;
     progress: number;
-    onClick: () => void;
+    onClick?: () => void;
 }
 
 function ProgressButton({ children, ...props }: ProgressButtonProps) {
