@@ -12,7 +12,7 @@ const getOresDistributionAtDepth = (
     const itemWeightArray: { item: keyof ItemsType; weight: number }[] = [];
 
     // Base weight, is not dependent on depth
-    itemWeightArray.push({ item: Items.STONE.name, weight: 100 });
+    itemWeightArray.push({ item: Items.COBBLESTONE.name, weight: 100 });
 
     // Weights at depth of ores
     const ironWeight = ironWeightAtDepth(depth);

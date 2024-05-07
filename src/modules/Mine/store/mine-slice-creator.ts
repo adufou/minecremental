@@ -1,6 +1,7 @@
 import { MineConstants } from '@/components/providers/engine/Mine/const.ts';
 import { Items, ItemsType } from '@/constants/items.ts';
 import { ItemStack } from '@/modules/Inventory/models/inventory-types.ts';
+import getOresDistributionAtDepth from '@/modules/Mine/utils/ores-distribution.utils.ts';
 import { useBoundStore } from '@/store/store.ts';
 import ItemTypes from '@/types/item-types.ts';
 import { StateCreator } from 'zustand';
@@ -119,12 +120,16 @@ export const createMineSlice: StateCreator<
             const mineSpeedThisTick =
                 (totalProgress - initialProgress) / 100 / (elapsed / 1000);
 
-            // TODO: Here we should return the list of items mined based on nbMined and a distribution based on the depth
-            newInventory[Items.STONE.name] = {
-                item: Items.STONE,
-                size: (newInventory[Items.STONE.name]?.size ?? 0) + nbMined,
-                perSecond: mineSpeedThisTick,
-            };
+            const oresDistribution = getOresDistributionAtDepth(depth);
+            oresDistribution.forEach((ore) => {
+                newInventory[ore.item] = {
+                    item: Items[ore.item],
+                    size:
+                        (newInventory[ore.item]?.size ?? 0) +
+                        nbMined * ore.probability,
+                    perSecond: mineSpeedThisTick * ore.probability,
+                };
+            });
 
             return {
                 mineProgress: newProgress,
@@ -187,11 +192,15 @@ export const createMineSlice: StateCreator<
 
             const newInventory = useBoundStore.getState().inventory;
 
-            // TODO: Here we should return the list of items mined based on nbMined and a distribution based on the depth
-            newInventory[Items.STONE.name] = {
-                item: Items.STONE,
-                size: (newInventory[Items.STONE.name]?.size ?? 0) + nbMined,
-            };
+            const oresDistribution = getOresDistributionAtDepth(depth);
+            oresDistribution.forEach((ore) => {
+                newInventory[ore.item] = {
+                    item: Items[ore.item],
+                    size:
+                        (newInventory[ore.item]?.size ?? 0) +
+                        nbMined * ore.probability,
+                };
+            });
 
             return { mineProgress: newProgress, inventory: newInventory };
         });

@@ -25,6 +25,22 @@ const ItemsRecipes: { [item: string]: ItemRecipe } = {
         ingredients: [{ item: Items.OAK_PLANKS, quantity: 2 }],
         quantity: 4,
     },
+    STONE_AXE: {
+        item: Items.STONE_AXE,
+        ingredients: [
+            { item: Items.STICK, quantity: 2 },
+            { item: Items.COBBLESTONE, quantity: 3 },
+        ],
+        quantity: 1,
+    },
+    STONE_PICKAXE: {
+        item: Items.STONE_PICKAXE,
+        ingredients: [
+            { item: Items.STICK, quantity: 2 },
+            { item: Items.COBBLESTONE, quantity: 3 },
+        ],
+        quantity: 1,
+    },
     WHITE_BED: {
         item: Items.WHITE_BED,
         ingredients: [
@@ -35,6 +51,14 @@ const ItemsRecipes: { [item: string]: ItemRecipe } = {
     },
     WOODEN_AXE: {
         item: Items.WOODEN_AXE,
+        ingredients: [
+            { item: Items.OAK_PLANKS, quantity: 3 },
+            { item: Items.STICK, quantity: 2 },
+        ],
+        quantity: 1,
+    },
+    WOODEN_PICKAXE: {
+        item: Items.WOODEN_PICKAXE,
         ingredients: [
             { item: Items.OAK_PLANKS, quantity: 3 },
             { item: Items.STICK, quantity: 2 },
