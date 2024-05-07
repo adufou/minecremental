@@ -9,7 +9,7 @@ describe('Ores distribution', () => {
 
         // Assert
         expect(oresDistribution).toEqual([
-            { item: Items.STONE.name, probability: 1 },
+            { item: Items.COBBLESTONE.name, probability: 1 },
         ]);
     });
     it('should return stone and iron at depth 100', () => {
@@ -19,7 +19,7 @@ describe('Ores distribution', () => {
 
         // Assert
         expect(oresDistribution).toEqual([
-            { item: Items.STONE.name, probability: 0.9090909090909091 },
+            { item: Items.COBBLESTONE.name, probability: 0.9090909090909091 },
             { item: Items.IRON_ORE.name, probability: 0.09090909090909091 },
         ]);
     });
