@@ -2,7 +2,7 @@
 
 import {Card} from "@/shared/ui/card";
 import type {ItemStack} from "@/modules/PlayerInventory/models/inventory";
-import {getImageOfItem} from "@/lib/image.utils";
+import {getImageOfItem} from "@/lib/image";
 import {computed} from "vue";
 
 const props = defineProps<{
