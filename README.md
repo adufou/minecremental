@@ -1,45 +1,15 @@
-# minecremental
+# Dev notes
+Last PR before moving to Vue : https://github.com/adufou/minecremental/pull/26
 
-This template should help get you started developing with Vue 3 in Vite.
+# Deployment
 
-## Recommended IDE Setup
+This game is deployed on GitHub Pages => https://adufou.github.io/minecremental/
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+To deploy, `npm run deploy` (https://create-react-app.dev/docs/deployment/#github-pages & https://github.com/adufou/minecremental/pull/9 for more infos)
 
-## Type Support for `.vue` Imports in TS
+# Important
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+## Textures
+The textures are placeholders and are not final. I'm currently using the textures from [Faithful 32x32](https://faithfulpack.net) for convenience. I am planning to switch to an open source alternative as soon as possible.
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Run Unit Tests with [Vitest](https://vitest.dev/)
-
-```sh
-npm run test:unit
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
+To generate the textures, I used either of the mods [BlockRenderer by unascribed](https://www.curseforge.com/minecraft/mc-mods/blockrenderer) or [Block Renderer \[Forge/Fabric\] by AterAnimAvis](https://www.curseforge.com/minecraft/mc-mods/block-renderer) to do a 2D/3D render of the blocks, with 64x64 PNG files.
