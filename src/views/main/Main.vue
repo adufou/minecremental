@@ -3,7 +3,7 @@
 import StatusBar from "@/modules/StatusBar/StatusBar.vue";
 import Sidebar from "@/modules/Sidebar/Sidebar.vue";
 import MainCard from "@/views/main/components/MainCard.vue";
-import PlayerInventory from "@/modules/PlayerInventory/PlayerInventory.vue";
+import PlayerInventory from "@/modules/PlayerInventory/Inventory.vue";
 import { Separator } from "@/shared/ui/separator";
 import Sections from "@/shared/models/sections";
 import {ref} from "vue";
