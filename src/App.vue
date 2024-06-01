@@ -13,7 +13,7 @@ body {
     width: 100%;
 }
 
-#root {
+#app {
     height: 100%;
     width: 100%;
 }

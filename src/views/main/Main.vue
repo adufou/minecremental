@@ -28,7 +28,7 @@ const setSection = (section: Sections) => {
                 orientation='vertical'
                 className='h-full'
             />
-            <MainCard section={section} />
+            <MainCard :section="currentSection" />
             <PlayerInventory />
         </div>
     </div>

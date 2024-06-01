@@ -4,6 +4,7 @@ import {Card} from "@/shared/ui/card";
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/shared/ui/accordion";
 import {computed, ref} from "vue";
 import InventoryStack from "@/modules/PlayerInventory/components/InventoryStack.vue";
+import BuildingCell from "@/modules/PlayerInventory/components/BuildingCell.vue";
 
 const activeAccordions = ref<string[]>([]);
 
