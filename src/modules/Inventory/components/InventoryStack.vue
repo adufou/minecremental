@@ -1,16 +1,58 @@
 <script setup lang="ts">
 
 import {Card} from "@/shared/ui/card";
-import type {ItemStack} from "@/modules/PlayerInventory/models/inventory";
 import {getImageOfItem} from "@/lib/image";
 import {computed} from "vue";
+import type {ItemStack} from "@/modules/Inventory/models/inventory";
+import {display} from "@/lib/numbers";
 
 const props = defineProps<{
     stack: ItemStack
 }>()
 
 const durabilityBarStyle = computed(() => {
-    return {}
+    const style: {
+        backgroundColor?: string;
+        width?: string;
+    } = {
+        backgroundColor: undefined,
+        width: 'bg-lime-700',
+    };
+
+    if (
+        props.stack.item.durability &&
+        props.stack.durability &&
+        props.stack.durability !== props.stack.item.durability
+    ) {
+        const durabilityRatio =
+            props.stack.durability / props.stack.item.durability;
+
+        style.backgroundColor = `rgb(${255 - durabilityRatio * 255}, ${
+            durabilityRatio * 255
+        }, 0)`;
+
+        style.width = `${durabilityRatio * 100}%`;
+    }
+
+    return style;
+})
+
+const durabilityDisplayedValue = computed<string>(() => {
+    if (
+        props.stack.item.durability !== undefined &&
+        props.stack.durability !== undefined &&
+        props.stack.durability !== props.stack.item.durability
+    ) {
+        return display(props.stack.durability);
+    }
+
+    return '';
+});
+
+const perSecond = computed(() => {
+    return props.stack.perSecond
+        ? `(${display(props.stack.perSecond)} /s)`
+        : '';
 })
 
 </script>
@@ -35,26 +77,28 @@ const durabilityBarStyle = computed(() => {
         <div class='flex flex-col justify-between w-full h-full'>
             <div class='flex flex-row justify-between'>
                     <span class='text-sm text-stone-50'>
-                        {props.stack.item.displayName}
+                       {{props.stack.item.displayName}}
                     </span>
                 <div class='flex gap-1 items-baseline'>
                         <span class='text-sm text-stone-500'>
-                            {display(props.stack.size)}
+                            {{ display(props.stack.size) }}
                         </span>
                     <span class='text-xs text-stone-500'>
-                            {perSecond}
+                            {{ perSecond }}
                         </span>
                 </div>
             </div>
 
             <div class='flex flex-row justify-between'>
                     <span class='text-sm text-stone-50'>
-                        {props.stack.durability !== undefined
-                            ? 'Durability'
-                            : ''}
+                        {{
+                            props.stack.durability !== undefined
+                                ? 'Durability'
+                                : ''
+                        }}
                     </span>
                 <span class='text-sm text-stone-500'>
-                        {durabilityDisplayedValue(props.stack)}
+                        {{ durabilityDisplayedValue }}
                     </span>
             </div>
         </div>

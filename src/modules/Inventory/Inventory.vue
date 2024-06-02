@@ -5,11 +5,14 @@ import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/sh
 import {computed, ref} from "vue";
 import InventoryStack from "@/modules/Inventory/components/InventoryStack.vue";
 import BuildingCell from "@/modules/Inventory/components/BuildingCell.vue";
+import {useInventoryStore} from "@/modules/Inventory/store/inventory.store";
+
+const inventoryStore = useInventoryStore();
 
 const activeAccordions = ref<string[]>([]);
 
 const inventory = computed(() => {
-    return [];
+    return inventoryStore.inventory;
 });
 
 const village = computed(() => {
