@@ -1,5 +1,5 @@
-import { Items } from '@/shared/constants/items.ts';
-import ItemRecipe from '@/types/item-recipe.ts';
+import { Items } from '@/shared/constants/items';
+import type ItemRecipe from '@/shared/models/itemRecipe';
 
 const ItemsRecipes: { [item: string]: ItemRecipe } = {
     OAK_FENCE: {
