@@ -1,14 +1,16 @@
-import {ChopConstants} from "@/modules/Forest/consts";
-import type {ItemStack} from "@/modules/Inventory/models/inventory";
-import {useInventoryStore} from "@/modules/Inventory/store/inventory.store";
-import type {Item, ItemsType} from "@/shared/constants/items";
-import ItemTypes from "@/shared/models/itemTypes";
-import {defineStore} from "pinia";
-import {ref} from "vue";
+import { ChopConstants } from '@/modules/Forest/consts';
+import type { ItemStack } from '@/modules/Inventory/models/inventory';
+import { useInventoryStore } from '@/modules/Inventory/store/inventory.store';
+import type { Item, ItemsType } from '@/shared/constants/items';
+import ItemTypes from '@/shared/models/itemTypes';
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
-export const useForestStore = defineStore('forest', () =>{
+export const useForestStore = defineStore('forest', () => {
     // Getters
-    const chopClickProgress = ref<number>(ChopConstants.BASE_CHOP_CLICK_PROGRESS);
+    const chopClickProgress = ref<number>(
+        ChopConstants.BASE_CHOP_CLICK_PROGRESS,
+    );
     const chopProgress = ref<number>(0);
 
     // Actions
@@ -21,9 +23,9 @@ export const useForestStore = defineStore('forest', () =>{
         let multiplier = 1;
         let hasChopped = false;
 
-        for (const [key, value] of Object.entries(inventoryStore.inventory) as Array<
-            [keyof ItemsType, ItemStack]
-        >) {
+        for (const [key, value] of Object.entries(
+            inventoryStore.inventory,
+        ) as Array<[keyof ItemsType, ItemStack]>) {
             // To chop only with the first axe found
             if (hasChopped) {
                 break;
@@ -68,11 +70,11 @@ export const useForestStore = defineStore('forest', () =>{
             item,
             size: (inventoryStore.inventory[item.name]?.size ?? 0) + nbChopped,
         };
-    }
+    };
 
     return {
         chopClickProgress,
         chopProgress,
         chopByClick,
-    }
-})
+    };
+});
