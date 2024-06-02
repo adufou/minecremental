@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Separator} from "@/shared/ui/separator";
 import Chop from "@/modules/Forest/components/Chop.vue";
+import { Separator} from "@/shared/ui/separator";
 
 </script>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
-import ToggleTheme from "@/modules/StatusBar/components/ToggleTheme.vue";
 import Devtools from "@/modules/Devtools/Devtools.vue";
+import ToggleTheme from "@/modules/StatusBar/components/ToggleTheme.vue";
 import { Separator } from "@/shared/ui/separator";
 
 </script>
