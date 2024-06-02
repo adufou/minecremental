@@ -3,11 +3,15 @@
 import ProgressButton from "@/shared/ui/ProgressButton.vue";
 import {computed} from "vue";
 import { Separator} from "@/shared/ui/separator";
+import {useForestStore} from "@/modules/Forest/store/forest.store";
+import {Items} from "@/shared/constants/items";
 
-const progress = computed(() => 0)
+const forestStore = useForestStore();
+
+const progress = computed(() => forestStore.chopProgress)
 
 const chopTree = () => {
-
+    forestStore.chopByClick(Items.OAK_LOG)
 }
 </script>
 
