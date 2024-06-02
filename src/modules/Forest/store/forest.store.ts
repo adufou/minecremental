@@ -182,5 +182,6 @@ export const useForestStore = defineStore('forest', () => {
         chopClickProgress,
         chopProgress,
         chopByClick,
+        chopByVillager,
     };
 });
