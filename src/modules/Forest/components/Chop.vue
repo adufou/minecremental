@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
-import ProgressButton from "@/shared/ui/ProgressButton.vue";
-import {computed} from "vue";
-import { Separator} from "@/shared/ui/separator";
 import {useForestStore} from "@/modules/Forest/store/forest.store";
 import {Items} from "@/shared/constants/items";
+import ProgressButton from "@/shared/ui/ProgressButton.vue";
+import { Separator} from "@/shared/ui/separator";
+import {computed} from "vue";
 
 const forestStore = useForestStore();
 

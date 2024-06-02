@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
-import {Card} from "@/shared/ui/card";
-import Sections from "@/shared/models/sections";
 import Forest from "@/modules/Forest/Forest.vue";
+import Sections from "@/shared/models/sections";
+import {Card} from "@/shared/ui/card";
 
 const props = defineProps<{
     section: Sections

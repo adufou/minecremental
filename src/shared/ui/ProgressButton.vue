@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
-import {computed} from "vue";
 import { Button} from "@/shared/ui/button";
+import {computed} from "vue";
 
 const props = defineProps<{
     onClick: () => void

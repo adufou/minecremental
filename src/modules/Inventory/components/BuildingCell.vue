@@ -1,8 +1,8 @@
 <script setup lang="ts">
 
-import {Card} from "@/shared/ui/card";
 import {display} from "@/lib/numbers";
 import type {VillageBuilding} from "@/shared/models/villageTypes";
+import {Card} from "@/shared/ui/card";
 
 const props = defineProps<{
     building: VillageBuilding;

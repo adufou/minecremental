@@ -1,11 +1,11 @@
 <script setup lang="ts">
 
-import {Card} from "@/shared/ui/card";
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/shared/ui/accordion";
-import {computed, ref} from "vue";
-import InventoryStack from "@/modules/Inventory/components/InventoryStack.vue";
 import BuildingCell from "@/modules/Inventory/components/BuildingCell.vue";
+import InventoryStack from "@/modules/Inventory/components/InventoryStack.vue";
 import {useInventoryStore} from "@/modules/Inventory/store/inventory.store";
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/shared/ui/accordion";
+import {Card} from "@/shared/ui/card";
+import {computed, ref} from "vue";
 
 const inventoryStore = useInventoryStore();
 

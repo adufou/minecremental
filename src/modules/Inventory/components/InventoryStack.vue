@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
-import {Card} from "@/shared/ui/card";
 import {getImageOfItem} from "@/lib/image";
-import {computed} from "vue";
-import type {ItemStack} from "@/modules/Inventory/models/inventory";
 import {display} from "@/lib/numbers";
+import type {ItemStack} from "@/modules/Inventory/models/inventory";
+import {Card} from "@/shared/ui/card";
+import {computed} from "vue";
 
 const props = defineProps<{
     stack: ItemStack
