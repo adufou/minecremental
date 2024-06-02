@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getImageOfItem } from '@/lib/image';
-import { display } from '@/lib/numbers';
+import { getImageOfItem } from '@/utils/image';
+import { display } from '@/utils/numbers';
 import type { ItemStack } from '@/modules/Inventory/models/inventory';
 import { Card } from '@/shared/ui/card';
 import { computed } from 'vue';

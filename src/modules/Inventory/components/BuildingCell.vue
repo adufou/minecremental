@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { display } from '@/lib/numbers';
+import { display } from '@/utils/numbers';
 import type { VillageBuilding } from '@/shared/models/villageTypes';
 import { Card } from '@/shared/ui/card';
 
