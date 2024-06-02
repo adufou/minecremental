@@ -1,4 +1,4 @@
-import {type Item, Items} from '@/shared/constants/items';
+import { type Item, Items } from '@/shared/constants/items';
 
 export type ItemStack = {
     item: Item;

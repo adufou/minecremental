@@ -1,28 +1,36 @@
 <script setup lang="ts">
-import { cn } from '@/lib/utils'
-import { DropdownMenuItem, type DropdownMenuItemProps, useForwardProps } from 'radix-vue'
-import { computed, type HTMLAttributes } from 'vue'
+import { cn } from '@/lib/utils';
+import {
+    DropdownMenuItem,
+    type DropdownMenuItemProps,
+    useForwardProps,
+} from 'radix-vue';
+import { computed, type HTMLAttributes } from 'vue';
 
-const props = defineProps<DropdownMenuItemProps & { class?: HTMLAttributes['class'], inset?: boolean }>()
+const props = defineProps<
+    DropdownMenuItemProps & { class?: HTMLAttributes['class']; inset?: boolean }
+>();
 
 const delegatedProps = computed(() => {
-  const { class: _, ...delegated } = props
+    const { class: _, ...delegated } = props;
 
-  return delegated
-})
+    return delegated;
+});
 
-const forwardedProps = useForwardProps(delegatedProps)
+const forwardedProps = useForwardProps(delegatedProps);
 </script>
 
 <template>
-  <DropdownMenuItem
-    v-bind="forwardedProps"
-    :class="cn(
-      'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-stone-100 focus:text-stone-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-stone-800 dark:focus:text-stone-50',
-      inset && 'pl-8',
-      props.class,
-    )"
-  >
-    <slot />
-  </DropdownMenuItem>
+    <DropdownMenuItem
+        v-bind="forwardedProps"
+        :class="
+            cn(
+                'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-stone-100 focus:text-stone-900 data-[disabled]:pointer-events-none data-[disabled]:opacity-50 dark:focus:bg-stone-800 dark:focus:text-stone-50',
+                inset && 'pl-8',
+                props.class,
+            )
+        "
+    >
+        <slot />
+    </DropdownMenuItem>
 </template>

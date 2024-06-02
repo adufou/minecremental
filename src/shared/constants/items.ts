@@ -1,5 +1,4 @@
-import ItemTypes from "@/shared/models/itemTypes";
-
+import ItemTypes from '@/shared/models/itemTypes';
 
 export type Item = {
     displayName: string;

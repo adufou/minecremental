@@ -1,11 +1,15 @@
 <script setup lang="ts">
-
-import BuildingCell from "@/modules/Inventory/components/BuildingCell.vue";
-import InventoryStack from "@/modules/Inventory/components/InventoryStack.vue";
-import {useInventoryStore} from "@/modules/Inventory/store/inventory.store";
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/shared/ui/accordion";
-import {Card} from "@/shared/ui/card";
-import {computed, ref} from "vue";
+import BuildingCell from '@/modules/Inventory/components/BuildingCell.vue';
+import InventoryStack from '@/modules/Inventory/components/InventoryStack.vue';
+import { useInventoryStore } from '@/modules/Inventory/store/inventory.store';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/shared/ui/accordion';
+import { Card } from '@/shared/ui/card';
+import { computed, ref } from 'vue';
 
 const inventoryStore = useInventoryStore();
 
@@ -21,44 +25,45 @@ const village = computed(() => {
 
 const toggleAccordion = (value: string) => {
     if (activeAccordions.value.includes(value)) {
-        activeAccordions.value = activeAccordions.value.filter((v) => v !== value);
+        activeAccordions.value = activeAccordions.value.filter(
+            (v) => v !== value,
+        );
     } else {
         activeAccordions.value = [...activeAccordions.value, value];
     }
 };
-
 </script>
 
 <template>
-    <div class='flex flex-shrink-0 w-64 m-2 ml-0'>
-        <Card class='h-full w-full'>
-            <div class='flex flex-col p-2 gap-1'>
+    <div class="flex flex-shrink-0 w-64 m-2 ml-0">
+        <Card class="h-full w-full">
+            <div class="flex flex-col p-2 gap-1">
                 <Accordion
-                    type='multiple'
-                    :value={activeAccordions}
+                    type="multiple"
+                    :value="{ activeAccordions }"
                 >
-                    <AccordionItem value='inventory'>
+                    <AccordionItem value="inventory">
                         <AccordionTrigger
                             @click="() => toggleAccordion('inventory')"
                         >
-                        Inventory
+                            Inventory
                         </AccordionTrigger>
                         <AccordionContent
-                            v-for="([key, value]) in Object.entries(inventory)"
+                            v-for="[key, value] in Object.entries(inventory)"
                             :key="'inv-' + key"
                         >
                             <InventoryStack :stack="value" />
                         </AccordionContent>
                     </AccordionItem>
 
-                    <AccordionItem value='village'>
+                    <AccordionItem value="village">
                         <AccordionTrigger
                             @click="() => toggleAccordion('village')"
                         >
-                        Village
+                            Village
                         </AccordionTrigger>
                         <AccordionContent
-                            v-for="([key, value]) in Object.entries(village)"
+                            v-for="[key, value] in Object.entries(village)"
                             :key="'inv-' + key"
                         >
                             <BuildingCell :building="value" />
@@ -70,6 +75,4 @@ const toggleAccordion = (value: string) => {
     </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
