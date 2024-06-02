@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { getImageOfItem } from '@/utils/image';
-import { display } from '@/utils/numbers';
 import type { ItemStack } from '@/modules/Inventory/models/inventory';
 import { Card } from '@/shared/ui/card';
+import { getImageOfItem } from '@/utils/image';
+import { display } from '@/utils/numbers';
 import { computed } from 'vue';
 
 const props = defineProps<{

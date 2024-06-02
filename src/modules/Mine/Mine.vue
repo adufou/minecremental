@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import MineDepth from '@/modules/Mine/components/MineDepth.vue';
 import { Separator } from '@/shared/ui/separator';
-
 </script>
 
 <template>

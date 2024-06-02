@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { display } from '@/utils/numbers';
 import type { VillageBuilding } from '@/shared/models/villageTypes';
 import { Card } from '@/shared/ui/card';
+import { display } from '@/utils/numbers';
 
 const props = defineProps<{
     building: VillageBuilding;
