@@ -8,6 +8,8 @@ module.exports = {
     'eslint:recommended',
     '@vue/eslint-config-typescript',
     '@vue/eslint-config-prettier/skip-formatting',
+    // Place this last ! "plugin:prettier/recommended"
+    'plugin:prettier/recommended',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs', '__React__'],
   parserOptions: {
