@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button } from '@/shared/ui/button';
+import { UiButton } from '@/shared/ui/button';
 import { computed } from 'vue';
 
 const props = defineProps<{
@@ -21,13 +21,13 @@ const backgroundStyle = computed<{ width: string }>(() => {
             :style="backgroundStyle"
         />
         <div class="w-full rounded-md p-1 relative">
-            <Button
+            <UiButton
                 class="w-full"
                 variant="ghost"
                 @click="props.onClick"
             >
                 <slot />
-            </Button>
+            </UiButton>
         </div>
     </div>
 </template>

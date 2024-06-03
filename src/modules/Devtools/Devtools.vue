@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { useTickStore } from '@/shared/stores/tick.store';
-import { Button } from '@/shared/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
+import { UiButton } from '@/shared/ui/button';
+import {
+    UiPopover,
+    UiPopoverContent,
+    UiPopoverTrigger,
+} from '@/shared/ui/popover';
 import { computed, ref } from 'vue';
 
 const tickStore = useTickStore();
@@ -19,19 +23,19 @@ tickStore.addTickFunction((elapsedTime: number) => {
 
 <template>
     <div class="pl-2">
-        <Popover>
-            <PopoverTrigger asChild>
-                <Button
+        <UiPopover>
+            <UiPopoverTrigger asChild>
+                <UiButton
                     variant="outline"
                     class="text-red-500"
                 >
                     DEV
-                </Button>
-            </PopoverTrigger>
-            <PopoverContent class="w-96">
+                </UiButton>
+            </UiPopoverTrigger>
+            <UiPopoverContent class="w-96">
                 <p>FPS: {{ fps }}</p>
-            </PopoverContent>
-        </Popover>
+            </UiPopoverContent>
+        </UiPopover>
     </div>
 </template>
 

@@ -3,9 +3,9 @@ import { useInventoryStore } from '@/modules/Inventory/store/inventory.store';
 import { useVillageStore } from '@/modules/Village/store/village.store';
 import type { Item } from '@/shared/constants/items';
 import type { BuildingRecipe } from '@/shared/models/villageTypes';
-import { Button } from '@/shared/ui/button';
-import { Card } from '@/shared/ui/card';
-import { Separator } from '@/shared/ui/separator';
+import { UiButton } from '@/shared/ui/button';
+import { UiCard } from '@/shared/ui/card';
+import { UiSeparator } from '@/shared/ui/separator';
 import { getImageOfItem } from '@/utils/image';
 
 const props = defineProps<{
@@ -87,13 +87,13 @@ const craftAllItems = () => {
 </script>
 
 <template>
-    <Card class="flex flex-col items-center gap-2 p-2">
+    <UiCard class="flex flex-col items-center gap-2 p-2">
         <div class="align-middle">
             <span class="text-lg">
                 {{ props.buildingRecipe.building.displayName }}
             </span>
         </div>
-        <Separator orientation="horizontal" />
+        <UiSeparator orientation="horizontal" />
         <div class="flex flex-row flex-auto flex-wrap gap-2">
             <div
                 v-for="recipeItem in props.buildingRecipe.ingredients"
@@ -104,33 +104,33 @@ const craftAllItems = () => {
                 "
                 class="flex flex-row items-center gap-1"
             >
-                <Card class="h-8 w-8 overflow-clip p-1">
+                <UiCard class="h-8 w-8 overflow-clip p-1">
                     <img
                         class="h-full w-full"
                         :src="getImageOfItem(recipeItem.item)"
                     />
-                </Card>
+                </UiCard>
                 <span>
                     {{ recipeItem.item.displayName }} x{{ recipeItem.quantity }}
                 </span>
             </div>
         </div>
-        <Separator orientation="horizontal" />
+        <UiSeparator orientation="horizontal" />
         <div class="flex flex-row gap-2">
-            <Button
+            <UiButton
                 class="h-8"
                 @click="craftBuilding"
             >
                 Craft
-            </Button>
-            <Button
+            </UiButton>
+            <UiButton
                 class="h-8"
                 @click="craftAllItems"
             >
                 Craft All
-            </Button>
+            </UiButton>
         </div>
-    </Card>
+    </UiCard>
 </template>
 
 <style scoped></style>

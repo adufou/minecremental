@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ItemStack } from '@/modules/Inventory/models/inventory';
-import { Card } from '@/shared/ui/card';
+import { UiCard } from '@/shared/ui/card';
 import { getImageOfItem } from '@/utils/image';
 import { display } from '@/utils/numbers';
 import { computed } from 'vue';
@@ -56,7 +56,7 @@ const perSecond = computed(() => {
 </script>
 
 <template>
-    <Card
+    <UiCard
         class="flex justify-between h-16 w-full overflow-clip relative gap-1 p-2"
     >
         <div class="relative w-12 h-12 flex-shrink-0">
@@ -102,7 +102,7 @@ const perSecond = computed(() => {
                 </span>
             </div>
         </div>
-    </Card>
+    </UiCard>
 </template>
 
 <style scoped></style>

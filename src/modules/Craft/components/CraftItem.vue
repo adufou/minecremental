@@ -2,9 +2,9 @@
 import { useInventoryStore } from '@/modules/Inventory/store/inventory.store';
 import type { Item } from '@/shared/constants/items';
 import type { ItemRecipe } from '@/shared/models/itemRecipe';
-import { Button } from '@/shared/ui/button';
-import { Card } from '@/shared/ui/card';
-import { Separator } from '@/shared/ui/separator';
+import { UiButton } from '@/shared/ui/button';
+import { UiCard } from '@/shared/ui/card';
+import { UiSeparator } from '@/shared/ui/separator';
 import { getImageOfItem } from '@/utils/image';
 
 const props = defineProps<{
@@ -88,29 +88,29 @@ const craftAllItems = () => {
     <div class="flex flex-col w-full">
         <div class="flex flex-row justify-between items-center gap-2">
             <div class="relative">
-                <Card class="h-16 w-16 overflow-hidden p-1">
+                <UiCard class="h-16 w-16 overflow-hidden p-1">
                     <img
                         class="h-full w-full"
                         :src="getImageOfItem(props.itemRecipe.item)"
                     />
-                </Card>
+                </UiCard>
                 <span class="absolute bottom-1 right-1">
                     x{{ props.itemRecipe.quantity }}
                 </span>
             </div>
-            <Separator orientation="vertical" />
+            <UiSeparator orientation="vertical" />
             <div class="flex flex-row w-full flex-wrap gap-2">
                 <div
                     v-for="recipeItem in props.itemRecipe.ingredients"
                     :key="recipeItem.item.name"
                     class="flex flex-row items-center gap-1"
                 >
-                    <Card class="h-8 w-8 overflow-clip p-1">
+                    <UiCard class="h-8 w-8 overflow-clip p-1">
                         <img
                             class="h-full w-full"
                             :src="getImageOfItem(recipeItem.item)"
                         />
-                    </Card>
+                    </UiCard>
                     <span>
                         {{ recipeItem.item.displayName }} x{{
                             recipeItem.quantity
@@ -118,19 +118,19 @@ const craftAllItems = () => {
                     </span>
                 </div>
             </div>
-            <Separator orientation="vertical" />
-            <Button
+            <UiSeparator orientation="vertical" />
+            <UiButton
                 class="h-8"
                 @click="craftItem"
             >
                 Craft
-            </Button>
-            <Button
+            </UiButton>
+            <UiButton
                 class="h-8"
                 @click="craftAllItems"
             >
                 Craft All
-            </Button>
+            </UiButton>
         </div>
     </div>
 </template>

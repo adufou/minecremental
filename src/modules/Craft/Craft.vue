@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import CraftItem from '@/modules/Craft/components/CraftItem.vue';
 import ItemsRecipes from '@/shared/constants/items-recipes';
-import { Separator } from '@/shared/ui/separator';
+import { UiSeparator } from '@/shared/ui/separator';
 </script>
 
 <template>
@@ -12,7 +12,7 @@ import { Separator } from '@/shared/ui/separator';
             :key="key"
         >
             <CraftItem :itemRecipe="value" />
-            <Separator />
+            <UiSeparator />
         </div>
     </div>
 </template>

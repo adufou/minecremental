@@ -3,7 +3,7 @@ import Inventory from '@/modules/Inventory/Inventory.vue';
 import Sidebar from '@/modules/Sidebar/Sidebar.vue';
 import StatusBar from '@/modules/StatusBar/StatusBar.vue';
 import Sections from '@/shared/models/sections';
-import { Separator } from '@/shared/ui/separator';
+import { UiSeparator } from '@/shared/ui/separator';
 import MainCard from '@/views/main/components/MainCard.vue';
 import { ref } from 'vue';
 
@@ -18,11 +18,11 @@ const setSection = (section: Sections) => {
     <div class="flex flex-col h-full w-full">
         <StatusBar />
 
-        <Separator />
+        <UiSeparator />
 
         <div class="flex flex-row flex-auto">
             <Sidebar :setSection="setSection" />
-            <Separator
+            <UiSeparator
                 orientation="vertical"
                 className="h-full"
             />

@@ -2,7 +2,7 @@
 import CraftBuild from '@/modules/Village/components/CraftBuild.vue';
 import { useVillageStore } from '@/modules/Village/store/village.store';
 import BuildingsRecipes from '@/shared/constants/buildings-recipes';
-import { Separator } from '@/shared/ui/separator';
+import { UiSeparator } from '@/shared/ui/separator';
 import { display } from '@/utils/numbers';
 
 const villageStore = useVillageStore();
@@ -15,7 +15,7 @@ const villageStore = useVillageStore();
                 {{ display(villageStore.villagers) }} villager
             </span>
         </div>
-        <Separator />
+        <UiSeparator />
         <div class="grid grid-cols-2 gap-2 w-full">
             <CraftBuild :buildingRecipe="BuildingsRecipes.OAK_HOUSE" />
         </div>

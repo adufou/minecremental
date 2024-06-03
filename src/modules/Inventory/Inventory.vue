@@ -8,7 +8,7 @@ import {
     UiAccordionItem,
     UiAccordionTrigger,
 } from '@/shared/ui/accordion';
-import { Card } from '@/shared/ui/card';
+import { UiCard } from '@/shared/ui/card';
 import { computed, ref } from 'vue';
 
 const inventoryStore = useInventoryStore();
@@ -36,7 +36,7 @@ const toggleAccordion = (value: string) => {
 
 <template>
     <div class="flex flex-shrink-0 w-64 m-2 ml-0">
-        <Card class="h-full w-full">
+        <UiCard class="h-full w-full">
             <div class="flex flex-col p-2 gap-1">
                 <UiAccordion
                     type="multiple"
@@ -71,7 +71,7 @@ const toggleAccordion = (value: string) => {
                     </UiAccordionItem>
                 </UiAccordion>
             </div>
-        </Card>
+        </UiCard>
     </div>
 </template>
 
