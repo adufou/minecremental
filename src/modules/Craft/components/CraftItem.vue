@@ -112,8 +112,9 @@ const craftAllItems = () => {
                         />
                     </Card>
                     <span>
-                        {{ recipeItem.item.displayName }} x
-                        {{ recipeItem.quantity }}
+                        {{ recipeItem.item.displayName }} x{{
+                            recipeItem.quantity
+                        }}
                     </span>
                 </div>
             </div>
