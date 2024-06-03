@@ -1,6 +1,6 @@
-export { default as Card } from './Card.vue';
-export { default as CardHeader } from './CardHeader.vue';
-export { default as CardTitle } from './CardTitle.vue';
-export { default as CardDescription } from './CardDescription.vue';
-export { default as CardContent } from './CardContent.vue';
-export { default as CardFooter } from './CardFooter.vue';
+export { default as UiCard } from './UiCard.vue';
+export { default as UiCardHeader } from './UiCardHeader.vue';
+export { default as UiCardTitle } from './UiCardTitle.vue';
+export { default as UiCardDescription } from './UiCardDescription.vue';
+export { default as UiCardContent } from './UiCardContent.vue';
+export { default as UiCardFooter } from './UiCardFooter.vue';

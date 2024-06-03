@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { VillageBuilding } from '@/shared/models/villageTypes';
-import { Card } from '@/shared/ui/card';
+import { UiCard } from '@/shared/ui/card';
 import { display } from '@/utils/numbers';
 
 const props = defineProps<{
@@ -9,7 +9,7 @@ const props = defineProps<{
 </script>
 
 <template>
-    <Card
+    <UiCard
         class="flex justify-between h-16 w-full overflow-clip relative gap-1 p-2"
     >
         <div class="flex flex-row justify-between items-center w-full h-full">
@@ -21,7 +21,7 @@ const props = defineProps<{
             </span>
             <span class="text-xs text-stone-500">{perSecond}</span>
         </div>
-    </Card>
+    </UiCard>
 </template>
 
 <style scoped></style>
