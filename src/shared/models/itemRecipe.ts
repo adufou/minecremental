@@ -1,6 +1,6 @@
 import type { Item } from '@/shared/constants/items';
 
-type ItemRecipe = {
+export type ItemRecipe = {
     item: Item;
     ingredients: {
         item: Item;
@@ -8,5 +8,3 @@ type ItemRecipe = {
     }[];
     quantity: number;
 };
-
-export default ItemRecipe;
