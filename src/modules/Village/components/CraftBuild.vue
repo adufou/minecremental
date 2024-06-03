@@ -2,11 +2,11 @@
 import { useInventoryStore } from '@/modules/Inventory/store/inventory.store';
 import { useVillageStore } from '@/modules/Village/store/village.store';
 import type { Item } from '@/shared/constants/items';
-import type { BuildingRecipe } from '@/shared/models/villageTypes';
 import { UiButton } from '@/shared/ui/button';
 import { UiCard } from '@/shared/ui/card';
 import { UiSeparator } from '@/shared/ui/separator';
 import { getImageOfItem } from '@/utils/image';
+import type {BuildingRecipe} from "@/shared/models/buildingRecipe";
 
 const props = defineProps<{
     buildingRecipe: BuildingRecipe;

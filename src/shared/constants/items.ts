@@ -14,12 +14,14 @@ export type ItemsType = {
     DIAMOND_AXE: Item;
     GLASS: Item;
     IRON_AXE: Item;
+    IRON_INGOT: Item;
     IRON_ORE: Item;
     OAK_FENCE: Item;
     OAK_LOG: Item;
     OAK_PLANKS: Item;
     OAK_STAIRS: Item;
     NETHERITE_AXE: Item;
+    SAND: Item;
     STICK: Item;
     STONE: Item;
     STONE_AXE: Item;
@@ -58,6 +60,11 @@ const Items: ItemsType = {
         multiplier: 8,
         type: ItemTypes.AXE,
     },
+    IRON_INGOT: {
+        displayName: 'Iron Ingot',
+        name: 'IRON_INGOT',
+        type: ItemTypes.INGREDIENT,
+    },
     IRON_ORE: {
         displayName: 'Iron Ore',
         name: 'IRON_ORE',
@@ -88,6 +95,11 @@ const Items: ItemsType = {
         name: 'NETHERITE_AXE',
         multiplier: 32,
         type: ItemTypes.AXE,
+    },
+    SAND: {
+        displayName: 'Sand',
+        name: 'SAND',
+        type: ItemTypes.BLOCK,
     },
     STICK: {
         displayName: 'Stick',

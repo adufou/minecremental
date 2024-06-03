@@ -1,7 +1,7 @@
 import { Items } from '@/shared/constants/items';
 import { type ItemRecipe } from '@/shared/models/itemRecipe';
 
-const ItemsRecipes: { [item: string]: ItemRecipe } = {
+const ItemRecipes: { [item: string]: ItemRecipe } = {
     OAK_FENCE: {
         item: Items.OAK_FENCE,
         ingredients: [
@@ -67,4 +67,4 @@ const ItemsRecipes: { [item: string]: ItemRecipe } = {
     },
 } as const;
 
-export default ItemsRecipes;
+export default ItemRecipes;
