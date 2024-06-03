@@ -6,15 +6,20 @@ import { useVillageStore } from '@/modules/Village/store/village.store';
 import { Items, type ItemsType } from '@/shared/constants/items';
 import ItemTypes from '@/shared/models/itemTypes';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 export const useMineStore = defineStore('mine', () => {
-    // Getters
-    const mineClickProgress = ref<number>(
-        MineConstants.BASE_MINE_CLICK_PROGRESS,
-    );
-    const mineProgress = ref<number>(0);
+    // State
+    const clickProgress = ref<number>(MineConstants.BASE_MINE_CLICK_PROGRESS);
+    const depth = ref<number>(0);
+    const maxDepth = ref<number>(0);
+    const progress = ref<number>(0);
     const miningVillagers = ref<number>(1);
+
+    // Getters
+    const maxDepthUpgradeCost = computed(() => {
+        return Math.pow(1.25, maxDepth.value + 1);
+    });
 
     // Actions
     const mineByClick = (depth: number) => {
@@ -63,11 +68,10 @@ export const useMineStore = defineStore('mine', () => {
             }
         }
 
-        const totalProgress =
-            mineProgress.value + mineClickProgress.value * multiplier;
+        const totalProgress = progress.value + clickProgress.value * multiplier;
 
         nbMined = Math.floor(totalProgress / 100);
-        mineProgress.value = totalProgress % 100;
+        progress.value = totalProgress % 100;
 
         const oresDistribution = getOresDistributionAtDepth(depth);
         oresDistribution.forEach((ore) => {
@@ -79,7 +83,7 @@ export const useMineStore = defineStore('mine', () => {
             };
         });
     };
-    const mineByVillager = (elapsed: number, depth: number) => {
+    const mineByVillager = (elapsed: number) => {
         /* Stores uses first ! See https://pinia.vuejs.org/cookbook/composing-stores.html */
         const inventoryStore = useInventoryStore();
         const villageStore = useVillageStore();
@@ -87,7 +91,7 @@ export const useMineStore = defineStore('mine', () => {
         /* Action */
         let nbMined = 0;
         let availableVillagers = 0;
-        const initialProgress = mineProgress.value;
+        const initialProgress = progress.value;
         let totalProgress = initialProgress;
 
         // Progress in ratio
@@ -167,13 +171,13 @@ export const useMineStore = defineStore('mine', () => {
         totalProgress += availableVillagers * oneVillagerMineBaseProgress;
 
         nbMined = Math.floor(totalProgress / 100);
-        mineProgress.value = totalProgress % 100;
+        progress.value = totalProgress % 100;
 
         // Can we really use this ? Works only when there is a single item.
         const mineSpeedThisTick =
             (totalProgress - initialProgress) / 100 / (elapsed / 1000);
 
-        const oresDistribution = getOresDistributionAtDepth(depth);
+        const oresDistribution = getOresDistributionAtDepth(depth.value);
         oresDistribution.forEach((ore) => {
             inventoryStore.inventory[ore.item] = {
                 item: Items[ore.item],
@@ -186,10 +190,13 @@ export const useMineStore = defineStore('mine', () => {
     };
 
     return {
+        clickProgress,
+        depth,
+        maxDepth,
+        maxDepthUpgradeCost,
         mineByClick,
         mineByVillager,
-        mineClickProgress,
-        mineProgress,
         miningVillagers,
+        progress,
     };
 });
