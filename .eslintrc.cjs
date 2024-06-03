@@ -15,7 +15,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest'
   },
-  plugins: ['import'],
+  plugins: ['import', 'filename-rules'],
   rules: {
     "curly": "error",
     'import/order': [
@@ -43,6 +43,7 @@ module.exports = {
     {
       files: ['src/shared/ui/**/*'],
       rules: {
+        'filename-rules/match': ['error', {'.ts': /^index/, ".vue": /^Ui/}],
         '@typescript-eslint/no-unused-vars': 'off',
       }
     }
