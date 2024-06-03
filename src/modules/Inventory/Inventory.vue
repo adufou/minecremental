@@ -3,10 +3,10 @@ import BuildingCell from '@/modules/Inventory/components/BuildingCell.vue';
 import InventoryStack from '@/modules/Inventory/components/InventoryStack.vue';
 import { useInventoryStore } from '@/modules/Inventory/store/inventory.store';
 import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
+    UiAccordion,
+    UiAccordionContent,
+    UiAccordionItem,
+    UiAccordionTrigger,
 } from '@/shared/ui/accordion';
 import { Card } from '@/shared/ui/card';
 import { computed, ref } from 'vue';
@@ -38,38 +38,38 @@ const toggleAccordion = (value: string) => {
     <div class="flex flex-shrink-0 w-64 m-2 ml-0">
         <Card class="h-full w-full">
             <div class="flex flex-col p-2 gap-1">
-                <Accordion
+                <UiAccordion
                     type="multiple"
                     :value="{ activeAccordions }"
                 >
-                    <AccordionItem value="inventory">
-                        <AccordionTrigger
+                    <UiAccordionItem value="inventory">
+                        <UiAccordionTrigger
                             @click="() => toggleAccordion('inventory')"
                         >
                             Inventory
-                        </AccordionTrigger>
-                        <AccordionContent
+                        </UiAccordionTrigger>
+                        <UiAccordionContent
                             v-for="[key, value] in Object.entries(inventory)"
                             :key="'inv-' + key"
                         >
                             <InventoryStack :stack="value" />
-                        </AccordionContent>
-                    </AccordionItem>
+                        </UiAccordionContent>
+                    </UiAccordionItem>
 
-                    <AccordionItem value="village">
-                        <AccordionTrigger
+                    <UiAccordionItem value="village">
+                        <UiAccordionTrigger
                             @click="() => toggleAccordion('village')"
                         >
                             Village
-                        </AccordionTrigger>
-                        <AccordionContent
+                        </UiAccordionTrigger>
+                        <UiAccordionContent
                             v-for="[key, value] in Object.entries(village)"
                             :key="'inv-' + key"
                         >
                             <BuildingCell :building="value" />
-                        </AccordionContent>
-                    </AccordionItem>
-                </Accordion>
+                        </UiAccordionContent>
+                    </UiAccordionItem>
+                </UiAccordion>
             </div>
         </Card>
     </div>
