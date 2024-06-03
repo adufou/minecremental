@@ -11,7 +11,7 @@ module.exports = {
     // Place this last ! "plugin:prettier/recommended"
     'plugin:prettier/recommended',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs', 'tailwind.config.js', '__React__'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'tailwind.config.js'],
   parserOptions: {
     ecmaVersion: 'latest'
   },
