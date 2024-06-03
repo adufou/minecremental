@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useInventoryStore } from '@/modules/Inventory/store/inventory.store';
 import type { Item } from '@/shared/constants/items';
-import type ItemRecipe from '@/shared/models/itemRecipe';
+import type { ItemRecipe } from '@/shared/models/itemRecipe';
 import { Button } from '@/shared/ui/button';
 import { Card } from '@/shared/ui/card';
 import { Separator } from '@/shared/ui/separator';
