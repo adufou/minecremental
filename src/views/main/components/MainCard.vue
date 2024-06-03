@@ -2,6 +2,7 @@
 import Craft from '@/modules/Craft/Craft.vue';
 import Forest from '@/modules/Forest/Forest.vue';
 import Mine from '@/modules/Mine/Mine.vue';
+import Village from '@/modules/Village/Village.vue';
 import Sections from '@/shared/models/sections';
 import { Card } from '@/shared/ui/card';
 
@@ -16,6 +17,7 @@ const props = defineProps<{
             <Forest v-if="props.section === Sections.FOREST" />
             <Mine v-if="props.section === Sections.MINE" />
             <Craft v-if="props.section === Sections.CRAFT" />
+            <Village v-if="props.section === Sections.VILLAGE" />
         </Card>
     </div>
 </template>

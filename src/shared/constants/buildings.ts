@@ -1,4 +1,7 @@
-import { BuildingsType, BuildingTypes } from '@/types/village-types.ts';
+import {
+    type BuildingsType,
+    BuildingTypes,
+} from '@/shared/models/villageTypes';
 
 const Buildings: BuildingsType = {
     OAK_HOUSE: {
