@@ -1,5 +1,5 @@
 <script setup lang="ts"></script>
 
-<template></template>
+<template>Devtools</template>
 
 <style scoped></style>

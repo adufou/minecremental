@@ -11,7 +11,7 @@ module.exports = {
     // Place this last ! "plugin:prettier/recommended"
     'plugin:prettier/recommended',
   ],
-  ignorePatterns: ['dist', '.eslintrc.cjs', '__React__'],
+  ignorePatterns: ['dist', '.eslintrc.cjs', 'tailwind.config.js', '__React__'],
   parserOptions: {
     ecmaVersion: 'latest'
   },
@@ -37,5 +37,14 @@ module.exports = {
         memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
       },
     ],
-  }
+    'vue/multi-word-component-names': 'off',
+  },
+  overrides: [
+    {
+      files: ['src/shared/ui/**/*'],
+      rules: {
+        '@typescript-eslint/no-unused-vars': 'off',
+      }
+    }
+  ]
 }

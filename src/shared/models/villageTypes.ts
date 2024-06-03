@@ -1,4 +1,4 @@
-import type {Item} from "@/shared/constants/items";
+import type { Item } from '@/shared/constants/items';
 
 export enum BuildingTypes {
     HOUSE,
