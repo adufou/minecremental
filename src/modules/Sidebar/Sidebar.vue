@@ -23,6 +23,12 @@ const props = defineProps<{
         </UiButton>
         <UiButton
             class="w-full"
+            @click="() => props.setSection(Sections.FOUNDRY)"
+        >
+            Foundry
+        </UiButton>
+        <UiButton
+            class="w-full"
             @click="() => props.setSection(Sections.CRAFT)"
         >
             Craft
