@@ -17,7 +17,7 @@ tickStore.addTickFunction((elapsedTime: number) =>
     forestStore.chopByVillager(elapsedTime, Items.OAK_LOG),
 );
 tickStore.addTickFunction((elapsedTime: number) =>
-    mineStore.mineByVillager(elapsedTime, 1),
+    mineStore.mineByVillager(elapsedTime),
 );
 
 onMounted(() => {
