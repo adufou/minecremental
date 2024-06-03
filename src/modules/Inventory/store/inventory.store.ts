@@ -44,7 +44,7 @@ export const useInventoryStore = defineStore('inventory', () => {
             inventory.value[payload.item.name] = {
                 ...inventory.value[payload.item.name],
                 item: payload.item,
-                size: Math.min(
+                size: Math.max(
                     (inventory.value[payload.item.name]?.size ?? 0) -
                         payload.quantity,
                     0,
