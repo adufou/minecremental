@@ -9,6 +9,7 @@ export type Item = {
 };
 
 export type ItemsType = {
+    COAL: Item;
     COBBLESTONE: Item;
     DIAMOND_AXE: Item;
     GLASS: Item;
@@ -30,6 +31,11 @@ export type ItemsType = {
 };
 
 const Items: ItemsType = {
+    COAL: {
+        displayName: 'Coal',
+        name: 'COAL',
+        type: ItemTypes.INGREDIENT,
+    },
     COBBLESTONE: {
         displayName: 'Cobblestone',
         name: 'COBBLESTONE',
