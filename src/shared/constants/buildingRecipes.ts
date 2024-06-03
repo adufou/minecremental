@@ -1,8 +1,9 @@
 import Buildings from '@/shared/constants/buildings';
 import { Items } from '@/shared/constants/items';
-import type { BuildingRecipe } from '@/shared/models/villageTypes';
 
-const BuildingsRecipes: { [building: string]: BuildingRecipe } = {
+import type { BuildingRecipe } from '@/shared/models/buildingRecipe';
+
+const BuildingRecipes: { [building: string]: BuildingRecipe } = {
     OAK_HOUSE: {
         building: Buildings.OAK_HOUSE,
         ingredients: [
@@ -35,4 +36,4 @@ const BuildingsRecipes: { [building: string]: BuildingRecipe } = {
     },
 } as const;
 
-export default BuildingsRecipes;
+export default BuildingRecipes;
