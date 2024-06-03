@@ -1,6 +1,6 @@
-import Buildings from '@/shared/constants/buildings.ts';
-import { Items } from '@/shared/constants/items.ts';
-import { BuildingRecipe } from '@/types/village-types.ts';
+import Buildings from '@/shared/constants/buildings';
+import { Items } from '@/shared/constants/items';
+import type { BuildingRecipe } from '@/shared/models/villageTypes';
 
 const BuildingsRecipes: { [building: string]: BuildingRecipe } = {
     OAK_HOUSE: {

@@ -1,4 +1,4 @@
-import { Item } from '@/constants/items.ts';
+import type {Item} from "@/shared/constants/items";
 
 export enum BuildingTypes {
     HOUSE,
