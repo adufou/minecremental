@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useMineStore } from '@/modules/Mine/store/mine.store';
+import { UiButton } from '@/shared/ui/button';
 import { UiCard } from '@/shared/ui/card';
 import {
     UiNumberField,
@@ -17,7 +18,7 @@ const handleDepthChange = (v: number) => {
 </script>
 
 <template>
-    <UiCard class="flex justify-between w-full gap-1 p-2">
+    <UiCard class="flex justify-between w-full gap-1 p-2 items-center">
         <UiNumberField
             @update:model-value="handleDepthChange"
             :default-value="mineStore.depth"
@@ -30,6 +31,8 @@ const handleDepthChange = (v: number) => {
                 <UiNumberFieldIncrement />
             </UiNumberFieldContent>
         </UiNumberField>
+        <span>Max: {{ mineStore.maxDepth }}</span>
+        <UiButton>Cost: X</UiButton>
     </UiCard>
 </template>
 

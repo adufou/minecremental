@@ -185,12 +185,12 @@ export const useMineStore = defineStore('mine', () => {
     };
 
     return {
+        clickProgress,
+        depth,
         maxDepth,
         mineByClick,
         mineByVillager,
-        clickProgress,
-        depth,
-        progress,
         miningVillagers,
+        progress,
     };
 });
