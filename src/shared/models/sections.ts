@@ -1,6 +1,7 @@
 enum Sections {
     FOREST,
     VILLAGE,
+    FOUNDRY,
     CRAFT,
     MINE,
 }
