@@ -57,5 +57,10 @@
     "vite-plugin-vue-devtools": "^7.0.25",
     "vitest": "^1.4.0",
     "vue-tsc": "^2.0.11"
+  },
+  "lint-staged": {
+    "*.{ts,vue}": [
+      "eslint --fix --max-warnings 0"
+    ]
   }
 }
