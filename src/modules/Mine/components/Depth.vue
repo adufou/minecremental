@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { useInventoryStore } from '@/modules/Inventory/store/inventory.store';
 import { useMineStore } from '@/modules/Mine/store/mine.store';
+import { Items } from '@/shared/constants/items';
 import { UiButton } from '@/shared/ui/button';
 import { UiCard } from '@/shared/ui/card';
 import {
@@ -9,11 +11,37 @@ import {
     UiNumberFieldIncrement,
     UiNumberFieldInput,
 } from '@/shared/ui/number-field';
+import { display } from '@/utils/numbers';
+import { computed } from 'vue';
 
+const inventoryStore = useInventoryStore();
 const mineStore = useMineStore();
+
+const isUpgradeDisabled = computed(() => {
+    return !inventoryStore.hasEnoughOfItemInInventory({
+        item: Items.COBBLESTONE,
+        quantity: mineStore.maxDepthUpgradeCost,
+    });
+});
 
 const handleDepthChange = (v: number) => {
     mineStore.depth = v;
+};
+
+const handleUpgradeMaxDepth = () => {
+    if (
+        inventoryStore.hasEnoughOfItemInInventory({
+            item: Items.COBBLESTONE,
+            quantity: mineStore.maxDepthUpgradeCost,
+        })
+    ) {
+        inventoryStore.removeItemFromPlayerInventory({
+            item: Items.COBBLESTONE,
+            quantity: mineStore.maxDepthUpgradeCost,
+        });
+
+        mineStore.maxDepth++;
+    }
 };
 </script>
 
@@ -32,7 +60,11 @@ const handleDepthChange = (v: number) => {
             </UiNumberFieldContent>
         </UiNumberField>
         <span>Max: {{ mineStore.maxDepth }}</span>
-        <UiButton>Cost: X</UiButton>
+        <UiButton
+            :disabled="isUpgradeDisabled"
+            @click="handleUpgradeMaxDepth"
+            >Cost: {{ display(mineStore.maxDepthUpgradeCost) }}</UiButton
+        >
     </UiCard>
 </template>
 

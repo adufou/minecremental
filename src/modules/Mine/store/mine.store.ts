@@ -6,15 +6,20 @@ import { useVillageStore } from '@/modules/Village/store/village.store';
 import { Items, type ItemsType } from '@/shared/constants/items';
 import ItemTypes from '@/shared/models/itemTypes';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 export const useMineStore = defineStore('mine', () => {
     // State
     const clickProgress = ref<number>(MineConstants.BASE_MINE_CLICK_PROGRESS);
     const depth = ref<number>(0);
-    const maxDepth = ref<number>(10);
+    const maxDepth = ref<number>(0);
     const progress = ref<number>(0);
     const miningVillagers = ref<number>(1);
+
+    // Getters
+    const maxDepthUpgradeCost = computed(() => {
+        return Math.pow(1.25, maxDepth.value + 1);
+    });
 
     // Actions
     const mineByClick = (depth: number) => {
@@ -188,6 +193,7 @@ export const useMineStore = defineStore('mine', () => {
         clickProgress,
         depth,
         maxDepth,
+        maxDepthUpgradeCost,
         mineByClick,
         mineByVillager,
         miningVillagers,
