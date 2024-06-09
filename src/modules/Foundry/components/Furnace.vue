@@ -22,6 +22,7 @@ import { Icon } from '@iconify/vue';
                 <div
                     class="flex flex-row w-full gap-2 justify-around items-center"
                 >
+                    <!-- TODO: Input selector -->
                     <UiCard class="h-16 w-16 p-1"
                         ><img :src="getImageOfItem(Items.IRON_ORE)"
                     /></UiCard>

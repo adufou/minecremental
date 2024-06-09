@@ -11,8 +11,8 @@ import { computed, ref } from 'vue';
 export const useMineStore = defineStore('mine', () => {
     // State
     const clickProgress = ref<number>(MineConstants.BASE_MINE_CLICK_PROGRESS);
-    const depth = ref<number>(0);
-    const maxDepth = ref<number>(0);
+    const depth = ref<number>(50);
+    const maxDepth = ref<number>(50);
     const progress = ref<number>(0);
     const miningVillagers = ref<number>(1);
 

@@ -6,6 +6,7 @@ export type Item = {
     type: ItemTypes;
     multiplier?: number;
     durability?: number;
+    fuel?: number; // 1 fuel = 1 ms of smelting (beginning of the game)
 };
 
 export type ItemsType = {
@@ -37,6 +38,7 @@ const Items: ItemsType = {
         displayName: 'Coal',
         name: 'COAL',
         type: ItemTypes.INGREDIENT,
+        fuel: 8_000,
     },
     COBBLESTONE: {
         displayName: 'Cobblestone',
