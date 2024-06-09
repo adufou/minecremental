@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useForestStore } from '@/modules/Forest/store/forest.store';
+import { useFoundryStore } from '@/modules/Foundry/store/foundry.store';
 import { useMineStore } from '@/modules/Mine/store/mine.store';
 import { Items } from '@/shared/constants/items';
 import { useTickStore } from '@/shared/stores/tick.store';
@@ -8,6 +9,7 @@ import { RouterView } from 'vue-router';
 
 // TEMP STORES
 const forestStore = useForestStore();
+const foundryStore = useFoundryStore();
 const mineStore = useMineStore();
 
 const tickStore = useTickStore();
@@ -18,6 +20,9 @@ tickStore.addTickFunction((elapsedTime: number) =>
 );
 tickStore.addTickFunction((elapsedTime: number) =>
     mineStore.mineByVillager(elapsedTime),
+);
+tickStore.addTickFunction((elapsedTime: number) =>
+    foundryStore.smelt(elapsedTime),
 );
 
 onMounted(() => {
