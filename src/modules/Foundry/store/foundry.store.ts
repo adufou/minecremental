@@ -8,7 +8,11 @@ export const useFoundryStore = defineStore('foundry', () => {
     // State
     const currentFuel = ref<{ item: Item; fuel: number }>();
     const progress = ref<number>(0);
-    const loadedRecipe = ref<SmeltRecipe>(SmeltRecipes.IRON_INGOT);
+    const loadedRecipe = ref<
+        { recipe: SmeltRecipe; fuelProgress?: number } | undefined
+    >({
+        recipe: SmeltRecipes.IRON_INGOT,
+    });
 
     // Getters
     const remainingFuel = computed<number>(() => {
@@ -31,12 +35,17 @@ export const useFoundryStore = defineStore('foundry', () => {
         // const inventoryStore = useInventoryStore();
 
         /* Action */
-        if (!currentFuel.value || !currentFuel.value.fuel) {
+        if (
+            !currentFuel.value ||
+            !currentFuel.value.fuel ||
+            !loadedRecipe.value
+        ) {
             // TODO: Reuse fuel here ?
             return;
         }
 
-        currentFuel.value.fuel -= elapsed;
+        currentFuel.value.fuel = Math.max(0, currentFuel.value.fuel - elapsed);
+        progress.value += elapsed;
     };
 
     return {
