@@ -30,3 +30,5 @@ const SmeltRecipes: { [recipe: string]: SmeltRecipe } = {
         quantity: 1,
     },
 } as const;
+
+export default SmeltRecipes;
