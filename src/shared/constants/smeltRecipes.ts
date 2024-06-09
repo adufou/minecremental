@@ -8,7 +8,7 @@ const SmeltRecipes: { [recipe: string]: SmeltRecipe } = {
             item: Items.SAND,
             quantity: 1,
         },
-        fuel: 1,
+        fuel: 1_000,
         quantity: 1,
     },
     IRON_INGOT: {
@@ -17,7 +17,7 @@ const SmeltRecipes: { [recipe: string]: SmeltRecipe } = {
             item: Items.IRON_ORE,
             quantity: 1,
         },
-        fuel: 1,
+        fuel: 1_000,
         quantity: 1,
     },
     STONE: {
@@ -26,7 +26,7 @@ const SmeltRecipes: { [recipe: string]: SmeltRecipe } = {
             item: Items.COBBLESTONE,
             quantity: 1,
         },
-        fuel: 1,
+        fuel: 1_000,
         quantity: 1,
     },
 } as const;

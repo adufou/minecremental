@@ -1,3 +1,4 @@
+import { useInventoryStore } from '@/modules/Inventory/store/inventory.store';
 import type { Item } from '@/shared/constants/items';
 import SmeltRecipes from '@/shared/constants/smeltRecipes';
 import type { SmeltRecipe } from '@/shared/models/smeltRecipe';
@@ -7,7 +8,6 @@ import { computed, ref } from 'vue';
 export const useFoundryStore = defineStore('foundry', () => {
     // State
     const currentFuel = ref<{ item: Item; fuel: number }>();
-    const progress = ref<number>(0);
     const loadedRecipe = ref<
         { recipe: SmeltRecipe; fuelProgress?: number } | undefined
     >({
@@ -15,7 +15,7 @@ export const useFoundryStore = defineStore('foundry', () => {
     });
 
     // Getters
-    const remainingFuel = computed<number>(() => {
+    const remainingFuelPercent = computed<number>(() => {
         if (!currentFuel.value?.fuel || !currentFuel.value?.item?.fuel) {
             return 0;
         }
@@ -32,7 +32,7 @@ export const useFoundryStore = defineStore('foundry', () => {
     // Actions
     const smelt = (elapsed: number) => {
         /* Stores uses first ! See https://pinia.vuejs.org/cookbook/composing-stores.html */
-        // const inventoryStore = useInventoryStore();
+        const inventoryStore = useInventoryStore();
 
         /* Action */
         if (
@@ -45,14 +45,36 @@ export const useFoundryStore = defineStore('foundry', () => {
         }
 
         currentFuel.value.fuel = Math.max(0, currentFuel.value.fuel - elapsed);
-        progress.value += elapsed;
+        loadedRecipe.value.fuelProgress =
+            (loadedRecipe.value.fuelProgress ?? 0) + elapsed;
+
+        console.log(
+            loadedRecipe.value.fuelProgress,
+            loadedRecipe.value.recipe.fuel,
+        );
+
+        if (loadedRecipe.value.fuelProgress >= loadedRecipe.value.recipe.fuel) {
+            inventoryStore.addItemToPlayerInventory({
+                item: loadedRecipe.value.recipe.item,
+                quantity: 1,
+            });
+            inventoryStore.removeItemFromPlayerInventory({
+                item: loadedRecipe.value.recipe.ingredients.item,
+                quantity: loadedRecipe.value.recipe.ingredients.quantity,
+            });
+
+            loadedRecipe.value.fuelProgress = Math.max(
+                0,
+                loadedRecipe.value.fuelProgress -
+                    loadedRecipe.value.recipe.fuel,
+            );
+        }
     };
 
     return {
         currentFuel,
-        progress,
         loadedRecipe,
-        remainingFuel,
+        remainingFuelPercent,
         smelt,
     };
 });
