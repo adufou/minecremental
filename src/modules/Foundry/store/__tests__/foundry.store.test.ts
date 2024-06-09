@@ -1,4 +1,5 @@
 import { useFoundryStore } from '@/modules/Foundry/store/foundry.store';
+import { useInventoryStore } from '@/modules/Inventory/store/inventory.store';
 import { Items } from '@/shared/constants/items';
 import SmeltRecipes from '@/shared/constants/smeltRecipes';
 import { createPinia, setActivePinia } from 'pinia';
@@ -94,13 +95,16 @@ describe('foundry store', () => {
                 // Arrange
                 const elapsed = 10;
                 const foundryStore = useFoundryStore();
-                foundryStore.progress = 0;
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 0,
+                };
 
                 // Act
                 foundryStore.smelt(elapsed);
 
                 // Assert
-                const result = foundryStore.progress;
+                const result = foundryStore.loadedRecipe.fuelProgress;
                 expect(result).toBe(0);
             });
             it('should not increase the progress if there is no fuel', () => {
@@ -109,29 +113,16 @@ describe('foundry store', () => {
                 const currentFuel = { item: Items.COAL, fuel: 0 };
                 const foundryStore = useFoundryStore();
                 foundryStore.currentFuel = currentFuel;
-                foundryStore.progress = 0;
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 0,
+                };
 
                 // Act
                 foundryStore.smelt(elapsed);
 
                 // Assert
-                const result = foundryStore.progress;
-                expect(result).toBe(0);
-            });
-            it('should not increase the progress if there is no loaded recipe', () => {
-                // Arrange
-                const elapsed = 10;
-                const currentFuel = { item: Items.COAL, fuel: 1_000 };
-                const foundryStore = useFoundryStore();
-                foundryStore.currentFuel = currentFuel;
-                foundryStore.loadedRecipe = undefined;
-                foundryStore.progress = 0;
-
-                // Act
-                foundryStore.smelt(elapsed);
-
-                // Assert
-                const result = foundryStore.progress;
+                const result = foundryStore.loadedRecipe.fuelProgress;
                 expect(result).toBe(0);
             });
             it('should increase the progress by the elapsed time', () => {
@@ -139,17 +130,182 @@ describe('foundry store', () => {
                 const elapsed = 10;
                 const currentFuel = { item: Items.COAL, fuel: 1_000 };
                 const foundryStore = useFoundryStore();
+                const inventoryStore = useInventoryStore();
+
                 foundryStore.currentFuel = currentFuel;
-                foundryStore.progress = 0;
-                foundryStore.loadedRecipe = { recipe: SmeltRecipes.IRON_INGOT };
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 0,
+                };
+
+                inventoryStore.inventory[Items.IRON_ORE.name] = {
+                    item: Items.IRON_ORE,
+                    size: 1,
+                };
 
                 // Act
                 foundryStore.smelt(elapsed);
 
                 // Assert
-                const result = foundryStore.progress;
+                const result = foundryStore.loadedRecipe.fuelProgress;
                 expect(result).toBe(10);
             });
+        });
+        describe('recipe', () => {
+            it('should not remove item from inventory if progress did not reach 100', () => {
+                // Arrange
+                const elapsed = 10;
+                const currentFuel = { item: Items.COAL, fuel: 1_000 };
+                const inventoryStore = useInventoryStore();
+                const foundryStore = useFoundryStore();
+
+                foundryStore.currentFuel = currentFuel;
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 0,
+                };
+
+                inventoryStore.inventory[Items.IRON_ORE.name] = {
+                    item: Items.IRON_ORE,
+                    size: 1,
+                };
+
+                // Act
+                foundryStore.smelt(elapsed);
+
+                // Assert
+                const result = inventoryStore.inventory[Items.IRON_ORE.name];
+                expect(result).toEqual({ item: Items.IRON_ORE, size: 1 });
+            });
+            it('should remove the smelted base item from inventory if progress reached 100', () => {
+                // Arrange
+                const elapsed = 1_000;
+                const currentFuel = { item: Items.COAL, fuel: 1_000 };
+                const inventoryStore = useInventoryStore();
+                const foundryStore = useFoundryStore();
+
+                foundryStore.currentFuel = currentFuel;
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 0,
+                };
+
+                inventoryStore.inventory[Items.IRON_ORE.name] = {
+                    item: Items.IRON_ORE,
+                    size: 1,
+                };
+
+                // Act
+                foundryStore.smelt(elapsed);
+
+                // Assert
+                const result =
+                    inventoryStore.inventory[Items.IRON_ORE.name]?.size;
+                expect(result).toBe(0);
+            });
+            it('should add the smelted item to the inventory', () => {
+                // Arrange
+                const elapsed = 1_000;
+                const currentFuel = { item: Items.COAL, fuel: 1_000 };
+                const inventoryStore = useInventoryStore();
+                const foundryStore = useFoundryStore();
+
+                foundryStore.currentFuel = currentFuel;
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 0,
+                };
+
+                inventoryStore.inventory[Items.IRON_ORE.name] = {
+                    item: Items.IRON_ORE,
+                    size: 1,
+                };
+                inventoryStore.inventory[Items.IRON_INGOT.name] = {
+                    item: Items.IRON_ORE,
+                    size: 0,
+                };
+
+                // Act
+                foundryStore.smelt(elapsed);
+
+                // Assert
+                const result =
+                    inventoryStore.inventory[Items.IRON_INGOT.name]?.size;
+                expect(result).toBe(1);
+            });
+        });
+    });
+
+    describe('remaining fuel', () => {
+        it('should return 0 if there is no current fuel', () => {
+            // Arrange
+            const foundryStore = useFoundryStore();
+
+            // Act
+            const result = foundryStore.remainingFuelPercent;
+
+            // Assert
+            expect(result).toBe(0);
+        });
+        it('should return 0 if there is no fuel', () => {
+            // Arrange
+            const currentFuel = { item: Items.COAL, fuel: 0 };
+            const foundryStore = useFoundryStore();
+            foundryStore.currentFuel = currentFuel;
+
+            // Act
+            const result = foundryStore.remainingFuelPercent;
+
+            // Assert
+            expect(result).toBe(0);
+        });
+        it('should return 50 if the current fuel is half empty', () => {
+            // Arrange
+            const currentFuel = { item: Items.COAL, fuel: 4_000 };
+            const foundryStore = useFoundryStore();
+            foundryStore.currentFuel = currentFuel;
+
+            // Act
+            const result = foundryStore.remainingFuelPercent;
+
+            // Assert
+            expect(result).toBe(50);
+        });
+        it('should return 100 if the current fuel is full', () => {
+            // Arrange
+            const currentFuel = { item: Items.COAL, fuel: 8_000 };
+            const foundryStore = useFoundryStore();
+            foundryStore.currentFuel = currentFuel;
+
+            // Act
+            const result = foundryStore.remainingFuelPercent;
+
+            // Assert
+            expect(result).toBe(100);
+        });
+        it('should return 100 if the current fuel is more than full', () => {
+            // Arrange
+            const currentFuel = { item: Items.COAL, fuel: 16_000 };
+            const foundryStore = useFoundryStore();
+            foundryStore.currentFuel = currentFuel;
+
+            // Act
+            const result = foundryStore.remainingFuelPercent;
+
+            // Assert
+            expect(result).toBe(100);
+        });
+        it('should return 0 if the current fuel is less than empty', () => {
+            // Arrange
+            const currentFuel = { item: Items.COAL, fuel: -8_000 };
+            const foundryStore = useFoundryStore();
+            foundryStore.currentFuel = currentFuel;
+
+            // Act
+            const result = foundryStore.remainingFuelPercent;
+
+            // Assert
+            expect(result).toBe(0);
         });
     });
 });
