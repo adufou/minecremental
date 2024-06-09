@@ -108,7 +108,26 @@ describe('foundry store', () => {
                 const currentFuel = foundryStore.currentFuel;
                 expect(currentFuel).toEqual({ item: Items.COAL, fuel: 7_990 });
             });
-            it('should refill the current fuel if the elapsed time is greater than the current fuel', () => {});
+            // it('should refill then use the current fuel if the elapsed time is greater than the current fuel', () => {
+            //     // Arrange
+            //     const elapsed = 1_000;
+            //     const foundryStore = useFoundryStore();
+            //     const inventoryStore = useInventoryStore();
+            //
+            //     foundryStore.currentFuel = { item: Items.COAL, fuel: 500 };
+            //     inventoryStore.inventory[Items.COAL.name] = {
+            //         item: Items.COAL,
+            //         size: 1,
+            //     };
+            //
+            //     // Act
+            //     foundryStore.smelt(elapsed);
+            //
+            //     // Assert
+            //     const currentFuel = foundryStore.currentFuel;
+            //     expect(currentFuel).toEqual({ item: Items.COAL, fuel: 7_500 });
+            //     expect(inventoryStore.inventory[Items.COAL.name]?.size).toBe(0);
+            // });
         });
         describe('progress', () => {
             it('should not increase the progress if there is no current fuel', () => {
