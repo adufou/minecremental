@@ -10,7 +10,7 @@ jobs:
 
         steps:
             - name: Checkout the code
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: JS Setup
               uses: ./.github/actions/js-setup
