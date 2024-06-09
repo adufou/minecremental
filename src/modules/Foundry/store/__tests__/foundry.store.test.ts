@@ -33,8 +33,18 @@ describe('foundry store', () => {
                 const elapsed = 10;
                 const currentFuel = { item: Items.COAL, fuel: 0 };
                 const foundryStore = useFoundryStore();
+                const inventoryStore = useInventoryStore();
 
                 foundryStore.currentFuel = currentFuel;
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 0,
+                };
+
+                inventoryStore.inventory[Items.COAL.name] = {
+                    item: Items.COAL,
+                    size: 1,
+                };
 
                 // Act
                 foundryStore.smelt(elapsed);
@@ -48,9 +58,15 @@ describe('foundry store', () => {
                 const elapsed = 10;
                 const currentFuel = { item: Items.COAL, fuel: 1_000 };
                 const foundryStore = useFoundryStore();
+                const inventoryStore = useInventoryStore();
 
                 foundryStore.currentFuel = currentFuel;
                 foundryStore.loadedRecipe = undefined;
+
+                inventoryStore.inventory[Items.COAL.name] = {
+                    item: Items.COAL,
+                    size: 1,
+                };
 
                 // Act
                 foundryStore.smelt(elapsed);
@@ -64,8 +80,22 @@ describe('foundry store', () => {
                 const elapsed = 10;
                 const currentFuel = { item: Items.COAL, fuel: 1_000 };
                 const foundryStore = useFoundryStore();
+                const inventoryStore = useInventoryStore();
 
                 foundryStore.currentFuel = currentFuel;
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 0,
+                };
+
+                inventoryStore.inventory[Items.COAL.name] = {
+                    item: Items.COAL,
+                    size: 1,
+                };
+                inventoryStore.inventory[Items.IRON_ORE.name] = {
+                    item: Items.IRON_ORE,
+                    size: 1,
+                };
 
                 // Act
                 foundryStore.smelt(elapsed);
@@ -79,8 +109,22 @@ describe('foundry store', () => {
                 const elapsed = 1_001;
                 const currentFuel = { item: Items.COAL, fuel: 1_000 };
                 const foundryStore = useFoundryStore();
+                const inventoryStore = useInventoryStore();
 
                 foundryStore.currentFuel = currentFuel;
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 0,
+                };
+
+                inventoryStore.inventory[Items.COAL.name] = {
+                    item: Items.COAL,
+                    size: 1,
+                };
+                inventoryStore.inventory[Items.IRON_ORE.name] = {
+                    item: Items.IRON_ORE,
+                    size: 1,
+                };
 
                 // Act
                 foundryStore.smelt(elapsed);
@@ -96,8 +140,17 @@ describe('foundry store', () => {
                 const inventoryStore = useInventoryStore();
 
                 foundryStore.currentFuel = undefined;
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 0,
+                };
+
                 inventoryStore.inventory[Items.COAL.name] = {
                     item: Items.COAL,
+                    size: 1,
+                };
+                inventoryStore.inventory[Items.IRON_ORE.name] = {
+                    item: Items.IRON_ORE,
                     size: 1,
                 };
 
@@ -128,6 +181,30 @@ describe('foundry store', () => {
             //     expect(currentFuel).toEqual({ item: Items.COAL, fuel: 7_500 });
             //     expect(inventoryStore.inventory[Items.COAL.name]?.size).toBe(0);
             // });
+            it('should not use fuel if there is not enough ore in the inventory', () => {
+                // Arrange
+                const elapsed = 10;
+                const foundryStore = useFoundryStore();
+                const inventoryStore = useInventoryStore();
+
+                foundryStore.currentFuel = { item: Items.COAL, fuel: 1_000 };
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 0,
+                };
+
+                inventoryStore.inventory[Items.IRON_ORE.name] = {
+                    item: Items.IRON_ORE,
+                    size: 0,
+                };
+
+                // Act
+                foundryStore.smelt(elapsed);
+
+                // Assert
+                const currentFuel = foundryStore.currentFuel;
+                expect(currentFuel).toEqual({ item: Items.COAL, fuel: 1_000 });
+            });
         });
         describe('progress', () => {
             it('should not increase the progress if there is no current fuel', () => {
@@ -188,6 +265,30 @@ describe('foundry store', () => {
                 // Assert
                 const result = foundryStore.loadedRecipe.fuelProgress;
                 expect(result).toBe(10);
+            });
+            it('should not progress if there is no ore in the inventory', () => {
+                // Arrange
+                const elapsed = 10;
+                const foundryStore = useFoundryStore();
+                const inventoryStore = useInventoryStore();
+
+                foundryStore.currentFuel = { item: Items.COAL, fuel: 1_000 };
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 0,
+                };
+
+                inventoryStore.inventory[Items.IRON_ORE.name] = {
+                    item: Items.IRON_ORE,
+                    size: 0,
+                };
+
+                // Act
+                foundryStore.smelt(elapsed);
+
+                // Assert
+                const result = foundryStore.loadedRecipe.fuelProgress;
+                expect(result).toBe(0);
             });
         });
         describe('recipe', () => {

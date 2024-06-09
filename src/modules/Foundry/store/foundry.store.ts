@@ -56,6 +56,15 @@ export const useFoundryStore = defineStore('foundry', () => {
             return;
         }
 
+        if (
+            !inventoryStore.hasEnoughOfItemInInventory({
+                item: loadedRecipe.value.recipe.ingredients.item,
+                quantity: loadedRecipe.value.recipe.ingredients.quantity,
+            })
+        ) {
+            return;
+        }
+
         if (!currentFuel.value || !currentFuel.value.fuel) {
             if (
                 selectedFuel.value.fuel &&
