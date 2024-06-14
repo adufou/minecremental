@@ -60,7 +60,8 @@ export const useFoundryStore = defineStore('foundry', () => {
             !inventoryStore.hasEnoughOfItemInInventory({
                 item: loadedRecipe.value.recipe.ingredients.item,
                 quantity: loadedRecipe.value.recipe.ingredients.quantity,
-            })
+            }) &&
+            !currentFuel.value?.fuel
         ) {
             return;
         }
@@ -90,6 +91,16 @@ export const useFoundryStore = defineStore('foundry', () => {
         }
 
         currentFuel.value.fuel = Math.max(0, currentFuel.value.fuel - elapsed);
+
+        if (
+            !inventoryStore.hasEnoughOfItemInInventory({
+                item: loadedRecipe.value.recipe.ingredients.item,
+                quantity: loadedRecipe.value.recipe.ingredients.quantity,
+            })
+        ) {
+            return;
+        }
+
         loadedRecipe.value.fuelProgress =
             (loadedRecipe.value.fuelProgress ?? 0) + elapsed;
 

@@ -28,7 +28,7 @@ describe('foundry store', () => {
                 const result = foundryStore.currentFuel;
                 expect(result).toBeUndefined();
             });
-            it('should not decrease the current fuel if there is no fuel', () => {
+            it('should not decrease the current fuel if there is no fuel and no item to smelt', () => {
                 // Arrange
                 const elapsed = 10;
                 const currentFuel = { item: Items.COAL, fuel: 0 };
@@ -181,7 +181,38 @@ describe('foundry store', () => {
             //     expect(currentFuel).toEqual({ item: Items.COAL, fuel: 7_500 });
             //     expect(inventoryStore.inventory[Items.COAL.name]?.size).toBe(0);
             // });
-            it('should not use fuel if there is not enough ore in the inventory', () => {
+            it('should not use fuel if there is not enough ore in the inventory and fuel is empty', () => {
+                // Arrange
+                const elapsed = 10;
+                const foundryStore = useFoundryStore();
+                const inventoryStore = useInventoryStore();
+
+                foundryStore.currentFuel = { item: Items.COAL, fuel: 0 };
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 0,
+                };
+
+                inventoryStore.inventory[Items.COAL.name] = {
+                    item: Items.COAL,
+                    size: 1,
+                };
+                inventoryStore.inventory[Items.IRON_ORE.name] = {
+                    item: Items.IRON_ORE,
+                    size: 0,
+                };
+
+                // Act
+                foundryStore.smelt(elapsed);
+
+                // Assert
+                const currentFuel = foundryStore.currentFuel;
+                expect(currentFuel).toEqual({ item: Items.COAL, fuel: 0 });
+                expect(inventoryStore.inventory[Items.COAL.name]?.size).toEqual(
+                    1,
+                );
+            });
+            it('should use fuel if it began to burn even if there is nothing in the furnace', () => {
                 // Arrange
                 const elapsed = 10;
                 const foundryStore = useFoundryStore();
@@ -203,7 +234,7 @@ describe('foundry store', () => {
 
                 // Assert
                 const currentFuel = foundryStore.currentFuel;
-                expect(currentFuel).toEqual({ item: Items.COAL, fuel: 1_000 });
+                expect(currentFuel).toEqual({ item: Items.COAL, fuel: 990 });
             });
         });
         describe('progress', () => {
