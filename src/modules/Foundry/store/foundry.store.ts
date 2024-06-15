@@ -109,6 +109,8 @@ export const useFoundryStore = defineStore('foundry', () => {
                     loadedRecipe.value.recipe.fuel,
             );
         }
+
+        console.log('smelt');
     };
 
     return {
