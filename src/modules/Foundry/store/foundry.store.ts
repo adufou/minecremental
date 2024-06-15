@@ -98,6 +98,7 @@ export const useFoundryStore = defineStore('foundry', () => {
                 quantity: loadedRecipe.value.recipe.ingredients.quantity,
             })
         ) {
+            loadedRecipe.value.fuelProgress = 0;
             return;
         }
 

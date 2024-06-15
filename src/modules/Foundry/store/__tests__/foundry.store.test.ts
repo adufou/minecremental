@@ -321,6 +321,31 @@ describe('foundry store', () => {
                 const result = foundryStore.loadedRecipe.fuelProgress;
                 expect(result).toBe(0);
             });
+            it('should reset progress to 0 if there is no other ingredient after smelting', () => {
+                // Arrange
+                const elapsed = 1_000;
+                const currentFuel = { item: Items.COAL, fuel: 4_000 };
+                const inventoryStore = useInventoryStore();
+                const foundryStore = useFoundryStore();
+
+                foundryStore.currentFuel = currentFuel;
+                foundryStore.loadedRecipe = {
+                    recipe: SmeltRecipes.IRON_INGOT,
+                    fuelProgress: 500,
+                };
+
+                inventoryStore.inventory[Items.IRON_ORE.name] = {
+                    item: Items.IRON_ORE,
+                    size: 0,
+                };
+
+                // Act
+                foundryStore.smelt(elapsed);
+
+                // Assert
+                const result = foundryStore.loadedRecipe.fuelProgress;
+                expect(result).toBe(0);
+            });
         });
         describe('recipe', () => {
             it('should not remove item from inventory if progress did not reach 100', () => {
