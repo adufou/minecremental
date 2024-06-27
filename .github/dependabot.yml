@@ -15,7 +15,6 @@ updates:
     groups:
       security:
         applies-to: "security-updates"
-      patch:
         update-types: 
           - "minor"
           - "patch"
@@ -30,7 +29,6 @@ updates:
     groups:
       security:
         applies-to: "security-updates"
-      patch:
         update-types: 
           - "minor"
           - "patch"
