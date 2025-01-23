@@ -9,6 +9,9 @@ updates:
     pull-request-branch-name:
       separator: "-"
     directory: "/" # Location of package manifests
+    # /!\ /!\ Disables Dependabot! Reenable it if needed by reverting the commit that brought it. See this https://stackoverflow.com/questions/76756236/is-there-a-way-to-disable-dependabot-from-the-yaml-config
+    ignore:
+      - dependency-name: "*" 
     schedule:
       interval: "monthly"
     open-pull-requests-limit: 100
@@ -23,6 +26,9 @@ updates:
     pull-request-branch-name:
       separator: "-"
     directory: "/" # Location of package manifests
+    # /!\ /!\ Disables Dependabot! Reenable it if needed by reverting the commit that brought it. See this https://stackoverflow.com/questions/76756236/is-there-a-way-to-disable-dependabot-from-the-yaml-config
+    ignore:
+      - dependency-name: "*" 
     schedule:
       interval: "monthly" 
     open-pull-requests-limit: 100
